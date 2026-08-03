@@ -8,7 +8,7 @@ from pathlib import Path
 import random
 from typing import Iterable
 
-from lludens.km2026 import LLMPolicy, Treatment, run_match
+from lludens.km2026 import LLMPolicy, RepeatedPDGame, Treatment
 
 
 DEFAULT_HORIZONS = (10, 20, 50)
@@ -118,15 +118,18 @@ def build_plan(
     return plan
 
 
-def completed_matches(path: Path) -> set[str]:
+def load_progress(path: Path) -> dict[str, list[dict]]:
     if not path.exists():
-        return set()
-    completed: set[str] = set()
+        return {}
+    progress: dict[str, list[dict]] = {}
     with path.open() as file:
         for line in file:
             if line.strip():
-                completed.add(json.loads(line)["match_id"])
-    return completed
+                row = json.loads(line)
+                progress.setdefault(row["match_id"], []).append(row)
+    for rows in progress.values():
+        rows.sort(key=lambda row: row["round"])
+    return progress
 
 
 def append_rows(path: Path, rows: Iterable[dict]) -> None:
@@ -163,12 +166,17 @@ def write_plan(path: Path, plan: Iterable[MatchSpec]) -> None:
 
 
 def run_plan(plan: Iterable[MatchSpec], output_path: Path, temperature: float | None) -> None:
-    completed = completed_matches(output_path)
+    progress = load_progress(output_path)
     for index, spec in enumerate(plan, start=1):
-        if spec.match_id in completed:
+        prior_rows = progress.get(spec.match_id, [])
+        if len(prior_rows) >= spec.horizon:
             print(f"[{index}] skip completed {spec.match_id}", flush=True)
             continue
-        print(f"[{index}] run {spec.match_id}", flush=True)
+        start_round = len(prior_rows) + 1
+        print(
+            f"[{index}] run {spec.match_id} from round {start_round}",
+            flush=True,
+        )
         player1 = LLMPolicy(
             spec.player1.model_id,
             label=spec.player1.label,
@@ -181,7 +189,7 @@ def run_plan(plan: Iterable[MatchSpec], output_path: Path, temperature: float | 
             private_gamma=spec.player2_gamma,
             temperature=temperature,
         )
-        rows = run_match(
+        game = RepeatedPDGame(
             spec.treatment,
             spec.horizon,
             player1,
@@ -189,9 +197,14 @@ def run_plan(plan: Iterable[MatchSpec], output_path: Path, temperature: float | 
             seed=spec.seed,
             match_id=spec.match_id,
         )
-        for row in rows:
+        game.history.extend(prior_rows)
+        for prior_row in prior_rows:
+            player1.observe(game.observation_for(1, prior_row))
+            player2.observe(game.observation_for(2, prior_row))
+        for round_number in range(start_round, spec.horizon + 1):
+            row = game.play_round(round_number)
             row["replicate"] = spec.replicate
-        append_rows(output_path, rows)
+            append_rows(output_path, [row])
 
 
 def parse_args() -> argparse.Namespace:

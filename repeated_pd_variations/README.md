@@ -87,7 +87,7 @@ The default outputs are:
 - `data/repeated_pd_variations_plan.json`: immutable match plan, seeds, seats, and private types;
 - `data/repeated_pd_variations.jsonl`: append-only round records.
 
-The runner checkpoints after every match. Re-running the same command skips match IDs already present in the JSONL output, so an interrupted sweep resumes without repeating paid calls. Use a new output path or seed for a genuinely new batch.
+The runner checkpoints after every round. Re-running the same command reconstructs public match history, resumes each partial match at its next missing round, and skips complete match IDs. Use a new output path or seed for a genuinely new batch.
 
 Large sweeps can run as independent shards. Each shard must use its own plan and JSONL paths:
 
@@ -116,6 +116,7 @@ uv run python -m repeated_pd_variations.summarize
 - Generalized action validation through `ActionSpace` while preserving `parse_binary_action()`.
 - Kept the legacy `Game` and `TotreLLM.interact()` interfaces for notebook compatibility.
 - Added deterministic plan sharding for parallel paid sweeps.
+- Changed paid-run checkpointing from match-level to round-level, including partial-match resume from reconstructed public history.
 
 ### 2026-08-03 — Initial scaffold
 
