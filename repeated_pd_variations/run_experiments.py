@@ -165,7 +165,12 @@ def write_plan(path: Path, plan: Iterable[MatchSpec]) -> None:
         file.write("\n")
 
 
-def run_plan(plan: Iterable[MatchSpec], output_path: Path, temperature: float | None) -> None:
+def run_plan(
+    plan: Iterable[MatchSpec],
+    output_path: Path,
+    temperature: float | None,
+    max_tokens: int,
+) -> None:
     progress = load_progress(output_path)
     for index, spec in enumerate(plan, start=1):
         prior_rows = progress.get(spec.match_id, [])
@@ -182,12 +187,14 @@ def run_plan(plan: Iterable[MatchSpec], output_path: Path, temperature: float | 
             label=spec.player1.label,
             private_gamma=spec.player1_gamma,
             temperature=temperature,
+            max_tokens=max_tokens,
         )
         player2 = LLMPolicy(
             spec.player2.model_id,
             label=spec.player2.label,
             private_gamma=spec.player2_gamma,
             temperature=temperature,
+            max_tokens=max_tokens,
         )
         game = RepeatedPDGame(
             spec.treatment,
@@ -217,6 +224,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--gamma-values", nargs="+", type=float, default=[0.0])
     parser.add_argument("--seed", type=int, default=20260803)
     parser.add_argument("--temperature", type=float)
+    parser.add_argument("--max-tokens", type=int, default=64)
     parser.add_argument("--shard-count", type=int, default=1)
     parser.add_argument("--shard-index", type=int, default=0)
     parser.add_argument("--output", type=Path, default=Path("data/repeated_pd_variations.jsonl"))
@@ -253,7 +261,7 @@ def main() -> None:
         flush=True,
     )
     if not args.dry_run:
-        run_plan(plan, args.output, args.temperature)
+        run_plan(plan, args.output, args.temperature, args.max_tokens)
 
 
 if __name__ == "__main__":

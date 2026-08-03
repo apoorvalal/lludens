@@ -112,6 +112,7 @@ class LLMPolicy(TotreLLM):
         model_id: str,
         *,
         temperature: float | None = None,
+        max_tokens: int = 64,
         label: str | None = None,
         private_type: str | None = None,
         private_gamma: float | None = None,
@@ -133,7 +134,9 @@ class LLMPolicy(TotreLLM):
                     "not observe theirs. Keep this value fixed throughout the match."
                 ),
             )
-        options = {} if temperature is None else {"temperature": temperature}
+        options: dict[str, float | int] = {"max_tokens": max_tokens}
+        if temperature is not None:
+            options["temperature"] = temperature
         super().__init__(
             model_id,
             system=(
