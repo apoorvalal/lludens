@@ -33,3 +33,6 @@ Homepage = "https://github.com/apoorvalal/lludens"
 
 [tool.setuptools.packages]
 find = {exclude = ["notebooks"]}
+
+[tool.setuptools.package-data]
+repeated_pd_variations = ["README.md", "models.json"]

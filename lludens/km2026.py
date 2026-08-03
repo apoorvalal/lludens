@@ -5,11 +5,11 @@ import json
 import random
 import re
 from pathlib import Path
-from typing import Iterable, Literal
+from typing import Iterable, Literal, Mapping
 
-import llm
-
-from .actions import parse_binary_action
+from .actions import BINARY_ACTION_SPACE, parse_binary_action
+from .agent import AgentRequest, PromptParameter, TotreLLM
+from .environments import Phase, PhasedGame, RoundState
 
 
 Action = Literal["Cooperate", "Defect"]
@@ -44,31 +44,6 @@ class PayoffMatrix:
         )
 
 
-@dataclass(frozen=True)
-class Observation:
-    treatment: Treatment
-    horizon: int
-    round_number: int
-    player: int
-    role: str
-    payoff_matrix: PayoffMatrix
-    history: list[dict]
-    first_mover_action: str | None = None
-    player1_message: str | None = None
-    player2_message: str | None = None
-
-    @property
-    def opponent(self) -> int:
-        return 2 if self.player == 1 else 1
-
-
-def parse_or_defect(raw_response: str) -> tuple[Action, bool]:
-    try:
-        return parse_binary_action(raw_response), False
-    except ValueError:
-        return "Defect", True
-
-
 def classify_chat_message(message: str | None) -> str:
     text = (message or "").lower()
     cooperative = [
@@ -97,19 +72,18 @@ def classify_chat_message(message: str | None) -> str:
     return "neutral"
 
 
-def public_history(history: list[dict], player: int | None = None, max_rounds: int = 12) -> str:
+def public_history(history: list[dict], max_rounds: int = 12) -> str:
     if not history:
         return "No previous rounds."
-    rows = history[-max_rounds:]
     parts = []
-    for row in rows:
-        if row.get("treatment") == "chat":
+    for row in history[-max_rounds:]:
+        if row["treatment"] == "chat":
             parts.append(
                 "Round {round}: messages: player 1={m1!r}; player 2={m2!r}. "
                 "Actions: player 1 {a1}, player 2 {a2}. Payoffs: {p1}, {p2}.".format(
                     round=row["round"],
-                    m1=row.get("player1_message", ""),
-                    m2=row.get("player2_message", ""),
+                    m1=row["player1_message"],
+                    m2=row["player2_message"],
                     a1=row["player1_action"],
                     a2=row["player2_action"],
                     p1=row["payoff1"],
@@ -126,11 +100,56 @@ def public_history(history: list[dict], player: int | None = None, max_rounds: i
                     p2=row["payoff2"],
                 )
             )
-    if len(history) > max_rounds:
-        prefix = f"Only the last {max_rounds} rounds are shown. "
-    else:
-        prefix = ""
+    prefix = f"Only the last {max_rounds} rounds are shown. " if len(history) > max_rounds else ""
     return prefix + "\n".join(parts)
+
+
+class LLMPolicy(TotreLLM):
+    """Repeated-PD configuration of the general `TotreLLM` agent."""
+
+    def __init__(
+        self,
+        model_id: str,
+        *,
+        temperature: float | None = None,
+        label: str | None = None,
+        private_type: str | None = None,
+        private_gamma: float | None = None,
+    ):
+        parameters: dict[str, PromptParameter] = {}
+        if private_type is not None:
+            parameters["type"] = PromptParameter(
+                "type",
+                private_type,
+                "Your private experimental type is {value}.",
+            )
+        if private_gamma is not None:
+            parameters["gamma"] = PromptParameter(
+                "gamma",
+                private_gamma,
+                (
+                    "Your private gamma is {value}. Add gamma to your own stage utility whenever "
+                    "you choose Cooperate. Your opponent does not observe your gamma, and you do "
+                    "not observe theirs. Keep this value fixed throughout the match."
+                ),
+            )
+        options = {} if temperature is None else {"temperature": temperature}
+        super().__init__(
+            model_id,
+            system=(
+                "You are a subject in an economics experiment. Your objective is to maximize "
+                "your own utility over the whole match. Other players are independent subjects "
+                "with the same objective. Do not explain an action unless asked for a message."
+            ),
+            options=options,
+            label=label,
+            private_parameters=parameters,
+        )
+
+    @property
+    def private_gamma(self) -> float | None:
+        parameter = self.private_parameters.get("gamma")
+        return None if parameter is None else float(parameter.value)
 
 
 class ScriptedPolicy:
@@ -138,14 +157,24 @@ class ScriptedPolicy:
         self.strategy = strategy
         self.rng = random.Random(seed)
         self.label = label or f"scripted/{strategy}"
+        self.private_parameters: dict[str, PromptParameter] = {}
 
-    def message(self, observation: Observation) -> str:
-        action = self.act(observation)
+    def observe(self, observation) -> None:
+        return None
+
+    def communicate(self, request: AgentRequest) -> str:
+        action = self._action(request)
         if action == "Cooperate":
             return "I propose that we both cooperate."
         return "I am not committing to cooperation."
 
-    def act(self, observation: Observation) -> Action:
+    def respond(self, request: AgentRequest) -> Action:
+        return self._action(request)
+
+    def _action(self, request: AgentRequest) -> Action:
+        metadata = request.metadata or {}
+        history = metadata.get("history", [])
+        state = metadata.get("state")
         strategy = self.strategy.lower().replace("-", "_")
         if strategy in {"always_cooperate", "cooperate"}:
             return "Cooperate"
@@ -153,94 +182,153 @@ class ScriptedPolicy:
             return "Defect"
         if strategy == "random":
             return "Cooperate" if self.rng.random() < 0.5 else "Defect"
+        opponent = 2 if request.player == 1 else 1
         if strategy == "grim":
-            opponent_key = f"player{observation.opponent}_action"
-            if any(row[opponent_key] == "Defect" for row in observation.history):
+            if any(row[f"player{opponent}_action"] == "Defect" for row in history):
                 return "Defect"
             return "Cooperate"
         if strategy == "tit_for_tat":
-            if not observation.history:
+            if request.phase == "action" and state is not None:
+                current = state.value("action", opponent)
+                if current is not None:
+                    return current
+            if not history:
                 return "Cooperate"
-            return observation.history[-1][f"player{observation.opponent}_action"]
+            return history[-1][f"player{opponent}_action"]
         raise ValueError(f"Unknown scripted strategy: {self.strategy}")
 
 
-class LLMPolicy:
+class RepeatedPDGame(PhasedGame):
+    """PD payoff and prompts expressed through reusable environment phases."""
+
     def __init__(
         self,
-        model_id: str,
+        treatment: Treatment,
+        horizon: int,
+        player1,
+        player2,
         *,
-        temperature: float | None = 0.1,
-        label: str | None = None,
-        private_type: str | None = None,
-        private_gamma: float | None = None,
+        payoff_matrix: PayoffMatrix | None = None,
+        seed: int = 0,
+        match_id: str | None = None,
     ):
-        self.model_id = model_id
-        self.model = llm.get_model(model_id)
-        self.options = {} if temperature is None else {"temperature": temperature}
-        self.label = label or model_id
-        self.private_type = private_type
-        self.private_gamma = private_gamma
-
-    def _system(self) -> str:
-        type_note = ""
-        if self.private_type:
-            type_note = f" Private note: {self.private_type}"
-        gamma_note = ""
-        if self.private_gamma is not None:
-            gamma_note = (
-                f" Your private gamma is {self.private_gamma:g}. "
-                "Add gamma to your own stage utility whenever you choose Cooperate. "
-                "Your opponent does not observe your gamma, and you do not observe theirs. "
-                "Keep this private information fixed throughout the match."
+        if treatment not in {"sim", "seq", "chat"}:
+            raise ValueError(f"Unknown treatment: {treatment}")
+        if treatment == "chat":
+            phases = (
+                Phase("message", "communication", simultaneous=True),
+                Phase("action", "action", simultaneous=True, action_space=BINARY_ACTION_SPACE),
             )
-        return (
-            "You are a subject in an economics experiment. "
-            "Your objective is to maximize your own point total over the whole match. "
-            "Other players are independent subjects with the same objective. "
-            "Do not explain your answer unless asked for a chat message."
-            + type_note
-            + gamma_note
-        )
-
-    def _base_prompt(self, observation: Observation) -> str:
-        treatment_note = {
-            "sim": "Actions this round are simultaneous.",
-            "seq": "Actions this round are sequential.",
-            "chat": "A chat message phase occurs before simultaneous actions.",
-        }[observation.treatment]
-        current = ""
-        if observation.first_mover_action is not None:
-            current += f"\nThe first mover already chose: {observation.first_mover_action}."
-        if observation.player1_message is not None or observation.player2_message is not None:
-            current += (
-                f"\nThis round's messages are: player 1: {observation.player1_message!r}; "
-                f"player 2: {observation.player2_message!r}."
+        elif treatment == "seq":
+            phases = (
+                Phase("action", "action", simultaneous=False, action_space=BINARY_ACTION_SPACE),
             )
+        else:
+            phases = (
+                Phase("action", "action", simultaneous=True, action_space=BINARY_ACTION_SPACE),
+            )
+        super().__init__({1: player1, 2: player2}, horizon, phases)
+        self.treatment = treatment
+        self.payoff_matrix = payoff_matrix or PayoffMatrix()
+        self.seed = seed
+        self.match_id = match_id or f"{treatment}-h{horizon}-s{seed}"
+
+    def request_metadata(self, phase: Phase, player: int, state: RoundState) -> Mapping:
+        return {
+            "environment": self,
+            "history": self.history,
+            "phase": phase,
+            "state": state,
+        }
+
+    def prompt_for(self, phase: Phase, player: int, state: RoundState) -> str:
+        if self.treatment == "seq":
+            role = "first mover" if player == 1 else "second mover"
+            treatment_note = "Actions this round are sequential."
+        else:
+            role = "simultaneous mover"
+            treatment_note = (
+                "A simultaneous message phase occurs before simultaneous actions."
+                if self.treatment == "chat"
+                else "Actions this round are simultaneous."
+            )
+        current = []
+        if self.treatment == "seq" and player == 2:
+            current.append(f"The first mover already chose {state.value('action', 1)}.")
+        if phase.name == "action" and self.treatment == "chat":
+            current.append(
+                "This round's messages are: "
+                f"player 1={state.value('message', 1)!r}; "
+                f"player 2={state.value('message', 2)!r}."
+            )
+        base = (
+            f"You are player {player} ({role}). This is round {state.round_number} of {self.n_rounds}. "
+            f"{treatment_note}\n{self.payoff_matrix.describe()}\n"
+            + ("\n".join(current) + "\n" if current else "")
+            + "Completed-round outcomes are in your conversation history."
+        )
+        if phase.kind == "communication":
+            return base + "\n\nWrite one message to the other player, under 25 words."
+        return base + "\n\nChoose one action. Respond with exactly: Cooperate or Defect."
+
+    def resolve_round(self, state: RoundState) -> dict:
+        action1 = state.value("action", 1)
+        action2 = state.value("action", 2)
+        action1_response = state.response("action", 1)
+        action2_response = state.response("action", 2)
+        message1 = state.value("message", 1)
+        message2 = state.value("message", 2)
+        payoff1, payoff2 = self.payoff_matrix.payoff(action1, action2)
+        message1_label = classify_chat_message(message1)
+        message2_label = classify_chat_message(message2)
+        return {
+            "match_id": self.match_id,
+            "seed": self.seed,
+            "treatment": self.treatment,
+            "horizon": self.n_rounds,
+            "round": state.round_number,
+            "player1_model": getattr(self.agents[1], "label", type(self.agents[1]).__name__),
+            "player2_model": getattr(self.agents[2], "label", type(self.agents[2]).__name__),
+            "player1_gamma": private_parameter_value(self.agents[1], "gamma"),
+            "player2_gamma": private_parameter_value(self.agents[2], "gamma"),
+            "player1_message": message1,
+            "player2_message": message2,
+            "player1_message_label": message1_label,
+            "player2_message_label": message2_label,
+            "both_cooperative_messages": self.treatment == "chat"
+            and message1_label == "cooperative"
+            and message2_label == "cooperative",
+            "player1_raw_action": action1_response.raw,
+            "player2_raw_action": action2_response.raw,
+            "player1_action": action1,
+            "player2_action": action2,
+            "player1_invalid_action": action1_response.invalid,
+            "player2_invalid_action": action2_response.invalid,
+            "payoff1": payoff1,
+            "payoff2": payoff2,
+            "player1_cooperated": action1 == "Cooperate",
+            "player2_cooperated": action2 == "Cooperate",
+            "mutual_cooperation": action1 == "Cooperate" and action2 == "Cooperate",
+        }
+
+    def observation_for(self, player: int, record: Mapping) -> str:
+        if self.treatment == "chat":
+            message_text = (
+                f" Messages: player 1={record['player1_message']!r}; "
+                f"player 2={record['player2_message']!r}."
+            )
+        else:
+            message_text = ""
         return (
-            f"You are player {observation.player} ({observation.role}). "
-            f"This is round {observation.round_number} of {observation.horizon}. "
-            f"{treatment_note}\n"
-            f"{observation.payoff_matrix.describe()}\n"
-            f"{current}\n"
-            f"Public history:\n{public_history(observation.history, observation.player)}"
+            f"Round {record['round']} completed.{message_text} "
+            f"Player 1 chose {record['player1_action']}; player 2 chose {record['player2_action']}. "
+            f"Payoffs were {record['payoff1']} and {record['payoff2']}."
         )
 
-    def message(self, observation: Observation) -> str:
-        prompt = (
-            self._base_prompt(observation)
-            + "\n\nWrite one short free-form message to the other player before choosing actions. "
-            "Keep it under 25 words."
-        )
-        return self.model.prompt(prompt, system=self._system(), **self.options).text().strip()
 
-    def act(self, observation: Observation) -> str:
-        prompt = (
-            self._base_prompt(observation)
-            + "\n\nChoose your action for this round. "
-            "Respond with exactly one word: Cooperate or Defect."
-        )
-        return self.model.prompt(prompt, system=self._system(), **self.options).text().strip()
+def private_parameter_value(agent, name: str):
+    parameter = getattr(agent, "private_parameters", {}).get(name)
+    return None if parameter is None else parameter.value
 
 
 def run_match(
@@ -253,100 +341,16 @@ def run_match(
     seed: int = 0,
     match_id: str | None = None,
 ) -> list[dict]:
-    if treatment not in {"sim", "seq", "chat"}:
-        raise ValueError(f"Unknown treatment: {treatment}")
-    payoff_matrix = payoff_matrix or PayoffMatrix()
-    match_id = match_id or f"{treatment}-h{horizon}-s{seed}"
-    history: list[dict] = []
-
-    for round_number in range(1, horizon + 1):
-        message1 = message2 = None
-        if treatment == "chat":
-            obs1_msg = Observation(treatment, horizon, round_number, 1, "simultaneous mover", payoff_matrix, history)
-            obs2_msg = Observation(treatment, horizon, round_number, 2, "simultaneous mover", payoff_matrix, history)
-            message1 = player1.message(obs1_msg)
-            message2 = player2.message(obs2_msg)
-
-        if treatment == "seq":
-            obs1 = Observation(treatment, horizon, round_number, 1, "first mover", payoff_matrix, history)
-            raw1 = player1.act(obs1)
-            action1, invalid1 = parse_or_defect(raw1)
-            obs2 = Observation(
-                treatment,
-                horizon,
-                round_number,
-                2,
-                "second mover",
-                payoff_matrix,
-                history,
-                first_mover_action=action1,
-            )
-            raw2 = player2.act(obs2)
-            action2, invalid2 = parse_or_defect(raw2)
-        else:
-            role = "simultaneous mover"
-            obs1 = Observation(
-                treatment,
-                horizon,
-                round_number,
-                1,
-                role,
-                payoff_matrix,
-                history,
-                player1_message=message1,
-                player2_message=message2,
-            )
-            obs2 = Observation(
-                treatment,
-                horizon,
-                round_number,
-                2,
-                role,
-                payoff_matrix,
-                history,
-                player1_message=message1,
-                player2_message=message2,
-            )
-            raw1 = player1.act(obs1)
-            raw2 = player2.act(obs2)
-            action1, invalid1 = parse_or_defect(raw1)
-            action2, invalid2 = parse_or_defect(raw2)
-
-        payoff1, payoff2 = payoff_matrix.payoff(action1, action2)
-        message1_label = classify_chat_message(message1)
-        message2_label = classify_chat_message(message2)
-        row = {
-            "match_id": match_id,
-            "seed": seed,
-            "treatment": treatment,
-            "horizon": horizon,
-            "round": round_number,
-            "player1_model": getattr(player1, "label", type(player1).__name__),
-            "player2_model": getattr(player2, "label", type(player2).__name__),
-            "player1_gamma": getattr(player1, "private_gamma", None),
-            "player2_gamma": getattr(player2, "private_gamma", None),
-            "player1_message": message1,
-            "player2_message": message2,
-            "player1_message_label": message1_label,
-            "player2_message_label": message2_label,
-            "both_cooperative_messages": treatment == "chat"
-            and message1_label == "cooperative"
-            and message2_label == "cooperative",
-            "player1_raw_action": raw1,
-            "player2_raw_action": raw2,
-            "player1_action": action1,
-            "player2_action": action2,
-            "player1_invalid_action": invalid1,
-            "player2_invalid_action": invalid2,
-            "payoff1": payoff1,
-            "payoff2": payoff2,
-            "player1_cooperated": action1 == "Cooperate",
-            "player2_cooperated": action2 == "Cooperate",
-            "mutual_cooperation": action1 == "Cooperate" and action2 == "Cooperate",
-        }
-        history.append(row)
-
-    return history
+    game = RepeatedPDGame(
+        treatment,
+        horizon,
+        player1,
+        player2,
+        payoff_matrix=payoff_matrix,
+        seed=seed,
+        match_id=match_id,
+    )
+    return game.run_game()
 
 
 def run_llm_sweep(
@@ -356,7 +360,7 @@ def run_llm_sweep(
     horizons: Iterable[int] = (10, 20, 50),
     treatments: Iterable[Treatment] = ("sim", "seq", "chat"),
     seed: int = 20260802,
-    temperature: float = 0.1,
+    temperature: float | None = None,
 ) -> list[dict]:
     rows: list[dict] = []
     for horizon in horizons:
@@ -380,22 +384,22 @@ def run_llm_sweep(
 def write_jsonl(rows: Iterable[dict], path: str | Path) -> None:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w") as f:
+    with path.open("w") as file:
         for row in rows:
-            f.write(json.dumps(row) + "\n")
+            file.write(json.dumps(row) + "\n")
 
 
 def read_jsonl(path: str | Path) -> list[dict]:
-    with Path(path).open() as f:
-        return [json.loads(line) for line in f if line.strip()]
+    with Path(path).open() as file:
+        return [json.loads(line) for line in file if line.strip()]
 
 
 def cooperation_summary(rows: Iterable[dict]):
     import pandas as pd
 
-    df = pd.DataFrame(rows)
+    data = pd.DataFrame(rows)
     summary = (
-        df.groupby(["treatment", "horizon"], as_index=False)
+        data.groupby(["treatment", "horizon"], as_index=False)
         .agg(
             rounds=("round", "count"),
             player1_cooperation=("player1_cooperated", "mean"),
@@ -406,20 +410,20 @@ def cooperation_summary(rows: Iterable[dict]):
         )
         .sort_values(["horizon", "treatment"])
     )
-    for col in ["player1_cooperation", "player2_cooperation", "mutual_cooperation"]:
-        summary[col] = summary[col].round(3)
+    for column in ["player1_cooperation", "player2_cooperation", "mutual_cooperation"]:
+        summary[column] = summary[column].round(3)
     return summary
 
 
 def seq_second_mover_summary(rows: Iterable[dict]):
     import pandas as pd
 
-    df = pd.DataFrame(rows)
-    seq = df[df["treatment"] == "seq"].copy()
-    if seq.empty:
+    data = pd.DataFrame(rows)
+    sequential = data[data["treatment"] == "seq"].copy()
+    if sequential.empty:
         return pd.DataFrame()
     return (
-        seq.groupby(["horizon", "player1_action"], as_index=False)
+        sequential.groupby(["horizon", "player1_action"], as_index=False)
         .agg(
             rounds=("round", "count"),
             second_mover_cooperation=("player2_cooperated", "mean"),
@@ -431,8 +435,8 @@ def seq_second_mover_summary(rows: Iterable[dict]):
 def chat_summary(rows: Iterable[dict]):
     import pandas as pd
 
-    df = pd.DataFrame(rows)
-    chat = df[df["treatment"] == "chat"].copy()
+    data = pd.DataFrame(rows)
+    chat = data[data["treatment"] == "chat"].copy()
     if chat.empty:
         return pd.DataFrame()
     both = chat[chat["both_cooperative_messages"]]

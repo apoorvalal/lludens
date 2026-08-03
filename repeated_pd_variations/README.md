@@ -9,6 +9,21 @@ This folder runs a four-model ordered round robin through the repeated-game trea
 
 All models are accessed through the `llm-openrouter` plugin. The model identifiers live in `models.json`, so the panel can be changed without editing the runner.
 
+## Library API
+
+The experiment is implemented through the reusable `lludens` API rather than a standalone game loop:
+
+- `PromptParameter` represents a parameter rendered only in an agent's system prompt. `TotreLLM` accepts any number of these private parameters, so gamma is an experiment configuration rather than a special case in the base agent.
+- `AgentRequest` is the environment-to-agent contract. It carries the current phase, player, round, prompt, optional observation, and environment metadata.
+- `TotreLLM.respond()` handles ordinary action or response phases. `TotreLLM.communicate()` is the side-communication hook; its default behavior delegates to the same model, but custom agents can implement a distinct communication policy.
+- `TotreLLM.observe()` adds public environment feedback to the next interaction without making a wasteful model call. The legacy `update_history()` method now delegates to `observe()`.
+- `ActionSpace` owns valid actions, aliases, parsing, invalid-response flags, and fallbacks. The PD uses the shared `BINARY_ACTION_SPACE`.
+- `Phase` declares who acts, whether responses are simultaneous or ordered, whether the phase is communication or action, and which action space validates responses.
+- `PhasedGame` executes phases, enforces simultaneous information sets by staging responses, reveals ordered responses immediately, maintains structured history, and sends public observations back to agents.
+- `RepeatedPDGame` supplies only the PD-specific phase list, prompts, payoff function, public observation, and round record. The simultaneous, sequential, and chat treatments are compositions of the same phase engine.
+
+The old two-player `Game` API and `TotreLLM.interact()` remain available for existing notebooks. New experiments should prefer `PhasedGame`, `AgentRequest`, and `ActionSpace`.
+
 ## Problem setup
 
 Two players repeatedly choose `Cooperate` or `Defect`. The stage-game payoffs are:
@@ -79,3 +94,17 @@ Summarize completed results with:
 ```bash
 uv run python -m repeated_pd_variations.summarize
 ```
+
+## Changelog
+
+### 2026-08-03 — Core API refactor
+
+- Replaced the bespoke repeated-PD orchestration loop with `PhasedGame` and reusable `Phase` objects.
+- Generalized `TotreLLM` to accept private system-prompt parameters and phase-specific requests.
+- Added an explicit side-communication hook and public-observation memory that does not trigger extra model calls.
+- Generalized action validation through `ActionSpace` while preserving `parse_binary_action()`.
+- Kept the legacy `Game` and `TotreLLM.interact()` interfaces for notebook compatibility.
+
+### 2026-08-03 — Initial scaffold
+
+- Added the four-model ordered round robin, resumable JSONL output, frozen plans, three treatments, three horizons, private gamma assignments, and summary command.
