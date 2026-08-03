@@ -8,14 +8,25 @@ version = "0.1.0"
 authors = [{ name = "Apoorva Lal", email = "lal.apoorva@gmail.com" }]
 description = "lludens simulates economic games with LLMs via the llm package."
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-dependencies = ["llm", "numpy"]
+dependencies = [
+    "ipykernel>=7.3.0",
+    "jupyter>=1.1.1",
+    "llm>=0.31.1",
+    "llm-anthropic>=0.25.1",
+    "llm-gemini>=0.32",
+    "llm-mistral>=0.15",
+    "llm-openrouter>=0.6",
+    "nbconvert>=7.17.1",
+    "numpy",
+    "pandas>=2.3.3",
+]
 
 [project.urls]
 Homepage = "https://github.com/apoorvalal/lludens"

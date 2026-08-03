@@ -3,6 +3,9 @@
 *.xlsx
 *.ipynb_checkpoints
 .vscode/*
+.venv/
+data/repeated_pd_variations*.json
+data/repeated_pd_variations*.jsonl
 **/*_cache/*
 *.pqt
 lludens.egg-info/*

@@ -1,0 +1,18 @@
+[
+  {
+    "label": "gpt-5.6-sol",
+    "model_id": "openrouter/openai/gpt-5.6-sol"
+  },
+  {
+    "label": "claude-sonnet-5",
+    "model_id": "openrouter/anthropic/claude-sonnet-5"
+  },
+  {
+    "label": "gemini-3.6-flash",
+    "model_id": "openrouter/google/gemini-3.6-flash"
+  },
+  {
+    "label": "deepseek-v4-pro",
+    "model_id": "openrouter/deepseek/deepseek-v4-pro"
+  }
+]

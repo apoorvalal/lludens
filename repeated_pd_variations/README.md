@@ -1,0 +1,81 @@
+# Repeated Prisoner's Dilemma variations
+
+This folder runs a four-model ordered round robin through the repeated-game treatments in Kartal and Mueller (2026). The default model panel is:
+
+- OpenAI GPT-5.6 Sol;
+- Anthropic Claude Sonnet 5;
+- Google Gemini 3.6 Flash;
+- DeepSeek V4 Pro.
+
+All models are accessed through the `llm-openrouter` plugin. The model identifiers live in `models.json`, so the panel can be changed without editing the runner.
+
+## Problem setup
+
+Two players repeatedly choose `Cooperate` or `Defect`. The stage-game payoffs are:
+
+| Player 1 | Player 2 | Player 1 payoff | Player 2 payoff |
+|---|---|---:|---:|
+| Cooperate | Cooperate | 32 | 32 |
+| Cooperate | Defect | 12 | 50 |
+| Defect | Cooperate | 50 | 12 |
+| Defect | Defect | 25 | 25 |
+
+The fixed horizons are 10, 20, and 50 rounds. Each model occupies both seats against every model, including itself. Seat order is retained because it is strategically meaningful in the sequential treatment. With four models, three treatments, and three horizons, one replicate contains `4^2 * 3 * 3 = 144` matches and 3,840 game-round records.
+
+## Treatments
+
+### Simultaneous
+
+Both players receive the public history and choose an action without observing the opponent's current action. The two responses are collected before payoffs and the public history are updated.
+
+### Sequential
+
+Player 1 moves first. Player 2 observes Player 1's current action before choosing. The ordered round robin runs every distinct model pairing in both seat assignments, while self-play appears once per model.
+
+### Chat
+
+Each round has a simultaneous cheap-talk phase followed by simultaneous actions. Each player writes one message without seeing the opponent's current message. Both messages are then shown to both players before they choose actions. Messages, coded message labels, actions, and payoffs are stored in the round-level JSONL output.
+
+## Private gamma
+
+Each player receives a private, match-stable `gamma` through its system prompt. The instruction says that choosing `Cooperate` adds `gamma` to that player's stage utility. A player observes its own gamma but not its opponent's. Gamma affects the model's decision problem through the private prompt; reported monetary payoffs remain the common payoff matrix above so behavior and experimental payments stay separately interpretable.
+
+`--gamma-values` specifies the support of the private-type distribution. The runner draws each player's gamma independently and deterministically from that support using the match seed. The default is `0`, which reproduces the untyped baseline. For example, `--gamma-values 0 10 20` spans low, intermediate, and high cooperation preferences; values above 18 eliminate the one-shot temptation to defect when the opponent cooperates under this payoff matrix.
+
+The assigned private types are recorded as `player1_gamma` and `player2_gamma` in both the frozen plan and every round record. They are never included in the public history or the opponent's prompt.
+
+## Running the experiment
+
+Configure the OpenRouter key for `llm` and inspect the full plan without making model calls:
+
+```bash
+uv run llm keys set openrouter
+uv run python -m repeated_pd_variations.run_experiments --dry-run
+```
+
+Run the untyped baseline:
+
+```bash
+uv run python -m repeated_pd_variations.run_experiments
+```
+
+Run three private gamma types with two independent replicates:
+
+```bash
+uv run python -m repeated_pd_variations.run_experiments \
+  --gamma-values 0 10 20 \
+  --replicates 2
+```
+
+The default outputs are:
+
+- `data/repeated_pd_variations_plan.json`: immutable match plan, seeds, seats, and private types;
+- `data/repeated_pd_variations.jsonl`: append-only round records.
+
+The runner checkpoints after every match. Re-running the same command skips match IDs already present in the JSONL output, so an interrupted sweep resumes without repeating paid calls. Use a new output path or seed for a genuinely new batch.
+
+Summarize completed results with:
+
+```bash
+uv run python -m repeated_pd_variations.summarize
+```
