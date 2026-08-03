@@ -89,6 +89,17 @@ The default outputs are:
 
 The runner checkpoints after every match. Re-running the same command skips match IDs already present in the JSONL output, so an interrupted sweep resumes without repeating paid calls. Use a new output path or seed for a genuinely new batch.
 
+Large sweeps can run as independent shards. Each shard must use its own plan and JSONL paths:
+
+```bash
+uv run python -m repeated_pd_variations.run_experiments \
+  --shard-count 4 --shard-index 0 \
+  --output data/repeated_pd_variations_shard0.jsonl \
+  --plan-output data/repeated_pd_variations_plan_shard0.json
+```
+
+Run shard indices `0` through `3` to cover the full plan exactly once, then concatenate their JSONL files for analysis.
+
 Summarize completed results with:
 
 ```bash
@@ -104,6 +115,7 @@ uv run python -m repeated_pd_variations.summarize
 - Added an explicit side-communication hook and public-observation memory that does not trigger extra model calls.
 - Generalized action validation through `ActionSpace` while preserving `parse_binary_action()`.
 - Kept the legacy `Game` and `TotreLLM.interact()` interfaces for notebook compatibility.
+- Added deterministic plan sharding for parallel paid sweeps.
 
 ### 2026-08-03 — Initial scaffold
 

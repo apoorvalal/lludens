@@ -204,6 +204,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--gamma-values", nargs="+", type=float, default=[0.0])
     parser.add_argument("--seed", type=int, default=20260803)
     parser.add_argument("--temperature", type=float)
+    parser.add_argument("--shard-count", type=int, default=1)
+    parser.add_argument("--shard-index", type=int, default=0)
     parser.add_argument("--output", type=Path, default=Path("data/repeated_pd_variations.jsonl"))
     parser.add_argument("--plan-output", type=Path, default=Path("data/repeated_pd_variations_plan.json"))
     parser.add_argument("--dry-run", action="store_true")
@@ -221,6 +223,15 @@ def main() -> None:
         gamma_values=args.gamma_values,
         base_seed=args.seed,
     )
+    if args.shard_count < 1:
+        raise ValueError("shard-count must be at least one.")
+    if not 0 <= args.shard_index < args.shard_count:
+        raise ValueError("shard-index must be between zero and shard-count minus one.")
+    plan = [
+        spec
+        for index, spec in enumerate(plan)
+        if index % args.shard_count == args.shard_index
+    ]
     write_plan(args.plan_output, plan)
     total_rounds = sum(spec.horizon for spec in plan)
     print(
