@@ -2,7 +2,7 @@
   {
     "label": "gpt-5.6-sol",
     "model_id": "openrouter/openai/gpt-5.6-sol",
-    "options": {"reasoning_enabled": false}
+    "options": {"reasoning_enabled": true, "reasoning_max_tokens": 64}
   },
   {
     "label": "claude-sonnet-5",
