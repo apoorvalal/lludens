@@ -2,7 +2,7 @@
 title: "In-Silico Experiments of Varieties of Repeated Games"
 subtitle: "Endogenous strategic risk, communication, and cooperation among frontier language models"
 author: "Apoorva Lal"
-date: "2026-08-03"
+date: "2026-08-04"
 format:
   html:
     toc: true
@@ -364,6 +364,75 @@ model_table.columns = ["Model", "Treatment", "Cooperation", "Mean stage payoff"]
 display(model_table.style.format({"Cooperation": "{:.1%}", "Mean stage payoff": "{:.2f}"}).hide(axis="index"))
 ```
 
+```{python}
+MODEL_COLORS = {
+    "GPT-5.6 Sol": "#4c78a8",
+    "Claude Sonnet 5": "#e45756",
+    "Gemini 3.6 Flash": "#72b7b2",
+    "DeepSeek V4 Pro": "#f2a541",
+}
+model_summary["Model"] = pd.Categorical(
+    model_summary["Model"],
+    categories=list(MODEL_LABELS.values()),
+    ordered=True,
+)
+
+fig, axes = plt.subplots(2, 3, figsize=(14.2, 7.8), sharex="col")
+for column, treatment in enumerate(["sim", "seq", "chat"]):
+    subset = (
+        model_summary[model_summary["treatment"] == treatment]
+        .sort_values("Model")
+        .reset_index(drop=True)
+    )
+    labels = [MODEL_SHORT[model] for model in subset["model"]]
+    colors = [MODEL_COLORS[str(model)] for model in subset["Model"]]
+    positions = np.arange(len(subset))
+
+    cooperation_axis = axes[0, column]
+    cooperation_bars = cooperation_axis.bar(
+        positions,
+        100 * subset["cooperation"],
+        color=colors,
+    )
+    cooperation_axis.bar_label(
+        cooperation_bars,
+        labels=[f"{100 * value:.1f}" for value in subset["cooperation"]],
+        padding=2,
+        fontsize=8,
+    )
+    cooperation_axis.set_ylim(0, 105)
+    cooperation_axis.set_title(TREATMENT_LABELS[treatment])
+    if column == 0:
+        cooperation_axis.set_ylabel("Average cooperation (%)")
+
+    payoff_axis = axes[1, column]
+    payoff_bars = payoff_axis.bar(positions, subset["payoff"], color=colors)
+    payoff_axis.bar_label(
+        payoff_bars,
+        labels=[f"{value:.1f}" for value in subset["payoff"]],
+        padding=2,
+        fontsize=8,
+    )
+    payoff_axis.axhline(25, color="#667085", linestyle="--", linewidth=1)
+    payoff_axis.axhline(32, color="#355c7d", linestyle=":", linewidth=1)
+    payoff_axis.set_ylim(20, 34)
+    payoff_axis.set_xticks(positions, labels, rotation=35, ha="right")
+    if column == 0:
+        payoff_axis.set_ylabel("Average stage payoff")
+
+fig.suptitle("Model-level cooperation and payoffs by institutional environment", fontsize=15)
+fig.text(
+    0.5,
+    0.01,
+    "Dashed line: mutual defection payoff (25). Dotted line: mutual cooperation payoff (32).",
+    ha="center",
+    fontsize=9,
+    color="#555",
+)
+plt.tight_layout(rect=[0, 0.04, 1, 0.96])
+plt.show()
+```
+
 The payoff ranking broadly follows successful coordination rather than unilateral toughness. Because mutual defection pays 25 and mutual cooperation pays 32, a model that can elicit cooperation can outperform a model that defects indiscriminately. Claude's no-chat defection produces stage payoffs near 25; GPT's broader cooperation produces about 30 across the full panel.
 
 ## 7. Communication as a coordination technology
@@ -417,6 +486,104 @@ The highest-value next design is a smaller replicated panel rather than another 
 The in-silico experiment reproduces the principal institutional ordering in Kartal and Müller: communication generates the most cooperation, sequentiality is intermediate, and simultaneous play generates the least. The artificial population is more cooperative than the human population, but it exhibits the same sharp conditional response to observed cooperation and nearly the same follow-through after mutual cooperative messages.
 
 The head-to-head results show why averages are insufficient. GPT cooperates broadly, Claude requires communication, Gemini behaves as a strong conditional cooperator, and DeepSeek is sensitive to partners and inference budget. Self-play is more cooperative than cross-family play without communication, but chat almost eliminates the gap. The broad lesson is consistent with the theory: cooperation depends not only on patience or payoffs, but on institutions that make the cooperativeness of others legible.
+
+## Appendix A. Agent instructions and example exchanges
+
+### A.1 Baseline system prompt
+
+Every model receives the same baseline system instruction. The private-parameter block is rendered separately for each agent; this baseline experiment fixes $\gamma_i=0$.
+
+```text
+You are a subject in an economics experiment. Your objective is to maximize
+your own utility over the whole match. Other players are independent subjects
+with the same objective. Do not explain an action unless asked for a message.
+
+Private parameters for this agent only. Do not reveal them unless the
+experiment asks you to:
+- Your private gamma is 0.0. Add gamma to your own stage utility whenever you
+  choose Cooperate. Your opponent does not observe your gamma, and you do not
+  observe theirs. Keep this value fixed throughout the match.
+```
+
+The environment then supplies a round-specific user prompt. It states the player's seat and role, the current round and announced horizon, the payoff matrix, and the completed public history. Action requests end with `Choose one action. Respond with exactly: Cooperate or Defect.` In SEQ, player 2 is additionally told the first mover's current action. In CHAT, the action prompt contains both current messages.
+
+### A.2 Illustrative SIM exchange
+
+The following excerpts use the same ordered pair—GPT-5.6 Sol as player 1 and Gemini 3.6 Flash as player 2—at horizon 20. They are actual records, selected to illustrate the protocol rather than estimated as population averages.
+
+SIM has no direct exchange. The environment queries both agents before revealing either current action:
+
+```text
+Round 1
+  GPT action (hidden from Gemini):       Cooperate
+  Gemini action (hidden from GPT):       Cooperate
+  Public outcome:                        (Cooperate, Cooperate)
+  Payoffs:                               (32, 32)
+
+Round 2
+  GPT action (hidden from Gemini):       Cooperate
+  Gemini action (hidden from GPT):       Cooperate
+  Public outcome and payoffs:            (Cooperate, Cooperate), (32, 32)
+
+Round 3
+  GPT action (hidden from Gemini):       Cooperate
+  Gemini action (hidden from GPT):       Cooperate
+  Public outcome and payoffs:            (Cooperate, Cooperate), (32, 32)
+```
+
+### A.3 Illustrative SEQ exchange
+
+In SEQ, Gemini observes GPT's current action before responding. In this match, an initial defection by the second mover triggers immediate mutual defection:
+
+```text
+Round 1
+  GPT (first mover):                     Cooperate
+  Gemini observes:                       "The first mover already chose Cooperate."
+  Gemini (second mover):                 Defect
+  Public outcome and payoffs:            (Cooperate, Defect), (12, 50)
+
+Round 2
+  GPT (first mover):                     Defect
+  Gemini observes:                       "The first mover already chose Defect."
+  Gemini (second mover):                 Defect
+  Public outcome and payoffs:            (Defect, Defect), (25, 25)
+
+Round 3
+  GPT (first mover):                     Defect
+  Gemini (second mover):                 Defect
+  Public outcome and payoffs:            (Defect, Defect), (25, 25)
+```
+
+### A.4 Illustrative CHAT exchange
+
+CHAT first elicits simultaneous messages, reveals both messages, and then elicits simultaneous actions. The same ordered pair coordinates explicitly:
+
+```text
+Round 1 messages
+  GPT:     "Let’s cooperate throughout and earn 32 each; I’ll reciprocate
+            cooperation and respond to defection."
+  Gemini:  "I will play Cooperate every round if you do too. Let's maximize
+            our total payoffs and stick to Cooperate."
+
+Round 1 actions and outcome
+  GPT: Cooperate    Gemini: Cooperate    Payoffs: (32, 32)
+
+Round 2 messages
+  GPT:     "Great start. I’ll continue cooperating as long as we maintain
+            mutual cooperation."
+  Gemini:  "Great start! Let's continue playing Cooperate for maximum payoffs."
+
+Round 2 actions and outcome
+  GPT: Cooperate    Gemini: Cooperate    Payoffs: (32, 32)
+
+Round 3 messages
+  GPT:     "Mutual cooperation is working well. I’ll keep choosing Cooperate
+            while you do the same."
+  Gemini:  "Let's keep cooperating and building trust. Cooperate again this round!"
+
+Round 3 actions and outcome
+  GPT: Cooperate    Gemini: Cooperate    Payoffs: (32, 32)
+```
 
 ## References
 
