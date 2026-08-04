@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import hashlib
 import json
 from pathlib import Path
@@ -19,6 +19,7 @@ DEFAULT_TREATMENTS: tuple[Treatment, ...] = ("sim", "seq", "chat")
 class ModelSpec:
     label: str
     model_id: str
+    options: dict[str, object] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -132,6 +133,36 @@ def load_progress(path: Path) -> dict[str, list[dict]]:
     return progress
 
 
+def truncate_invalid_progress(path: Path) -> tuple[int, int]:
+    progress = load_progress(path)
+    retained: list[dict] = []
+    removed_rows = 0
+    affected_matches = 0
+    for rows in progress.values():
+        first_invalid = next(
+            (
+                index
+                for index, row in enumerate(rows)
+                if row["player1_invalid_action"] or row["player2_invalid_action"]
+            ),
+            None,
+        )
+        if first_invalid is None:
+            retained.extend(rows)
+            continue
+        affected_matches += 1
+        retained.extend(rows[:first_invalid])
+        removed_rows += len(rows) - first_invalid
+
+    if removed_rows:
+        temporary_path = path.with_suffix(f"{path.suffix}.tmp")
+        with temporary_path.open("w") as file:
+            for row in retained:
+                file.write(json.dumps(row) + "\n")
+        temporary_path.replace(path)
+    return removed_rows, affected_matches
+
+
 def append_rows(path: Path, rows: Iterable[dict]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a") as file:
@@ -148,8 +179,10 @@ def write_plan(path: Path, plan: Iterable[MatchSpec]) -> None:
                     "match_id": spec.match_id,
                     "player1_label": spec.player1.label,
                     "player1_model": spec.player1.model_id,
+                    "player1_model_options": spec.player1.options,
                     "player2_label": spec.player2.label,
                     "player2_model": spec.player2.model_id,
+                    "player2_model_options": spec.player2.options,
                     "treatment": spec.treatment,
                     "horizon": spec.horizon,
                     "replicate": spec.replicate,
@@ -170,6 +203,7 @@ def run_plan(
     output_path: Path,
     temperature: float | None,
     max_tokens: int,
+    reasoning_enabled: bool,
 ) -> None:
     progress = load_progress(output_path)
     for index, spec in enumerate(plan, start=1):
@@ -188,6 +222,8 @@ def run_plan(
             private_gamma=spec.player1_gamma,
             temperature=temperature,
             max_tokens=max_tokens,
+            reasoning_enabled=reasoning_enabled,
+            model_options=spec.player1.options,
         )
         player2 = LLMPolicy(
             spec.player2.model_id,
@@ -195,6 +231,8 @@ def run_plan(
             private_gamma=spec.player2_gamma,
             temperature=temperature,
             max_tokens=max_tokens,
+            reasoning_enabled=reasoning_enabled,
+            model_options=spec.player2.options,
         )
         game = RepeatedPDGame(
             spec.treatment,
@@ -224,7 +262,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--gamma-values", nargs="+", type=float, default=[0.0])
     parser.add_argument("--seed", type=int, default=20260803)
     parser.add_argument("--temperature", type=float)
-    parser.add_argument("--max-tokens", type=int, default=64)
+    parser.add_argument("--max-tokens", type=int, default=256)
+    parser.add_argument("--reasoning", action="store_true")
+    parser.add_argument("--rerun-invalid", action="store_true")
     parser.add_argument("--shard-count", type=int, default=1)
     parser.add_argument("--shard-index", type=int, default=0)
     parser.add_argument("--output", type=Path, default=Path("data/repeated_pd_variations.jsonl"))
@@ -261,7 +301,14 @@ def main() -> None:
         flush=True,
     )
     if not args.dry_run:
-        run_plan(plan, args.output, args.temperature, args.max_tokens)
+        if args.rerun_invalid:
+            removed_rows, affected_matches = truncate_invalid_progress(args.output)
+            print(
+                f"Removed {removed_rows} rows from {affected_matches} matches "
+                "at or after their first invalid action.",
+                flush=True,
+            )
+        run_plan(plan, args.output, args.temperature, args.max_tokens, args.reasoning)
 
 
 if __name__ == "__main__":

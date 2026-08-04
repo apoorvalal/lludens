@@ -112,7 +112,9 @@ class LLMPolicy(TotreLLM):
         model_id: str,
         *,
         temperature: float | None = None,
-        max_tokens: int = 64,
+        max_tokens: int = 256,
+        reasoning_enabled: bool | None = False,
+        model_options: Mapping[str, object] | None = None,
         label: str | None = None,
         private_type: str | None = None,
         private_gamma: float | None = None,
@@ -134,9 +136,13 @@ class LLMPolicy(TotreLLM):
                     "not observe theirs. Keep this value fixed throughout the match."
                 ),
             )
-        options: dict[str, float | int] = {"max_tokens": max_tokens}
+        options: dict[str, float | int | bool] = {"max_tokens": max_tokens}
         if temperature is not None:
             options["temperature"] = temperature
+        if reasoning_enabled is not None:
+            options["reasoning_enabled"] = reasoning_enabled
+        if model_options:
+            options.update(model_options)
         super().__init__(
             model_id,
             system=(

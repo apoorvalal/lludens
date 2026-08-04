@@ -89,6 +89,8 @@ The default outputs are:
 
 The runner checkpoints after every round. Re-running the same command reconstructs public match history, resumes each partial match at its next missing round, and skips complete match IDs. Use a new output path or seed for a genuinely new batch.
 
+Paid sweeps default to a 256-token response cap with model reasoning disabled; the game asks for one action or a message of at most 25 words, so hidden reasoning only adds cost and can consume the entire response allowance. Provider-specific overrides live in `models.json`: models that require reasoning can enable it there with a small reasoning-token budget. If a provider returns an invalid or truncated action, resume with `--rerun-invalid`. The runner truncates every affected match immediately before its first invalid round and regenerates that round and its dependent suffix. Pass `--reasoning` only for experiments that intentionally study reasoning-enabled behavior across models without a per-model override.
+
 Large sweeps can run as independent shards. Each shard must use its own plan and JSONL paths:
 
 ```bash
@@ -117,6 +119,9 @@ uv run python -m repeated_pd_variations.summarize
 - Kept the legacy `Game` and `TotreLLM.interact()` interfaces for notebook compatibility.
 - Added deterministic plan sharding for parallel paid sweeps.
 - Changed paid-run checkpointing from match-level to round-level, including partial-match resume from reconstructed public history.
+- Disabled hidden reasoning and raised the response cap to prevent empty action responses in paid sweeps.
+- Added `--rerun-invalid` to regenerate an invalid round and every later round conditioned on it.
+- Added per-model option overrides so provider constraints such as mandatory Gemini reasoning remain explicit and reproducible.
 
 ### 2026-08-03 — Initial scaffold
 
