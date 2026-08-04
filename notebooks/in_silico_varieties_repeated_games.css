@@ -1,0 +1,35 @@
+body {
+  color: #20242a;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+h1,
+h2,
+h3,
+.title {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+#quarto-content {
+  max-width: 980px;
+}
+
+.abstract {
+  background: #f5f7fa;
+  border-left: 4px solid #355c7d;
+  margin: 1.25rem 0 2rem;
+  padding: 1rem 1.2rem;
+}
+
+.callout {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+table {
+  font-size: 0.92rem;
+}
+
+figcaption {
+  color: #555;
+  font-size: 0.9rem;
+}

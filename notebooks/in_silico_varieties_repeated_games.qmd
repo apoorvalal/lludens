@@ -1,0 +1,433 @@
+---
+title: "In-Silico Experiments of Varieties of Repeated Games"
+subtitle: "Endogenous strategic risk, communication, and cooperation among frontier language models"
+author: "Apoorva Lal"
+date: "2026-08-03"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    embed-resources: true
+    css: in_silico_varieties_repeated_games.css
+    code-fold: true
+    code-summary: "Show analysis code"
+    theme: cosmo
+    fig-format: svg
+    smooth-scroll: true
+execute:
+  echo: false
+  warning: false
+  message: false
+jupyter: python3
+---
+
+```{python}
+from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from IPython.display import display
+
+plt.style.use("seaborn-v0_8-whitegrid")
+COLORS = {"Human": "#667085", "LLM": "#8b2f2f"}
+TREATMENT_COLORS = {"SIM": "#4c78a8", "SEQ": "#f2a541", "CHAT": "#54a24b"}
+
+data_path = Path("data/repeated_pd_variations_baseline_20260803.jsonl")
+if not data_path.exists():
+    data_path = Path("../data/repeated_pd_variations_baseline_20260803.jsonl")
+
+data = pd.read_json(data_path, lines=True)
+MODEL_LABELS = {
+    "gpt-5.6-sol": "GPT-5.6 Sol",
+    "claude-sonnet-5": "Claude Sonnet 5",
+    "gemini-3.6-flash": "Gemini 3.6 Flash",
+    "deepseek-v4-pro": "DeepSeek V4 Pro",
+}
+MODEL_SHORT = {
+    "gpt-5.6-sol": "GPT",
+    "claude-sonnet-5": "Claude",
+    "gemini-3.6-flash": "Gemini",
+    "deepseek-v4-pro": "DeepSeek",
+}
+MODEL_ORDER = list(MODEL_LABELS)
+SHORT_ORDER = [MODEL_SHORT[model] for model in MODEL_ORDER]
+TREATMENT_LABELS = {"sim": "SIM", "seq": "SEQ", "chat": "CHAT"}
+
+data["self_play"] = data["player1_model"].eq(data["player2_model"])
+data["player1_short"] = data["player1_model"].map(MODEL_SHORT)
+data["player2_short"] = data["player2_model"].map(MODEL_SHORT)
+```
+
+::: {.abstract}
+**Abstract.** Kartal and Müller (2026) explain cooperation in indefinitely repeated dilemmas by making strategic risk endogenous: players privately differ in their utility from cooperation, so the danger that an opponent defects is itself an equilibrium object. Their model predicts that sequential moves reduce strategic risk and that honest cheap talk can reduce it further. We implement a computational analogue with four frontier language-model families—GPT, Claude, Gemini, and DeepSeek—in simultaneous, sequential, and pre-play-chat repeated prisoner's dilemmas at horizons 10, 20, and 50. The resulting balanced round robin contains 144 ordered matches and 3,840 rounds. The qualitative institutional ranking matches the human experiment: mutual cooperation is 37.1% in simultaneous play, 45.9% in sequential play, and 84.0% with chat. The model panel is substantially more cooperative than humans, and its heterogeneity is unusually stark: Claude defects in every no-chat round but cooperates at high rates after communication, while GPT is broadly cooperative across institutions. This is an exploratory *in-silico* pilot rather than a model-comparison benchmark: there is one match per design cell, horizons are fixed rather than geometrically terminated, and provider-specific inference settings changed during recovery from truncated responses.
+:::
+
+## 1. Motivation
+
+The folk theorem gives repeated games an embarrassment of equilibria. Once players are sufficiently patient, both persistent cooperation and persistent defection can be supported, and small institutional changes often leave the equilibrium set essentially unchanged. Laboratory behavior is much sharper. Cooperation reacts to the payoff matrix, the continuation probability, the timing of moves, the composition of the subject pool, and the opportunity to communicate.
+
+Kartal and Müller (2026) propose a disciplined way to recover those comparative statics. Instead of treating strategic risk as an external equilibrium-selection parameter, they derive it from private heterogeneity in preferences for cooperation. Their framework yields cutoff equilibria and ordered predictions across simultaneous play, sequential play, and communication. Their laboratory experiment strongly confirms the ordering.
+
+Large language models provide a new population on which to examine the same institutions. They are not replicas of human subjects: their “preferences” are induced by training, prompting, and inference configuration rather than stable utility parameters. But they are heterogeneous, strategically responsive, and capable of natural-language communication. This makes them useful as computational subjects for asking three narrower questions:
+
+1. Do the institutional rankings from the human experiment survive with LLM agents?
+2. Does a longer announced horizon act like a stronger shadow of the future?
+3. Is cooperation a generic model capability, or does it depend on matching a model with its own family versus another family?
+
+## 2. The benchmark model
+
+### 2.1 Private preferences and endogenous strategic risk
+
+The monetary stage game is
+
+|              | Other cooperates | Other defects |
+|:-------------|-----------------:|--------------:|
+| **Cooperate** | $c,c$            | $a,b$         |
+| **Defect**    | $b,a$            | $d,d$         |
+
+with $b>c>d>a$ and $2c>a+b$. Player $i$ has a privately observed type $\gamma_i$, drawn independently from a commonly known distribution $F$. If the player chooses $C$, stage utility is monetary payoff plus $\gamma_i$; if the player chooses $D$, stage utility is monetary payoff alone. Thus a larger $\gamma_i$ means a stronger preference for cooperation.
+
+The analysis focuses on two repeated-game strategies:
+
+- **CS:** cooperate while cooperation survives, then punish forever after a breakdown;
+- **AD:** always defect.
+
+If an opponent uses CS with probability $p$, the net expected utility from CS rather than AD is
+
+$$
+\Pi(\delta,p,\gamma)
+=p\left(\frac{c+\gamma}{1-\delta}-b-\frac{\delta d}{1-\delta}\right)
++(1-p)(a+\gamma-d).
+$$
+
+The second term is the loss from attempting cooperation against an always-defect opponent. In equilibrium, $p$ is not imposed by an analyst: it equals the mass of types whose own incentives lead them to choose CS. The most cooperative perfect Bayesian equilibrium has a cutoff $\gamma^*$ satisfying
+
+$$
+\Pi\!\left(\delta,1-F(\gamma^*),\gamma^*\right)=0.
+$$
+
+Types above $\gamma^*$ choose CS and types below it choose AD. Strategic risk is therefore $F(\gamma^*)$, the equilibrium probability of encountering an AD type.
+
+### 2.2 Comparative statics
+
+The cutoff representation generates the paper's basic predictions. Cooperation rises when the reward from mutual cooperation $c$, the sucker payoff $a$, or patience $\delta$ rises; it rises when the temptation payoff $b$ or punishment payoff $d$ falls; and it rises when the type distribution shifts toward stronger preferences for cooperation. The result is sharper than the classical repeated-game condition because it predicts changes in the *prevalence* of cooperation, not merely whether a cooperative equilibrium exists.
+
+Sequential play has two cutoffs. A second mover who observes first-mover cooperation faces no uncertainty about the current action, so $\gamma_S^*$ solves
+
+$$
+\frac{c+\gamma_S^*}{1-\delta}-b-\frac{\delta d}{1-\delta}=0.
+$$
+
+The first mover anticipates this conditional response and therefore faces less strategic risk than under simultaneous play. Kartal and Müller show that both the first-mover cutoff $\gamma_F^*$ and the second-mover cutoff $\gamma_S^*$ lie below the simultaneous cutoff $\gamma^*$. Consequently, first-mover cooperation, second-mover cooperation after an observed $C$, continuation cooperation, and mutual cooperation are all predicted to be higher in SEQ than in SIM. The model does **not** order $\gamma_F^*$ and $\gamma_S^*$: first movers cannot earn the temptation payoff, while second movers face no strategic uncertainty after observing $C$.
+
+Communication adds a second private dimension: some players are honest and will not announce CS if they intend to play AD. Mutual cooperative messages then screen out at least some defectors. Any positive honesty rate raises continuation and mutual cooperation above SIM; if honesty is sufficiently prevalent, CHAT also exceeds SEQ. Under perfect honesty, nobody is cheated following a mutual cooperative agreement, and the cooperative cutoff collapses to the comparison between the streams $c+\gamma$ and $d$.
+
+These results imply a clean institutional ranking:
+
+$$
+\text{mutual cooperation: CHAT} > \text{SEQ} > \text{SIM},
+$$
+
+provided communication is sufficiently honest.
+
+## 3. Human evidence in Kartal and Müller
+
+### 3.1 Design
+
+The paper implements the monetary payoff matrix $(a,b,c,d)=(12,50,32,25)$ with continuation probability $\delta=0.5$:
+
+|              | Other cooperates | Other defects |
+|:-------------|-----------------:|--------------:|
+| **Cooperate** | 32, 32           | 12, 50        |
+| **Defect**    | 50, 12           | 25, 25        |
+
+The design is between subjects. SIM uses simultaneous actions; SEQ fixes subjects as first or second movers for the entire session; CHAT permits free-form communication before every simultaneous action. Each treatment contains six independent matching groups. Matches end geometrically with probability $1-\delta=0.5$ after each round. The experiment was run at the Vienna Center for Experimental Economics in 2017 with 280 participants; subjects completed repeated matches for up to 75 minutes or 60 matches and earned €19.43 on average.
+
+### 3.2 Results
+
+```{python}
+human_results = pd.DataFrame(
+    [
+        ["SIM cooperation", 17.05, 16.79],
+        ["SEQ first-mover cooperation", 30.90, 29.63],
+        ["SEQ second mover after C", 62.31, 67.21],
+        ["SEQ second mover after D", 3.32, 3.37],
+        ["CHAT cooperation", 79.08, 74.59],
+        ["SIM mutual cooperation", 4.41, 4.99],
+        ["SEQ mutual cooperation", 19.25, 19.92],
+        ["CHAT mutual cooperation", 69.86, 66.37],
+    ],
+    columns=["Outcome", "First rounds (%)", "All rounds (%)"],
+)
+display(human_results.style.format({"First rounds (%)": "{:.2f}", "All rounds (%)": "{:.2f}"}).hide(axis="index"))
+```
+
+The human data support both central hypotheses. First-mover cooperation in SEQ exceeds SIM, and second movers condition sharply on the observed first action: they cooperate 67.21% of the time after $C$ but only 3.37% after $D$. Mutual cooperation is 4.99% in SIM, 19.92% in SEQ, and 66.37% in CHAT; all pairwise differences are reported as significant at $p<0.001$. The ordering remains when the authors restrict attention to experienced subjects.
+
+Communication is behaviorally meaningful rather than decorative. External coders classify messages as cooperative, neutral, or defective. Mutual cooperative signals strongly predict mutual cooperation, and more than 91% of subjects follow through after exchanging cooperative messages. The paper interprets this honesty as the mechanism that lets chat screen strategic types and coordinate play.
+
+## 4. In-silico design
+
+We retain the paper's payoff matrix but replace the human subject pool with four model families accessed through OpenRouter:
+
+- GPT-5.6 Sol;
+- Claude Sonnet 5;
+- Gemini 3.6 Flash;
+- DeepSeek V4 Pro.
+
+Every ordered pair—including self-play—is run in three institutions and at fixed horizons $T\in\{10,20,50\}$. This yields $4^2\times3\times3=144$ matches and 3,840 observed rounds. The ordering is intentional: in SEQ, reversing a pair changes which family moves first; even in SIM and CHAT, keeping ordered seats exposes prompt- or role-label asymmetries.
+
+The treatments are direct computational analogues:
+
+- **SIM:** both models choose without observing the other's current action;
+- **SEQ:** player 1 chooses first and player 2 observes that action;
+- **CHAT:** models exchange messages of at most 25 words, observe both messages, and then choose simultaneously.
+
+Actions are restricted to `Cooperate` and `Defect`. The runner logs prompts, raw and parsed actions, messages, payoffs, model identities, roles, horizon, and seed after every round. Invalid outputs are retried and affected match suffixes are regenerated rather than retained. The final panel has no invalid action records.
+
+The experiment differs from Kartal and Müller in three important ways. First, horizons are finite and announced, not geometrically terminated. Horizon length is therefore only a rough proxy for the shadow of the future; it is not a change in $\delta$. Second, this baseline sets the private system-prompt parameter $\gamma$ to zero for both models, so heterogeneity comes from model families rather than experimentally assigned preference types. Third, endpoint constraints required provider-specific inference settings. GPT and Claude ran without hidden reasoning; Gemini required a small reasoning allowance; DeepSeek required a larger low-effort allowance to avoid consuming the entire response budget before emitting an action. Recovery from early truncations also means that valid records were produced under more than one response ceiling. These choices preserve actions but weaken any interpretation of model-family coefficients as pure architectural effects.
+
+::: {.callout-warning}
+## Inferential status
+
+There is one match per ordered-pair × treatment × horizon cell. Rounds within a match are serially dependent, and no independent seed replication is available. All comparisons below are descriptive pilot results, not standard errors or hypothesis tests.
+:::
+
+## 5. Aggregate results
+
+### 5.1 The institutional ordering survives
+
+```{python}
+treatment_summary = (
+    data.groupby("treatment")
+    .agg(
+        rounds=("round", "size"),
+        player1_cooperation=("player1_cooperated", "mean"),
+        player2_cooperation=("player2_cooperated", "mean"),
+        mutual_cooperation=("mutual_cooperation", "mean"),
+    )
+    .reindex(["sim", "seq", "chat"])
+    .reset_index()
+)
+treatment_summary["Treatment"] = treatment_summary["treatment"].map(TREATMENT_LABELS)
+table = treatment_summary[["Treatment", "rounds", "player1_cooperation", "player2_cooperation", "mutual_cooperation"]].copy()
+table.columns = ["Treatment", "Rounds", "Player 1 coop.", "Player 2 coop.", "Mutual coop."]
+display(
+    table.style.format(
+        {"Player 1 coop.": "{:.1%}", "Player 2 coop.": "{:.1%}", "Mutual coop.": "{:.1%}"}
+    ).hide(axis="index")
+)
+```
+
+Mutual cooperation is 37.1% in SIM, 45.9% in SEQ, and 84.0% in CHAT. Thus the LLM population reproduces the qualitative ranking $\text{CHAT}>\text{SEQ}>\text{SIM}$. The level difference from humans is large: LLM mutual cooperation exceeds the human rate by 32.1 percentage points in SIM, 26.0 points in SEQ, and 17.6 points in CHAT.
+
+```{python}
+comparison = pd.DataFrame(
+    {
+        "Treatment": ["SIM", "SEQ", "CHAT"],
+        "Human": [4.99, 19.92, 66.37],
+        "LLM": 100 * treatment_summary["mutual_cooperation"].to_numpy(),
+    }
+)
+plot_data = comparison.melt("Treatment", var_name="Population", value_name="Mutual cooperation")
+fig, ax = plt.subplots(figsize=(8.2, 4.6))
+x = np.arange(3)
+width = 0.36
+for offset, population in zip([-width / 2, width / 2], ["Human", "LLM"]):
+    values = comparison[population].to_numpy()
+    bars = ax.bar(x + offset, values, width, label=population, color=COLORS[population])
+    ax.bar_label(bars, labels=[f"{value:.1f}" for value in values], padding=3, fontsize=9)
+ax.set_xticks(x, comparison["Treatment"])
+ax.set_ylabel("Mutual cooperation (%)")
+ax.set_ylim(0, 100)
+ax.legend(frameon=False)
+ax.set_title("The institutional ranking is shared; LLM cooperation is higher")
+plt.tight_layout()
+plt.show()
+```
+
+The sequential mechanism is particularly stark. Across all SEQ rounds, second movers cooperate after a first-mover $C$ in 95.9% of observations and after a first-mover $D$ in only 0.15%. In first rounds alone, the corresponding rates are 65.4% and 0%. The first-round conditional response to cooperation is therefore almost identical to the human estimate (62.31%), even though subsequent LLM play locks into conditional cooperation more strongly.
+
+The first-mover prediction is more nuanced. Across all rounds, player-1 cooperation rises from 39.5% in SIM to 47.9% in SEQ, consistent with reduced strategic risk. In first rounds, however, player-1 cooperation is *lower* in SEQ (54.2%) than in SIM (64.6%). The human first-round ranking therefore does not replicate. The divergence is a warning against mapping an announced finite horizon directly into the paper's stationary infinite-horizon cutoff model.
+
+### 5.2 Horizon patterns
+
+```{python}
+horizon_summary = (
+    data.groupby(["treatment", "horizon"], as_index=False)
+    .mutual_cooperation.mean()
+)
+fig, ax = plt.subplots(figsize=(8.2, 4.8))
+for treatment in ["sim", "seq", "chat"]:
+    subset = horizon_summary[horizon_summary["treatment"] == treatment]
+    label = TREATMENT_LABELS[treatment]
+    ax.plot(
+        subset["horizon"],
+        100 * subset["mutual_cooperation"],
+        marker="o",
+        linewidth=2.2,
+        markersize=7,
+        label=label,
+        color=TREATMENT_COLORS[label],
+    )
+ax.set_xticks([10, 20, 50])
+ax.set_xlabel("Announced horizon")
+ax.set_ylabel("Mutual cooperation (%)")
+ax.set_ylim(0, 100)
+ax.legend(frameon=False)
+ax.set_title("Longer horizons especially strengthen chat-based cooperation")
+plt.tight_layout()
+plt.show()
+```
+
+SIM mutual cooperation rises from 26.2% at $T=10$ to 40.6% at $T=50$. CHAT rises more sharply, from 68.1% to 89.9%. SEQ is non-monotone—40.6%, 33.4%, and 52.0%—but is highest at the longest horizon. The horizon gradient is therefore directionally consistent with a stronger shadow of the future in SIM and CHAT, but the finite design does not identify the comparative static in $\delta$.
+
+## 6. Head-to-head model comparisons
+
+### 6.1 Self-play versus cross-family play
+
+```{python}
+self_cross = (
+    data.groupby(["treatment", "self_play"], as_index=False)
+    .agg(mutual_cooperation=("mutual_cooperation", "mean"), rounds=("round", "size"))
+)
+self_cross["Treatment"] = self_cross["treatment"].map(TREATMENT_LABELS)
+self_cross["Pair type"] = self_cross["self_play"].map({True: "Self-play", False: "Cross-family"})
+self_cross = self_cross[["Treatment", "Pair type", "rounds", "mutual_cooperation"]]
+self_cross.columns = ["Treatment", "Pair type", "Rounds", "Mutual cooperation"]
+display(self_cross.style.format({"Mutual cooperation": "{:.1%}"}).hide(axis="index"))
+```
+
+Self-play is more cooperative than cross-family play in every institution, but the gap depends strongly on whether models can communicate. It is 10.5 percentage points in SIM (45.0% versus 34.5%), 12.9 points in SEQ (55.6% versus 42.7%), and only 1.8 points in CHAT (85.3% versus 83.5%). Communication nearly eliminates the aggregate “same-family premium.”
+
+That aggregate comparison is not a generic preference for one's own family. It is driven heavily by the identity of the match. Claude's no-chat behavior, in particular, creates zeros in every pair containing Claude. Pair-level matrices are therefore more informative than a single self-play coefficient.
+
+### 6.2 Pairwise cooperation matrices
+
+```{python}
+fig, axes = plt.subplots(1, 3, figsize=(14.2, 4.4), constrained_layout=True)
+for ax, treatment in zip(axes, ["sim", "seq", "chat"]):
+    matrix = (
+        data[data["treatment"] == treatment]
+        .pivot_table(
+            index="player1_short",
+            columns="player2_short",
+            values="mutual_cooperation",
+            aggfunc="mean",
+        )
+        .reindex(index=SHORT_ORDER, columns=SHORT_ORDER)
+    )
+    image = ax.imshow(100 * matrix, vmin=0, vmax=100, cmap="YlGn")
+    for row in range(len(SHORT_ORDER)):
+        for column in range(len(SHORT_ORDER)):
+            value = 100 * matrix.iloc[row, column]
+            ax.text(column, row, f"{value:.1f}", ha="center", va="center", fontsize=8.5)
+    ax.set_xticks(range(4), SHORT_ORDER, rotation=40, ha="right")
+    ax.set_yticks(range(4), SHORT_ORDER)
+    ax.set_xlabel("Player 2")
+    ax.set_ylabel("Player 1")
+    ax.set_title(TREATMENT_LABELS[treatment])
+fig.colorbar(image, ax=axes, shrink=0.82, label="Mutual cooperation (%)")
+plt.show()
+```
+
+Four patterns stand out.
+
+**First, GPT is the most robust cooperator.** Pooling seats and opponents, GPT cooperates in 69.8% of SIM actions, 66.1% of SEQ actions, and 92.8% of CHAT actions. Its average stage payoff is also the highest in the panel (30.47), not because it exploits more often, but because it coordinates successfully with most non-Claude partners.
+
+**Second, Claude is institutionally discontinuous.** Claude defects in every SIM and SEQ action, whether matched with itself or another family. With chat, its cooperation rate jumps to 85.2%, and Claude self-play reaches 90% mutual cooperation. For this model, communication does not merely raise an existing cooperative tendency; it changes the apparent strategy class.
+
+**Third, Gemini is highly conditionally cooperative.** In SEQ it cooperates after an observed $C$ in 98.9% of cases and after $D$ in 0%. Gemini's mutual-cooperation rate is 91.2% in SIM self-play and 72.5% in SEQ self-play. It coordinates very well with GPT, but its SIM pairing with DeepSeek is sensitive to seat order: Gemini→DeepSeek yields 0% mutual cooperation while DeepSeek→Gemini yields 46.2%.
+
+**Fourth, DeepSeek is the most variable family.** It coordinates well with GPT and often with Gemini, but defects throughout several self- and cross-family cells. Communication raises DeepSeek's pooled cooperation rate to 81.4% and DeepSeek self-play mutual cooperation to 91.2%.
+
+The ordered matrices also reveal that nominally simultaneous games are not perfectly invariant to seat labels. Reversing Gemini and DeepSeek changes behavior even though neither model observes the other's contemporaneous action. This may reflect player-number wording, stochastic path dependence, or the absence of replication rather than a structural asymmetry.
+
+### 6.3 Model-level cooperation and payoffs
+
+```{python}
+long_rows = []
+for seat in [1, 2]:
+    frame = data[["treatment", f"player{seat}_model", f"player{seat}_cooperated", f"payoff{seat}"]].copy()
+    frame.columns = ["treatment", "model", "cooperated", "payoff"]
+    long_rows.append(frame)
+long = pd.concat(long_rows, ignore_index=True)
+model_summary = (
+    long.groupby(["model", "treatment"], as_index=False)
+    .agg(cooperation=("cooperated", "mean"), payoff=("payoff", "mean"))
+)
+model_summary["Model"] = model_summary["model"].map(MODEL_LABELS)
+model_summary["Treatment"] = model_summary["treatment"].map(TREATMENT_LABELS)
+model_table = model_summary[["Model", "Treatment", "cooperation", "payoff"]].copy()
+model_table.columns = ["Model", "Treatment", "Cooperation", "Mean stage payoff"]
+display(model_table.style.format({"Cooperation": "{:.1%}", "Mean stage payoff": "{:.2f}"}).hide(axis="index"))
+```
+
+The payoff ranking broadly follows successful coordination rather than unilateral toughness. Because mutual defection pays 25 and mutual cooperation pays 32, a model that can elicit cooperation can outperform a model that defects indiscriminately. Claude's no-chat defection produces stage payoffs near 25; GPT's broader cooperation produces about 30 across the full panel.
+
+## 7. Communication as a coordination technology
+
+The automated message classifier labels 70.7% of individual CHAT messages as cooperative and 57.6% of rounds as containing two cooperative messages. Mutual cooperation follows 88.6% of mutually cooperative message exchanges, close to the human paper's “more than 91%” follow-through rate.
+
+```{python}
+chat = data[data["treatment"] == "chat"].copy()
+chat_stats = pd.DataFrame(
+    [
+        ["Individual message coded cooperative", pd.concat([
+            chat["player1_message_label"].eq("cooperative"),
+            chat["player2_message_label"].eq("cooperative"),
+        ]).mean()],
+        ["Both messages coded cooperative", chat["both_cooperative_messages"].mean()],
+        ["Mutual cooperation after two cooperative messages", chat.loc[chat["both_cooperative_messages"], "mutual_cooperation"].mean()],
+        ["Mutual cooperation otherwise", chat.loc[~chat["both_cooperative_messages"], "mutual_cooperation"].mean()],
+    ],
+    columns=["CHAT diagnostic", "Rate"],
+)
+display(chat_stats.style.format({"Rate": "{:.1%}"}).hide(axis="index"))
+```
+
+GPT produces cooperative messages most frequently (89.2%), followed by DeepSeek (71.9%), Claude (68.0%), and Gemini (53.9%). Yet mutual cooperation remains 77.7% even without two messages coded as cooperative. This may indicate tacit coordination, but it also reflects the limits of a keyword-based classifier: a model can communicate an implicit contingent plan without using the classifier's cooperative vocabulary.
+
+The close human–LLM follow-through rates are more informative than raw chat cooperation. Cheap talk works in the theory because messages reveal intentions. Both populations behave as if mutually cooperative statements create a strong, though imperfect, commitment. The LLM result is especially notable for Claude, whose action policy changes from universal defection without chat to high cooperation with chat.
+
+## 8. Interpretation and implications
+
+The experiment offers qualified support for the paper's mechanism. Institutional changes that reduce uncertainty about an opponent's willingness to cooperate have large effects on model behavior. Observing a first action produces near-mechanical conditional cooperation for GPT, Gemini, and DeepSeek; exchanging messages produces high cooperation for every family, including a family that otherwise always defects. In that sense, the model's central object—endogenous strategic risk—travels well to an artificial population.
+
+But the source of heterogeneity differs. Kartal and Müller posit stable private $\gamma$ types and honesty types. Here, the strongest heterogeneity lies across pretrained model families and interaction protocols. The LLMs do not literally maximize the paper's utility function, and their behavior may reflect learned norms, prompt interpretation, or provider inference policies. The results should therefore be read as institutional response functions, not estimates of a latent human-style type distribution.
+
+The finite-horizon design also changes the theoretical benchmark. A standard finite repeated prisoner's dilemma with common knowledge of rationality has a backward-induction logic absent from the paper's infinite game. The fact that cooperation rises with the horizon, especially in CHAT, shows that models treat a longer relationship as strategically meaningful rather than unraveling mechanically. That is an empirical regularity about LLM reasoning, not a direct test of Proposition 1's $\delta$ comparative static.
+
+Finally, the head-to-head matrices caution against reporting a single “LLM cooperation rate.” Model identity and partner identity matter as much as the treatment average. Communication compresses those differences: the self-play premium nearly disappears, Claude crosses from total defection to high cooperation, and even difficult cross-family pairings often coordinate. The institutional affordance is more portable than any one model's baseline disposition.
+
+## 9. Next experiments
+
+Four extensions would turn this pilot into a credible computational experiment.
+
+1. **Independent replication.** Run multiple seeds for every ordered pair and cluster uncertainty at the match level rather than treating rounds as independent.
+2. **Random continuation.** Implement the paper's geometric stopping rule at $\delta=0.5$ and hide the realized match length from agents.
+3. **Randomized private types.** Draw private $\gamma_i$ values into system prompts, hold them fixed within matches, and estimate whether model behavior has a cutoff structure.
+4. **Frozen inference protocols.** Record model revision, provider, reasoning budget, response ceiling, and prompt hash on every row; rerun the full panel under a single immutable configuration.
+
+The highest-value next design is a smaller replicated panel rather than another broad single-seed sweep. Three to five independent matches per cell, geometric continuation, and pre-registered model settings would allow uncertainty estimates and distinguish stable family behavior from path dependence.
+
+## 10. Conclusion
+
+The in-silico experiment reproduces the principal institutional ordering in Kartal and Müller: communication generates the most cooperation, sequentiality is intermediate, and simultaneous play generates the least. The artificial population is more cooperative than the human population, but it exhibits the same sharp conditional response to observed cooperation and nearly the same follow-through after mutual cooperative messages.
+
+The head-to-head results show why averages are insufficient. GPT cooperates broadly, Claude requires communication, Gemini behaves as a strong conditional cooperator, and DeepSeek is sensitive to partners and inference budget. Self-play is more cooperative than cross-family play without communication, but chat almost eliminates the gap. The broad lesson is consistent with the theory: cooperation depends not only on patience or payoffs, but on institutions that make the cooperativeness of others legible.
+
+## References
+
+Kartal, Melis, and Wieland Müller. 2026. “A New Approach to the Analysis of Cooperation under the Shadow of the Future: Theory and Experimental Evidence.” *Quantitative Economics* 17 (3): 827–857. <https://doi.org/10.3982/QE2768>.
+
+Dal Bó, Pedro, and Guillaume R. Fréchette. 2011. “The Evolution of Cooperation in Infinitely Repeated Games: Experimental Evidence.” *American Economic Review* 101 (1): 411–429.
+
+Ghidoni, Riccardo, and Sigrid Suetens. 2022. “The Effect of Sequentiality on Cooperation in Repeated Games.”
+
+::: {.callout-note}
+## Reproducibility
+
+The analysis uses `data/repeated_pd_variations_baseline_20260803.jsonl` in the `lludens` repository: 3,840 unique match-round records, 144 matches, four ordered model families, three treatments, and three horizons. The runner and model configuration are documented in `repeated_pd_variations/README.md` and `repeated_pd_variations/models.json`.
+:::

@@ -1,0 +1,145 @@
+   player1_model    player2_model treatment  horizon  matches  rounds  player1_cooperation  player2_cooperation  mutual_cooperation  player1_payoff  player2_payoff
+ claude-sonnet-5  claude-sonnet-5      chat       10        1      10                 0.90                 0.90                0.90           31.30           31.30
+ claude-sonnet-5  deepseek-v4-pro      chat       10        1      10                 0.90                 1.00                0.90           33.80           30.00
+ claude-sonnet-5 gemini-3.6-flash      chat       10        1      10                 0.80                 0.80                0.80           30.60           30.60
+ claude-sonnet-5      gpt-5.6-sol      chat       10        1      10                 0.80                 0.90                0.80           33.10           29.30
+ deepseek-v4-pro  claude-sonnet-5      chat       10        1      10                 0.90                 0.80                0.80           29.30           33.10
+ deepseek-v4-pro  deepseek-v4-pro      chat       10        1      10                 0.90                 0.90                0.90           31.30           31.30
+ deepseek-v4-pro gemini-3.6-flash      chat       10        1      10                 0.00                 0.00                0.00           25.00           25.00
+ deepseek-v4-pro      gpt-5.6-sol      chat       10        1      10                 0.10                 0.20                0.00           28.70           24.90
+gemini-3.6-flash  claude-sonnet-5      chat       10        1      10                 0.00                 0.20                0.00           30.00           22.40
+gemini-3.6-flash  deepseek-v4-pro      chat       10        1      10                 0.80                 0.90                0.80           33.10           29.30
+gemini-3.6-flash gemini-3.6-flash      chat       10        1      10                 0.90                 0.90                0.90           31.30           31.30
+gemini-3.6-flash      gpt-5.6-sol      chat       10        1      10                 0.80                 0.90                0.80           33.10           29.30
+     gpt-5.6-sol  claude-sonnet-5      chat       10        1      10                 0.80                 0.80                0.80           30.60           30.60
+     gpt-5.6-sol  deepseek-v4-pro      chat       10        1      10                 0.90                 1.00                0.90           33.80           30.00
+     gpt-5.6-sol gemini-3.6-flash      chat       10        1      10                 0.90                 0.90                0.90           31.30           31.30
+     gpt-5.6-sol      gpt-5.6-sol      chat       10        1      10                 0.80                 0.70                0.70           28.60           32.40
+ claude-sonnet-5  claude-sonnet-5      chat       20        1      20                 0.85                 0.90                0.85           32.20           30.30
+ claude-sonnet-5  deepseek-v4-pro      chat       20        1      20                 0.95                 0.90                0.90           30.65           32.55
+ claude-sonnet-5 gemini-3.6-flash      chat       20        1      20                 0.90                 0.90                0.90           31.30           31.30
+ claude-sonnet-5      gpt-5.6-sol      chat       20        1      20                 0.95                 0.95                0.95           31.65           31.65
+ deepseek-v4-pro  claude-sonnet-5      chat       20        1      20                 0.85                 0.90                0.85           32.20           30.30
+ deepseek-v4-pro  deepseek-v4-pro      chat       20        1      20                 0.75                 0.85                0.75           32.75           28.95
+ deepseek-v4-pro gemini-3.6-flash      chat       20        1      20                 0.90                 0.85                0.85           30.30           32.20
+ deepseek-v4-pro      gpt-5.6-sol      chat       20        1      20                 0.95                 0.90                0.90           30.65           32.55
+gemini-3.6-flash  claude-sonnet-5      chat       20        1      20                 0.85                 0.90                0.85           32.20           30.30
+gemini-3.6-flash  deepseek-v4-pro      chat       20        1      20                 0.00                 0.05                0.00           26.25           24.35
+gemini-3.6-flash gemini-3.6-flash      chat       20        1      20                 0.00                 0.05                0.00           26.25           24.35
+gemini-3.6-flash      gpt-5.6-sol      chat       20        1      20                 0.95                 0.95                0.95           31.65           31.65
+     gpt-5.6-sol  claude-sonnet-5      chat       20        1      20                 0.85                 0.90                0.85           32.20           30.30
+     gpt-5.6-sol  deepseek-v4-pro      chat       20        1      20                 0.95                 1.00                0.95           32.90           31.00
+     gpt-5.6-sol gemini-3.6-flash      chat       20        1      20                 0.95                 0.95                0.95           31.65           31.65
+     gpt-5.6-sol      gpt-5.6-sol      chat       20        1      20                 0.90                 0.85                0.85           30.30           32.20
+ claude-sonnet-5  claude-sonnet-5      chat       50        1      50                 0.92                 0.94                0.92           31.94           31.18
+ claude-sonnet-5  deepseek-v4-pro      chat       50        1      50                 0.06                 0.00                0.00           24.22           26.50
+ claude-sonnet-5 gemini-3.6-flash      chat       50        1      50                 0.98                 0.98                0.98           31.86           31.86
+ claude-sonnet-5      gpt-5.6-sol      chat       50        1      50                 0.96                 0.96                0.96           31.72           31.72
+ deepseek-v4-pro  claude-sonnet-5      chat       50        1      50                 0.94                 0.96                0.94           32.08           31.32
+ deepseek-v4-pro  deepseek-v4-pro      chat       50        1      50                 0.98                 1.00                0.98           32.36           31.60
+ deepseek-v4-pro gemini-3.6-flash      chat       50        1      50                 0.90                 0.92                0.90           31.80           31.04
+ deepseek-v4-pro      gpt-5.6-sol      chat       50        1      50                 0.98                 0.96                0.96           31.46           32.22
+gemini-3.6-flash  claude-sonnet-5      chat       50        1      50                 0.98                 1.00                0.98           32.36           31.60
+gemini-3.6-flash  deepseek-v4-pro      chat       50        1      50                 0.96                 0.98                0.96           32.22           31.46
+gemini-3.6-flash gemini-3.6-flash      chat       50        1      50                 0.98                 0.96                0.96           31.46           32.22
+gemini-3.6-flash      gpt-5.6-sol      chat       50        1      50                 0.98                 0.98                0.98           31.86           31.86
+     gpt-5.6-sol  claude-sonnet-5      chat       50        1      50                 0.96                 0.96                0.96           31.72           31.72
+     gpt-5.6-sol  deepseek-v4-pro      chat       50        1      50                 0.98                 1.00                0.98           32.36           31.60
+     gpt-5.6-sol gemini-3.6-flash      chat       50        1      50                 0.98                 0.98                0.98           31.86           31.86
+     gpt-5.6-sol      gpt-5.6-sol      chat       50        1      50                 0.96                 0.96                0.94           31.82           31.82
+ claude-sonnet-5  claude-sonnet-5       seq       10        1      10                 0.00                 0.00                0.00           25.00           25.00
+ claude-sonnet-5  deepseek-v4-pro       seq       10        1      10                 0.00                 0.00                0.00           25.00           25.00
+ claude-sonnet-5 gemini-3.6-flash       seq       10        1      10                 0.00                 0.00                0.00           25.00           25.00
+ claude-sonnet-5      gpt-5.6-sol       seq       10        1      10                 0.00                 0.00                0.00           25.00           25.00
+ deepseek-v4-pro  claude-sonnet-5       seq       10        1      10                 0.00                 0.00                0.00           25.00           25.00
+ deepseek-v4-pro  deepseek-v4-pro       seq       10        1      10                 0.10                 0.00                0.00           23.70           27.50
+ deepseek-v4-pro gemini-3.6-flash       seq       10        1      10                 0.70                 0.70                0.70           29.90           29.90
+ deepseek-v4-pro      gpt-5.6-sol       seq       10        1      10                 0.80                 0.80                0.80           30.60           30.60
+gemini-3.6-flash  claude-sonnet-5       seq       10        1      10                 0.10                 0.00                0.00           23.70           27.50
+gemini-3.6-flash  deepseek-v4-pro       seq       10        1      10                 0.90                 0.90                0.90           31.30           31.30
+gemini-3.6-flash gemini-3.6-flash       seq       10        1      10                 0.90                 0.90                0.90           31.30           31.30
+gemini-3.6-flash      gpt-5.6-sol       seq       10        1      10                 0.90                 0.80                0.80           29.30           33.10
+     gpt-5.6-sol  claude-sonnet-5       seq       10        1      10                 0.10                 0.00                0.00           23.70           27.50
+     gpt-5.6-sol  deepseek-v4-pro       seq       10        1      10                 0.80                 0.90                0.80           33.10           29.30
+     gpt-5.6-sol gemini-3.6-flash       seq       10        1      10                 0.70                 0.70                0.70           29.90           29.90
+     gpt-5.6-sol      gpt-5.6-sol       seq       10        1      10                 0.90                 0.90                0.90           31.30           31.30
+ claude-sonnet-5  claude-sonnet-5       seq       20        1      20                 0.00                 0.00                0.00           25.00           25.00
+ claude-sonnet-5  deepseek-v4-pro       seq       20        1      20                 0.00                 0.00                0.00           25.00           25.00
+ claude-sonnet-5 gemini-3.6-flash       seq       20        1      20                 0.00                 0.00                0.00           25.00           25.00
+ claude-sonnet-5      gpt-5.6-sol       seq       20        1      20                 0.00                 0.00                0.00           25.00           25.00
+ deepseek-v4-pro  claude-sonnet-5       seq       20        1      20                 0.10                 0.00                0.00           23.70           27.50
+ deepseek-v4-pro  deepseek-v4-pro       seq       20        1      20                 0.00                 0.00                0.00           25.00           25.00
+ deepseek-v4-pro gemini-3.6-flash       seq       20        1      20                 0.95                 0.95                0.95           31.65           31.65
+ deepseek-v4-pro      gpt-5.6-sol       seq       20        1      20                 0.90                 0.85                0.85           30.30           32.20
+gemini-3.6-flash  claude-sonnet-5       seq       20        1      20                 0.05                 0.00                0.00           24.35           26.25
+gemini-3.6-flash  deepseek-v4-pro       seq       20        1      20                 0.95                 0.95                0.95           31.65           31.65
+gemini-3.6-flash gemini-3.6-flash       seq       20        1      20                 0.05                 0.00                0.00           24.35           26.25
+gemini-3.6-flash      gpt-5.6-sol       seq       20        1      20                 0.90                 0.85                0.85           30.30           32.20
+     gpt-5.6-sol  claude-sonnet-5       seq       20        1      20                 0.05                 0.00                0.00           24.35           26.25
+     gpt-5.6-sol  deepseek-v4-pro       seq       20        1      20                 0.90                 0.90                0.90           31.30           31.30
+     gpt-5.6-sol gemini-3.6-flash       seq       20        1      20                 0.05                 0.00                0.00           24.35           26.25
+     gpt-5.6-sol      gpt-5.6-sol       seq       20        1      20                 0.90                 0.85                0.85           30.30           32.20
+ claude-sonnet-5  claude-sonnet-5       seq       50        1      50                 0.00                 0.00                0.00           25.00           25.00
+ claude-sonnet-5  deepseek-v4-pro       seq       50        1      50                 0.00                 0.00                0.00           25.00           25.00
+ claude-sonnet-5 gemini-3.6-flash       seq       50        1      50                 0.00                 0.00                0.00           25.00           25.00
+ claude-sonnet-5      gpt-5.6-sol       seq       50        1      50                 0.00                 0.00                0.00           25.00           25.00
+ deepseek-v4-pro  claude-sonnet-5       seq       50        1      50                 0.06                 0.00                0.00           24.22           26.50
+ deepseek-v4-pro  deepseek-v4-pro       seq       50        1      50                 0.96                 0.94                0.94           31.32           32.08
+ deepseek-v4-pro gemini-3.6-flash       seq       50        1      50                 0.78                 0.78                0.78           30.46           30.46
+ deepseek-v4-pro      gpt-5.6-sol       seq       50        1      50                 0.96                 0.94                0.94           31.32           32.08
+gemini-3.6-flash  claude-sonnet-5       seq       50        1      50                 0.04                 0.00                0.00           24.48           26.00
+gemini-3.6-flash  deepseek-v4-pro       seq       50        1      50                 0.96                 0.94                0.94           31.32           32.08
+gemini-3.6-flash gemini-3.6-flash       seq       50        1      50                 0.98                 0.98                0.98           31.86           31.86
+gemini-3.6-flash      gpt-5.6-sol       seq       50        1      50                 0.98                 0.96                0.96           31.46           32.22
+     gpt-5.6-sol  claude-sonnet-5       seq       50        1      50                 0.04                 0.00                0.00           24.48           26.00
+     gpt-5.6-sol  deepseek-v4-pro       seq       50        1      50                 0.94                 0.94                0.94           31.58           31.58
+     gpt-5.6-sol gemini-3.6-flash       seq       50        1      50                 0.90                 0.90                0.90           31.30           31.30
+     gpt-5.6-sol      gpt-5.6-sol       seq       50        1      50                 0.96                 0.94                0.94           31.32           32.08
+ claude-sonnet-5  claude-sonnet-5       sim       10        1      10                 0.00                 0.00                0.00           25.00           25.00
+ claude-sonnet-5  deepseek-v4-pro       sim       10        1      10                 0.00                 0.10                0.00           27.50           23.70
+ claude-sonnet-5 gemini-3.6-flash       sim       10        1      10                 0.00                 0.10                0.00           27.50           23.70
+ claude-sonnet-5      gpt-5.6-sol       sim       10        1      10                 0.00                 0.10                0.00           27.50           23.70
+ deepseek-v4-pro  claude-sonnet-5       sim       10        1      10                 0.10                 0.00                0.00           23.70           27.50
+ deepseek-v4-pro  deepseek-v4-pro       sim       10        1      10                 0.00                 0.00                0.00           25.00           25.00
+ deepseek-v4-pro gemini-3.6-flash       sim       10        1      10                 0.00                 0.10                0.00           27.50           23.70
+ deepseek-v4-pro      gpt-5.6-sol       sim       10        1      10                 0.60                 0.70                0.60           31.70           27.90
+gemini-3.6-flash  claude-sonnet-5       sim       10        1      10                 0.10                 0.00                0.00           23.70           27.50
+gemini-3.6-flash  deepseek-v4-pro       sim       10        1      10                 0.10                 0.00                0.00           23.70           27.50
+gemini-3.6-flash gemini-3.6-flash       sim       10        1      10                 0.60                 0.80                0.50           34.70           27.10
+gemini-3.6-flash      gpt-5.6-sol       sim       10        1      10                 0.90                 0.80                0.80           29.30           33.10
+     gpt-5.6-sol  claude-sonnet-5       sim       10        1      10                 0.10                 0.00                0.00           23.70           27.50
+     gpt-5.6-sol  deepseek-v4-pro       sim       10        1      10                 0.80                 0.90                0.80           33.10           29.30
+     gpt-5.6-sol gemini-3.6-flash       sim       10        1      10                 0.80                 0.80                0.80           30.60           30.60
+     gpt-5.6-sol      gpt-5.6-sol       sim       10        1      10                 0.80                 0.70                0.70           28.60           32.40
+ claude-sonnet-5  claude-sonnet-5       sim       20        1      20                 0.00                 0.00                0.00           25.00           25.00
+ claude-sonnet-5  deepseek-v4-pro       sim       20        1      20                 0.00                 0.00                0.00           25.00           25.00
+ claude-sonnet-5 gemini-3.6-flash       sim       20        1      20                 0.00                 0.05                0.00           26.25           24.35
+ claude-sonnet-5      gpt-5.6-sol       sim       20        1      20                 0.00                 0.05                0.00           26.25           24.35
+ deepseek-v4-pro  claude-sonnet-5       sim       20        1      20                 0.05                 0.00                0.00           24.35           26.25
+ deepseek-v4-pro  deepseek-v4-pro       sim       20        1      20                 0.05                 0.00                0.00           24.35           26.25
+ deepseek-v4-pro gemini-3.6-flash       sim       20        1      20                 0.05                 0.10                0.00           26.85           24.95
+ deepseek-v4-pro      gpt-5.6-sol       sim       20        1      20                 0.95                 0.90                0.90           30.65           32.55
+gemini-3.6-flash  claude-sonnet-5       sim       20        1      20                 0.05                 0.00                0.00           24.35           26.25
+gemini-3.6-flash  deepseek-v4-pro       sim       20        1      20                 0.05                 0.00                0.00           24.35           26.25
+gemini-3.6-flash gemini-3.6-flash       sim       20        1      20                 0.95                 0.95                0.95           31.65           31.65
+gemini-3.6-flash      gpt-5.6-sol       sim       20        1      20                 0.95                 0.90                0.90           30.65           32.55
+     gpt-5.6-sol  claude-sonnet-5       sim       20        1      20                 0.10                 0.00                0.00           23.70           27.50
+     gpt-5.6-sol  deepseek-v4-pro       sim       20        1      20                 0.90                 0.95                0.90           32.55           30.65
+     gpt-5.6-sol gemini-3.6-flash       sim       20        1      20                 0.90                 0.95                0.90           32.55           30.65
+     gpt-5.6-sol      gpt-5.6-sol       sim       20        1      20                 0.85                 0.85                0.85           30.95           30.95
+ claude-sonnet-5  claude-sonnet-5       sim       50        1      50                 0.00                 0.00                0.00           25.00           25.00
+ claude-sonnet-5  deepseek-v4-pro       sim       50        1      50                 0.00                 0.02                0.00           25.50           24.74
+ claude-sonnet-5 gemini-3.6-flash       sim       50        1      50                 0.00                 0.02                0.00           25.50           24.74
+ claude-sonnet-5      gpt-5.6-sol       sim       50        1      50                 0.00                 0.02                0.00           25.50           24.74
+ deepseek-v4-pro  claude-sonnet-5       sim       50        1      50                 0.02                 0.00                0.00           24.74           25.50
+ deepseek-v4-pro  deepseek-v4-pro       sim       50        1      50                 0.04                 0.00                0.00           24.48           26.00
+ deepseek-v4-pro gemini-3.6-flash       sim       50        1      50                 0.80                 0.80                0.74           30.90           30.90
+ deepseek-v4-pro      gpt-5.6-sol       sim       50        1      50                 0.98                 0.96                0.96           31.46           32.22
+gemini-3.6-flash  claude-sonnet-5       sim       50        1      50                 0.02                 0.00                0.00           24.74           25.50
+gemini-3.6-flash  deepseek-v4-pro       sim       50        1      50                 0.08                 0.08                0.00           25.96           25.96
+gemini-3.6-flash gemini-3.6-flash       sim       50        1      50                 0.98                 0.98                0.98           31.86           31.86
+gemini-3.6-flash      gpt-5.6-sol       sim       50        1      50                 0.98                 0.96                0.96           31.46           32.22
+     gpt-5.6-sol  claude-sonnet-5       sim       50        1      50                 0.04                 0.00                0.00           24.48           26.00
+     gpt-5.6-sol  deepseek-v4-pro       sim       50        1      50                 0.96                 0.98                0.96           32.22           31.46
+     gpt-5.6-sol gemini-3.6-flash       sim       50        1      50                 0.96                 0.98                0.96           32.22           31.46
+     gpt-5.6-sol      gpt-5.6-sol       sim       50        1      50                 0.94                 0.96                0.94           32.08           31.32
