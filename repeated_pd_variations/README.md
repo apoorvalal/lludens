@@ -122,6 +122,7 @@ uv run python -m repeated_pd_variations.summarize
 - Disabled hidden reasoning and raised the response cap to prevent empty action responses in paid sweeps.
 - Added `--rerun-invalid` to regenerate an invalid round and every later round conditioned on it.
 - Added per-model option overrides so provider constraints such as mandatory Gemini reasoning remain explicit and reproducible.
+- Added phase-level invalid-action retries so transient empty provider responses are regenerated before a round is recorded.
 
 ### 2026-08-03 — Initial scaffold
 

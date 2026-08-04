@@ -20,6 +20,7 @@ class Phase:
     actors: tuple[int, ...] = (1, 2)
     simultaneous: bool = True
     action_space: ActionSpace | None = None
+    invalid_retries: int = 2
 
 
 @dataclass(frozen=True)
@@ -86,16 +87,19 @@ class PhasedGame:
             system_context=self.system_context_for(phase, player, state),
             metadata=self.request_metadata(phase, player, state),
         )
-        if phase.kind == "communication" and hasattr(agent, "communicate"):
-            raw = agent.communicate(request)
-        elif hasattr(agent, "respond"):
-            raw = agent.respond(request)
-        else:
-            raw = agent.interact(request.prompt)
-        if phase.action_space is None:
-            return PhaseResponse(raw=raw, value=raw)
-        parsed = phase.action_space.resolve(raw)
-        return PhaseResponse(raw=parsed.raw, value=parsed.value, invalid=parsed.invalid)
+        for attempt in range(phase.invalid_retries + 1):
+            if phase.kind == "communication" and hasattr(agent, "communicate"):
+                raw = agent.communicate(request)
+            elif hasattr(agent, "respond"):
+                raw = agent.respond(request)
+            else:
+                raw = agent.interact(request.prompt)
+            if phase.action_space is None:
+                return PhaseResponse(raw=raw, value=raw)
+            parsed = phase.action_space.resolve(raw)
+            if not parsed.invalid or attempt == phase.invalid_retries:
+                return PhaseResponse(raw=parsed.raw, value=parsed.value, invalid=parsed.invalid)
+        raise AssertionError("unreachable")
 
     def play_round(self, round_number: int) -> dict[str, Any]:
         state = RoundState(round_number)
