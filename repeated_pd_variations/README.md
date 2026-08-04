@@ -123,6 +123,7 @@ uv run python -m repeated_pd_variations.summarize
 - Added `--rerun-invalid` to regenerate an invalid round and every later round conditioned on it.
 - Added per-model option overrides so provider constraints such as mandatory Gemini reasoning remain explicit and reproducible.
 - Added phase-level invalid-action retries so transient empty provider responses are regenerated before a round is recorded.
+- Made invalid-action retries corrective rather than identical by explicitly repeating the valid action set after a failed response.
 
 ### 2026-08-03 — Initial scaffold
 

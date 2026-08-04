@@ -99,6 +99,19 @@ class PhasedGame:
             parsed = phase.action_space.resolve(raw)
             if not parsed.invalid or attempt == phase.invalid_retries:
                 return PhaseResponse(raw=parsed.raw, value=parsed.value, invalid=parsed.invalid)
+            request = AgentRequest(
+                prompt=(
+                    request.prompt
+                    + "\n\nYour previous response was empty or invalid. Try again and return "
+                    + f"exactly one of: {phase.action_space.instruction()}. No other text."
+                ),
+                phase=request.phase,
+                round_number=request.round_number,
+                player=request.player,
+                observation=request.observation,
+                system_context=request.system_context,
+                metadata=request.metadata,
+            )
         raise AssertionError("unreachable")
 
     def play_round(self, round_number: int) -> dict[str, Any]:
