@@ -17,6 +17,6 @@
   {
     "label": "deepseek-v4-pro",
     "model_id": "openrouter/deepseek/deepseek-v4-pro",
-    "options": {"reasoning_enabled": true, "reasoning_max_tokens": 64}
+    "options": {"max_tokens": 1024, "reasoning_enabled": true, "reasoning_max_tokens": 128}
   }
 ]
