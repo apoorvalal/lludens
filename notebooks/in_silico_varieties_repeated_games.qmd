@@ -8,10 +8,8 @@ format:
     toc: true
     toc-depth: 2
     embed-resources: true
-    css: in_silico_varieties_repeated_games.css
     code-fold: true
     code-summary: "Show analysis code"
-    theme: cosmo
     fig-format: svg
     smooth-scroll: true
 execute:
