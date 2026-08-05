@@ -1,11 +1,12 @@
 # Repeated Prisoner's Dilemma variations
 
-This folder runs a four-model ordered round robin through the repeated-game treatments in Kartal and Mueller (2026). The default model panel is:
+This folder runs a five-model ordered round robin through the repeated-game treatments in Kartal and Mueller (2026). The default model panel is:
 
 - OpenAI GPT-5.6 Sol;
 - Anthropic Claude Sonnet 5;
 - Google Gemini 3.6 Flash;
-- DeepSeek V4 Pro.
+- DeepSeek V4 Pro;
+- xAI Grok 4.5.
 
 All models are accessed through the `llm-openrouter` plugin. The model identifiers live in `models.json`, so the panel can be changed without editing the runner.
 
@@ -35,7 +36,19 @@ Two players repeatedly choose `Cooperate` or `Defect`. The stage-game payoffs ar
 | Defect | Cooperate | 50 | 12 |
 | Defect | Defect | 25 | 25 |
 
-The fixed horizons are 10, 20, and 50 rounds. Each model occupies both seats against every model, including itself. Seat order is retained because it is strategically meaningful in the sequential treatment. With four models, three treatments, and three horizons, one replicate contains `4^2 * 3 * 3 = 144` matches and 3,840 game-round records.
+The fixed horizons are 10, 20, and 50 rounds. Each model occupies both seats against every model, including itself. Seat order is retained because it is strategically meaningful in the sequential treatment. With five models, three treatments, and three horizons, one replicate contains `5^2 * 3 * 3 = 225` matches and 6,000 game-round records.
+
+## Completed baseline panel
+
+The current five-model baseline fixes both private gamma values at zero and contains 225 ordered matches and 6,000 unique match-round records with no invalid actions. The analysis-ready combined file is:
+
+```text
+data/repeated_pd_variations_five_models_20260804.jsonl
+```
+
+The first four families were run as a 144-match panel. Grok was then added with `--involving-model grok-4.5`, producing exactly the 81 new cells that contain Grok: four incoming cross-family pairings, four outgoing cross-family pairings, and Grok self-play, each crossed with three treatments and three horizons. The four Grok shard outputs were concatenated with the original baseline only after row-count, match-count, uniqueness, and invalid-action checks passed.
+
+Aggregate mutual cooperation in the completed panel is 26.2% in SIM, 36.3% in SEQ, and 85.8% in CHAT. Grok is strongly communication-dependent: its action-level cooperation rate is 6.5% in SIM, 17.6% in SEQ, and 90.5% in CHAT; Grok self-play mutual cooperation is 0% in SIM, 0% in SEQ, and 96.2% in CHAT. The full descriptive analysis is in `notebooks/in_silico_varieties_repeated_games.qmd`.
 
 ## Treatments
 
@@ -89,7 +102,7 @@ The default outputs are:
 
 The runner checkpoints after every round. Re-running the same command reconstructs public match history, resumes each partial match at its next missing round, and skips complete match IDs. Use a new output path or seed for a genuinely new batch.
 
-Paid sweeps default to a 256-token response cap with model reasoning disabled; the game asks for one action or a message of at most 25 words, so hidden reasoning only adds cost and can consume the entire response allowance. Provider-specific overrides live in `models.json`: models that require reasoning can enable it there with a small reasoning-token budget. If a provider returns an invalid or truncated action, resume with `--rerun-invalid`. The runner truncates every affected match immediately before its first invalid round and regenerates that round and its dependent suffix. Pass `--reasoning` only for experiments that intentionally study reasoning-enabled behavior across models without a per-model override.
+Paid sweeps default to a 256-token response cap with model reasoning disabled; the game asks for one action or a message of at most 25 words, so hidden reasoning only adds cost and can consume the entire response allowance. Provider-specific overrides live in `models.json`: Gemini and Grok require small reasoning allowances, while DeepSeek uses a larger low-effort allowance to ensure it emits a final action. If a provider returns an invalid or truncated action, resume with `--rerun-invalid`. The runner truncates every affected match immediately before its first invalid round and regenerates that round and its dependent suffix. Pass `--reasoning` only for experiments that intentionally study reasoning-enabled behavior across models without a per-model override.
 
 Large sweeps can run as independent shards. Each shard must use its own plan and JSONL paths:
 
@@ -119,6 +132,13 @@ uv run python -m repeated_pd_variations.summarize
 ```
 
 ## Changelog
+
+### 2026-08-04 — Grok row-and-column expansion
+
+- Added Grok 4.5 to the default OpenRouter model panel with its mandatory reasoning setting and a 64-token reasoning cap.
+- Ran the 81-match incremental Grok row/column expansion in four deterministic shards: 2,160 rounds with zero invalid actions.
+- Merged the expansion with the four-family baseline into a validated five-model panel containing 225 matches and 6,000 rounds.
+- Updated the paper's aggregate results, pairwise matrices, model-level figure, interpretation, and reproducibility note for the five-model panel.
 
 ### 2026-08-03 — Core API refactor
 
