@@ -18,5 +18,10 @@
     "label": "deepseek-v4-pro",
     "model_id": "openrouter/deepseek/deepseek-v4-pro",
     "options": {"max_tokens": 4096, "reasoning_enabled": true, "reasoning_effort": "low"}
+  },
+  {
+    "label": "grok-4.5",
+    "model_id": "openrouter/x-ai/grok-4.5",
+    "options": {"reasoning_enabled": true, "reasoning_max_tokens": 64}
   }
 ]

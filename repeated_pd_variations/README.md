@@ -102,6 +102,16 @@ uv run python -m repeated_pd_variations.run_experiments \
 
 Run shard indices `0` through `3` to cover the full plan exactly once, then concatenate their JSONL files for analysis.
 
+To add one model's row and column without rerunning an existing panel, configure the new model and filter the plan to matches involving its label before sharding:
+
+```bash
+uv run python -m repeated_pd_variations.run_experiments \
+  --involving-model grok-4.5 \
+  --shard-count 4 --shard-index 0 \
+  --output data/repeated_pd_variations_grok_shard0.jsonl \
+  --plan-output data/repeated_pd_variations_grok_plan_shard0.json
+```
+
 Summarize completed results with:
 
 ```bash
@@ -124,6 +134,7 @@ uv run python -m repeated_pd_variations.summarize
 - Added per-model option overrides so provider constraints such as mandatory Gemini reasoning remain explicit and reproducible.
 - Added phase-level invalid-action retries so transient empty provider responses are regenerated before a round is recorded.
 - Made invalid-action retries corrective rather than identical by explicitly repeating the valid action set after a failed response.
+- Added `--involving-model` for incremental row-and-column expansions of an existing round robin.
 
 ### 2026-08-03 — Initial scaffold
 

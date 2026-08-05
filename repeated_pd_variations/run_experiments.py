@@ -265,6 +265,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-tokens", type=int, default=256)
     parser.add_argument("--reasoning", action="store_true")
     parser.add_argument("--rerun-invalid", action="store_true")
+    parser.add_argument(
+        "--involving-model",
+        nargs="+",
+        metavar="LABEL",
+        help="Keep only matches where at least one player has a listed model label.",
+    )
     parser.add_argument("--shard-count", type=int, default=1)
     parser.add_argument("--shard-index", type=int, default=0)
     parser.add_argument("--output", type=Path, default=Path("data/repeated_pd_variations.jsonl"))
@@ -284,6 +290,17 @@ def main() -> None:
         gamma_values=args.gamma_values,
         base_seed=args.seed,
     )
+    if args.involving_model:
+        configured_labels = {model.label for model in models}
+        requested_labels = set(args.involving_model)
+        unknown_labels = requested_labels - configured_labels
+        if unknown_labels:
+            raise ValueError(f"Unknown model labels: {sorted(unknown_labels)}")
+        plan = [
+            spec
+            for spec in plan
+            if spec.player1.label in requested_labels or spec.player2.label in requested_labels
+        ]
     if args.shard_count < 1:
         raise ValueError("shard-count must be at least one.")
     if not 0 <= args.shard_index < args.shard_count:
@@ -297,7 +314,7 @@ def main() -> None:
     total_rounds = sum(spec.horizon for spec in plan)
     print(
         f"Planned {len(plan)} matches and {total_rounds} game rounds "
-        f"across {len(models)} models.",
+        f"from {len(models)} configured models.",
         flush=True,
     )
     if not args.dry_run:
