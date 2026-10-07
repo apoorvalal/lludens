@@ -1,0 +1,53 @@
+{
+  "model_id": "openai-decisions/gpt-6-luna",
+  "answer": {
+    "type": "choice",
+    "name": "evaluation",
+    "choice": "left",
+    "probabilities": [
+      {
+        "value": "left",
+        "probability": 1.0
+      },
+      {
+        "value": "right",
+        "probability": 0.0
+      }
+    ],
+    "confidence": 1.0
+  },
+  "raw": {
+    "model": "gpt-6-luna",
+    "answers": [
+      {
+        "type": "choice",
+        "name": "evaluation",
+        "choice": "left",
+        "probabilities": [
+          {
+            "value": "left",
+            "probability": 1.0
+          },
+          {
+            "value": "right",
+            "probability": 0.0
+          }
+        ],
+        "confidence": 1.0
+      }
+    ],
+    "usage": {
+      "input_tokens": 140,
+      "input_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 140
+    }
+  },
+  "seconds": 1.1377970408648252
+}

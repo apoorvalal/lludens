@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Decision models in repeated economic games — lludens</title>
+<style>
+:root{color-scheme:light;--ink:#20303d;--muted:#56646e;--blue:#1f658f;--orange:#b45725;--line:#d5dde1;--paper:#fff;--bg:#f5f6f5}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 system-ui,-apple-system,sans-serif}main{max-width:1120px;margin:auto;padding:44px 28px 80px}h1{font:600 clamp(2rem,4.4vw,3.2rem)/1.16 Georgia,serif;max-width:850px;margin:12px 0 22px}h2{font:600 1.65rem/1.3 Georgia,serif;margin:48px 0 18px}h3{margin-top:24px;font-size:1.1rem}p{max-width:930px}a{color:var(--blue)}.eyebrow{color:var(--muted);font-size:.83rem;text-transform:uppercase;letter-spacing:.09em}.lead{font-size:1.16rem;max-width:930px}.box{border-left:4px solid var(--blue);background:#e9f0f4;padding:14px 20px;margin:24px 0}.muted,small{color:var(--muted)}nav{display:flex;gap:18px;flex-wrap:wrap;border-block:1px solid var(--line);padding:12px 0;margin:30px 0}nav a{font-size:.9rem;text-decoration:none}section{scroll-margin-top:20px}.scroll{overflow-x:auto;max-width:100%;margin:18px 0}table{border-collapse:collapse;background:white;width:100%;font-size:.87rem;font-variant-numeric:tabular-nums}th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line)}th{background:#e9edf0;font-weight:600}td:first-child{min-width:140px}figure{margin:28px 0;background:white;padding:14px;border:1px solid var(--line)}figure img{width:100%;height:auto}figcaption{font-size:.88rem;color:var(--muted);padding:6px 10px}details{border:1px solid var(--line);border-radius:5px;padding:16px;margin:22px 0;background:white}summary{cursor:pointer;font-weight:600}code{font-size:.86em;background:#e8edef;padding:2px 5px;overflow-wrap:anywhere}pre{overflow:auto;background:#edf0f2;padding:16px;font-size:.84rem;line-height:1.45}li{margin:7px 0}.controls{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:12px;margin:20px 0}label{display:block;font-size:.86rem;font-weight:600}select{width:100%;padding:10px;background:white;border:1px solid #9aaab4;border-radius:4px;color:var(--ink);font:inherit}input[type=range]{width:100%;accent-color:var(--blue)}.players{display:grid;grid-template-columns:1fr 1fr;gap:18px}.player{background:white;padding:20px;border:1px solid var(--line);border-top:4px solid var(--blue)}.player[data-provider=jev]{border-top-color:var(--orange)}.big{font-size:1.7rem;font-weight:650}.barrow{display:grid;grid-template-columns:60px 1fr 45px;gap:8px;align-items:center;font-size:.82rem}.track{height:9px;background:#e7ecef}.bar{height:9px;background:var(--blue)}.player[data-provider=jev] .bar{background:var(--orange)}.roundline{display:flex;align-items:center;gap:14px;margin:15px 0}.roundline button{border:1px solid #9aaab4;background:white;padding:7px 13px;cursor:pointer;font-size:1rem}.roundline strong{white-space:nowrap}.timeline{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;margin:18px 0}.timeline button{border:1px solid var(--line);padding:7px 0;cursor:pointer;background:#e7ecef;font-size:.7rem;color:var(--ink)}.timeline button.active{outline:2px solid var(--blue)}.foot{font-size:.87rem;margin-top:40px;border-top:1px solid var(--line);padding-top:15px}@media(max-width:660px){main{padding:25px 16px 50px}.controls{grid-template-columns:1fr}.players{grid-template-columns:1fr}.player{padding:15px}body{font-size:16px}h2{margin-top:36px}.timeline{gap:1px}.timeline button{font-size:.61rem}th,td{padding:9px}figure{padding:0}nav{gap:12px}}
+</style></head><body><main>
+<div class="eyebrow">lludens · API pilot · 6 October 2026</div>
+<h1>Decision models in repeated economic games</h1>
+<p class="lead">GPT-6 Luna through OpenAI’s Decisions API and TypeSafe’s Jev 1.13.0 play simultaneous, twenty-round Prisoner’s Dilemma, Stag Hunt, and two-player public-goods games. The comparison separates the APIs’ selected actions from an explicitly randomized policy built from their returned probabilities.</p>
+<div class="box"><strong>Main finding.</strong> Jev earns slightly more in all three direct-choice head-to-head panels, largely by avoiding Luna’s occasional cooperative or risky moves. This is not a stable overall ranking: sampling from the distributions reverses the payoff comparison in Prisoner’s Dilemma and public goods. Both models solve every known-opponent best-response check.</div>
+<nav><a href="#results">Results</a><a href="#replay">Replay a match</a><a href="#rules">Game rules</a><a href="#diagnostics">Diagnostics</a><a href="#methods">Design and limits</a><a href="#download">Data and code</a></nav>
+
+<section id="results"><h2>Head-to-head results</h2>
+<p>The primary panel uses the <strong>action selected by each API</strong>, with no extra random draw. Each game has eight seeded pairs of matches; a pair swaps the models’ player seats while retaining the seat-specific option-order schedule. Every match lasts exactly twenty rounds.</p>
+@@MAIN_TABLE@@
+<p class="muted">C means Cooperate in Prisoner’s Dilemma. The Stag Hunt rate is the frequency of Stag. The public-goods rate is the fraction of the ten-token endowment contributed, not the frequency of a particular action. Points are comparable within a game, not across games.</p>
+<figure><img src="cooperation.png" alt="Round-by-round cooperation, Stag choices, and mean public-goods contributions for Luna and Jev in the primary panel"><figcaption>Average behavior across sixteen primary head-to-head matches per game. Each line describes the evolving joint interaction, not a fixed individual policy.</figcaption></figure>
+<h3>Sampling is a different policy</h3>
+<p>A separate panel samples actions from each returned distribution using a recorded random seed. There are four seat-swapped pairs per game. These are <strong>experimenter-imposed stochastic policies</strong>: classification probabilities are not automatically a model’s intended game-theoretic mixed strategy.</p>
+@@SAMPLE_TABLE@@
+<figure><img src="payoffs.png" alt="Mean points per round for direct API choices and sampled actions in each of the three games"><figcaption>The extraction rule changes the strategic interaction. A model ranking without specifying that rule is incomplete.</figcaption></figure>
+<details><summary>Match wins, score differences, and paired uncertainty</summary><p>The bootstrap resamples complete seed pairs, preserving both swapped-seat matches and all twenty rounds. It does not treat correlated rounds as independent observations. With only eight primary or four sampled pairs, these intervals are descriptive pilot summaries, conditional on this design—not population-wide confidence claims.</p>@@INTERVAL_TABLE@@</details>
+</section>
+
+<section id="replay"><h2>Replay a recorded match</h2><p>Inspect both moves, cumulative scores, and the distributions returned <em>before</em> those moves. Opponents never received one another’s current choices or probabilities.</p>
+<div class="controls"><label>Game<select id="game"><option value="prisoners_dilemma">Prisoner’s Dilemma</option><option value="stag_hunt">Stag Hunt</option><option value="public_goods">Public goods (2 players)</option></select></label><label>Panel<select id="panel"><option value="argmax">Head-to-head · API choice</option><option value="sample">Head-to-head · sampled</option><option value="self">Self-play · API choice</option></select></label><label>Match<select id="match"></select></label></div>
+<div class="roundline"><button id="prev" aria-label="Previous round">←</button><strong id="roundLabel">Round 1 / 20</strong><input id="round" type="range" min="1" max="20" value="1" aria-label="Replay round"><button id="next" aria-label="Next round">→</button></div>
+<div id="players" class="players" aria-live="polite"></div><div id="timeline" class="timeline" aria-label="Choose a round"></div>
+<p class="muted">Probability bars are normalized only when needed for rounding; raw provider probabilities remain in the downloadable call journal. The round buttons are shaded by joint cooperation or contribution.</p></section>
+
+<section id="rules"><h2>Game rules and incentives</h2>
+<p>Every player is told to maximize <strong>its own expected total match points</strong>, not its advantage over the opponent and not joint welfare. The complete history, fixed remaining horizon, and all payoff rules are available at every decision. There is no communication, punishment phase, side payment, or hidden preference parameter.</p>
+<div class="scroll"><table><thead><tr><th>Game</th><th>Payoffs and action set</th><th>Useful benchmarks</th></tr></thead><tbody>
+<tr><td>Prisoner’s Dilemma</td>(C,C): (3,3); (C,D): (0,5); (D,C): (5,0); (D,D): (1,1).</td><td>Defection strictly dominates in one round. Mutual cooperation gives 3 each; mutual defection gives 1 each.</td></tr>
+<tr><td>Stag Hunt</td>(Stag,Stag): (4,4); (Stag,Hare): (0,3); (Hare,Stag): (3,0); (Hare,Hare): (3,3).</td><td>Stag/Stag is payoff-dominant; Hare/Hare is risk-dominant. Stag is a best response when the believed probability of the other choosing Stag exceeds 0.75.</td></tr>
+<tr><td>Public goods</td>Two players each receive 10 tokens every round. Contributions are 0, 2, 4, 6, 8, or 10. A pool multiplier of 1.6 is shared equally. Own points: 10 − own contribution + 0.8 × total contribution.</td><td>Contributing zero is a one-shot best response regardless of the other contribution. Both contribute zero: 10 each. Both contribute ten: 16 each.</td></tr>
+</tbody></table></div>
+<p>With the stated fixed horizon, standard complete-information backward induction selects defection in Prisoner’s Dilemma and zero contribution in public goods under common knowledge of rationality. The agents are not told that their counterpart satisfies those assumptions. Low cooperation here is therefore not itself evidence of misunderstanding. Stag Hunt instead has two pure stage-game equilibria.</p>
+</section>
+
+<section id="diagnostics"><h2>Payoff understanding, history, and ordering</h2>
+<p>The known-opponent check supplies each possible opposing action in a one-round game. Its optimal response is calculated directly from the payoff function. The model selects among the same actions, tested in both forward and reverse option order. Separately, seven fixed histories in each game are queried forward, reversed, and identically repeated.</p>
+@@PROBES_TABLE@@
+<p><strong>History matters.</strong> In the controlled Prisoner’s Dilemma probes, both models cooperate following five mutual-cooperation rounds, defect following mutual defection, and defect in the final round even after nineteen cooperative rounds. In Stag Hunt, both choose Stag after sustained Stag/Stag play but Hare after sustained Hare/Hare play. These are responses to supplied histories, not evidence of training or parameter updates.</p>
+<p><strong>A small but consequential order effect.</strong> Luna’s empty-history Stag Hunt choice changes from Stag to Hare when the options are reversed. Jev chooses Hare in both orders. Jev’s public-goods response after mutual full contribution changes from 0 to 10 on an identical repeat. The small diagnostic does not establish order invariance or deterministic behavior for either service.</p>
+<details><summary>All controlled-history choices</summary>@@HISTORY_TABLE@@<p class="muted">Forward / reverse / repeat refer only to the supplied options list. Prompt text and history are unchanged. Public-goods choices are contributed tokens.</p></details>
+<h3>Self-play</h3><p>Two direct-choice matches per model per game provide a limited comparison with the head-to-head interaction. One Luna Stag Hunt self-play match coordinates on Stag for all twenty rounds; the other settles near the safe equilibrium after an initial mismatch. Jev’s two self-play Stag Hunt matches choose Hare throughout. Two matches are insufficient for estimating equilibrium-selection probabilities.</p>
+@@SELF_TABLE@@
+</section>
+
+<section id="methods"><h2>Experimental design and limits</h2>
+<ul><li><strong>84 matches, 1,680 rounds, 3,360 game decisions.</strong> Forty-eight primary head-to-head matches, twenty-four sampled-policy matches, and twelve self-play matches, plus 166 controlled diagnostic calls.</li>
+<li><strong>Same economic information.</strong> Both plugins receive identical instructions and the same role-adjusted state text. The model’s or opponent’s brand is never in the prompt. The existing lludens phase engine stages both moves before publishing either.</li>
+<li><strong>Independent calls with explicit memory.</strong> Neither API provides a conversational agent. The entire public action/payoff history is supplied each round. No private chain-of-thought, free-form negotiation, or cross-match memory is added.</li>
+<li><strong>Order control.</strong> Legal options are shuffled independently for each seat and round with a fixed seed. Paired seat swaps retain each seat’s schedule. The order of the payoff explanation itself is held fixed. This is not an exhaustive prompt-robustness study.</li>
+<li><strong>Full offline replay.</strong> Every stored prompt and option ordering is regenerated, and every action, sampled draw, and payoff is replayed from the exact recorded response. No live API calls are needed to recompute the results.</li>
+<li><strong>Exploratory scope.</strong> One payoff specification, one twenty-round horizon, one framing, no communication, and two decision models. A two-player public-goods game does not establish behavior in larger groups. Within-match payoff advantages are not a universal measure of model intelligence or social desirability.</li></ul>
+<details><summary>Integration and execution notes</summary><p>The local lludens checkout and all pre-existing edits were preserved. New work is on <code>experiment/decisions-jev-games-2026-10-06</code>. Both Simon Willison plugins are pinned to inspected Git commits in <code>requirements.txt</code>.</p><p>Initial setup exposed an expired local API-proxy certificate; it was renewed with the same key and identity without disabling TLS or changing host permissions. LLM 0.36’s lazy plugin registration required serialization before concurrent use. An overly strict probability-mass check interrupted eleven public-goods matches and one probe: Jev returns two-decimal probabilities whose sum can be 0.99 or 1.01. The adapter now accepts only deviations consistent with that rounding and normalizes relative mass for sampling. Raw responses remain unchanged.</p><p>Successful calls were checkpointed individually. Incomplete matches resumed from their exact earlier histories, including any already-selected but not-yet-published move. No API error became a default action. Twelve rejected validation responses were not retained by the initial strict adapter and required a new call; this small service-level replay limitation is recorded. All final planned matches and probes completed. Fifteen focused harness tests cover incentives, simultaneous information, role perspective, schema validation, sampling, and failure handling.</p></details>
+<h3>Latency and token use</h3>
+@@USAGE_TABLE@@
+<p>Estimated cost of retained game and diagnostic responses: <strong>$@@TOTAL_COST@@</strong>. Rates are $0.10 per million input tokens for Decisions and $0.042 for Jev; output tokens are free. This is not a billing reconciliation: the estimate excludes two initial successful smoke tests, twelve rejected-validation responses, and one rounding-inspection call. Latencies are end-to-end client measurements under concurrent load, including per-call connection setup—not isolated model-compute benchmarks.</p>
+</section>
+
+<section id="download"><h2>Reproduce and inspect</h2><p><a href="replication.zip">Download the replication bundle</a> · <a href="decisions_jev_games.ipynb">Executed analysis notebook</a> · <a href="summary.json">Summary JSON</a></p><p>The bundle contains the added lludens modules, runner, tests, pinned dependencies, frozen match/probe plans, exact synthetic request/response journals, checkpoints, and report sources. No credentials or unrelated prior experiments are included.</p>
+<pre>uv venv --python 3.12 .venv
+uv pip install --python .venv/bin/python \
+  -r experiments/decisions_jev_games_2026_10_06/requirements.txt
+.venv/bin/python experiments/decisions_jev_games_2026_10_06/analyze.py
+.venv/bin/python -m pytest tests/test_decision_games.py -q</pre>
+<p>Analysis is offline. Live runs use the same plugins and require their normal API connections; a full saved run is replayed rather than billed again. Use a new experiment directory and seeds for a genuinely new sample.</p>
+<p><a href="https://simonwillison.net/2026/Oct/6/llm-openai-decisions/">Plugin announcement</a> · <a href="https://github.com/simonw/llm-openai-decisions">Decisions plugin</a> · <a href="https://github.com/simonw/llm-typesafe">Jev plugin</a> · <a href="https://developers.openai.com/api/docs/guides/decisions">OpenAI Decisions documentation</a> · <a href="https://docs.typesafe.ai/models">Jev model and pricing</a> · <a href="https://github.com/apoorvalal/lludens">lludens</a></p></section>
+<p class="foot">Model responses were collected on 6 October 2026 Pacific time (7 October UTC). Report and artifacts are served through the private Tailscale report library. No public publication or GitHub push was performed.</p>
+</main>
+<script>
+const matches=@@REPLAY_DATA@@;
+const names={decisions:'GPT-6 Luna',jev:'Jev 1.13.0'};
+const el=id=>document.getElementById(id);
+const fmt=x=>Number(x).toFixed(2).replace(/\.00$/,'');
+function selectMatches(){
+ const panel=el('panel').value,game=el('game').value;
+ const list=matches.filter(m=>m.game===game&&(panel==='self'?m.kind==='self':m.kind==='h2h'&&m.policy===panel));
+ el('match').replaceChildren(...list.map(m=>{let o=document.createElement('option');o.value=m.id;o.textContent=panel==='self'?`${names[m.players[0]]} · seed ${m.pair}`:`Seed ${m.pair} · ${names[m.players[0]]} in seat 1`;return o}));
+ el('round').value=1; render();
+}
+function render(){
+ const m=matches.find(m=>m.id===el('match').value),t=Number(el('round').value),r=m.history[t-1];
+ el('roundLabel').textContent=`Round ${t} / ${m.rounds}`;
+ el('prev').disabled=t===1;el('next').disabled=t===m.rounds;
+ el('players').replaceChildren(...[1,2].map(p=>{
+  const id=String(p),model=m.players[p-1],box=document.createElement('div');box.className='player';box.dataset.provider=model;
+  const total=m.history.slice(0,t).reduce((s,h)=>s+h.payoffs[id],0);
+  const probs=r.probabilities[id];
+  box.innerHTML=`<div class="eyebrow">Player ${p} · ${names[model]}</div><div class="big">${r.actions[id]}</div><p>This round: <strong>${fmt(r.payoffs[id])}</strong> points<br>Cumulative: <strong>${fmt(total)}</strong> points</p><div class="muted">Pre-move distribution</div>`;
+  Object.entries(probs).sort((a,b)=>a[0].localeCompare(b[0],undefined,{numeric:true})).forEach(([k,v])=>{
+   const line=document.createElement('div');line.className='barrow';line.innerHTML=`<span>${k}</span><div class="track"><div class="bar" style="width:${100*v}%"></div></div><span>${(100*v).toFixed(0)}%</span>`;box.appendChild(line);
+  });return box;
+ }));
+ el('timeline').replaceChildren(...m.history.map(h=>{const b=document.createElement('button');b.textContent=h.round;b.title=`Round ${h.round}`;b.setAttribute('aria-label',`Go to round ${h.round}`);if(h.round===t)b.className='active';const c=m.game==='public_goods'?(Number(h.actions['1'])+Number(h.actions['2']))/20:((h.actions['1']===(m.game==='stag_hunt'?'Stag':'C'))+(h.actions['2']===(m.game==='stag_hunt'?'Stag':'C')))/2;b.style.background=`rgba(31,101,143,${.05+.45*c})`;b.onclick=()=>{el('round').value=h.round;render()};return b}));
+}
+el('game').onchange=selectMatches;el('panel').onchange=selectMatches;el('match').onchange=()=>{el('round').value=1;render()};el('round').oninput=render;el('prev').onclick=()=>{el('round').value=Number(el('round').value)-1;render()};el('next').onclick=()=>{el('round').value=Number(el('round').value)+1;render()};selectMatches();
+</script></body></html>

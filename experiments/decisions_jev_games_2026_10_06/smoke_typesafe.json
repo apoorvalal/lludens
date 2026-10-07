@@ -1,0 +1,31 @@
+{
+  "model_id": "typesafe/jev-latest",
+  "answer": {
+    "type": "choice",
+    "choice": "left",
+    "confidence": 1.0,
+    "probabilities": {
+      "right": 0.0,
+      "left": 1.0
+    }
+  },
+  "raw": {
+    "model": "jev-1.13.0",
+    "answers": {
+      "evaluation": {
+        "type": "choice",
+        "choice": "left",
+        "confidence": 1.0,
+        "probabilities": {
+          "right": 0.0,
+          "left": 1.0
+        }
+      }
+    },
+    "usage": {
+      "input_tokens": 336,
+      "output_tokens": 31
+    }
+  },
+  "seconds": 0.27166283316910267
+}
