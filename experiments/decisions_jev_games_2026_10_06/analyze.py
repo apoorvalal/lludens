@@ -18,9 +18,10 @@ import pandas as pd
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0,str(ROOT)); sys.path.insert(0,str(HERE))
-from run import Journal, jsonl
-from lludens.decision_agent import DecisionAgent, normalize_choice
-from lludens.decision_games import GAMES, RepeatedDecisionGame
+from lludens.sysone import DecisionJournal as Journal, read_jsonl as jsonl
+from lludens.sysone import DecisionAgent, normalize_choice
+from lludens.sysone import GAMES, RepeatedDecisionGame
+from opening_examples import opening_examples, examples_html
 
 TITLES = {"prisoners_dilemma":"Prisoner’s Dilemma", "stag_hunt":"Stag Hunt", "public_goods":"Public goods (2 players)"}
 NAMES = {"decisions":"GPT-6 Luna", "jev":"Jev 1.13.0"}
@@ -143,7 +144,7 @@ def table(headers,rows):
     return '<div class="scroll"><table><thead><tr>'+''.join('<th>'+html.escape(str(x))+'</th>' for x in headers)+'</tr></thead><tbody>'+''.join('<tr>'+''.join('<td>'+html.escape(str(x))+'</td>' for x in row)+'</tr>' for row in rows)+'</tbody></table></div>'
 
 
-def make_report(summary,probes,replay):
+def make_report(summary,probes,replay,examples):
     rows=[]; sample=[]
     for r in summary['h2h']:
         row=[TITLES[r['game']],r['matches'],f"{r['luna_points']:.3f}",f"{r['jev_points']:.3f}",
@@ -169,6 +170,8 @@ def make_report(summary,probes,replay):
     history_table=table(['Game','Fixed history','Luna: forward / reverse / repeat','Jev: forward / reverse / repeat'],case_rows)
     template=(HERE/'report_template.html').read_text()
     tokens={'MAIN_TABLE':main_table,'SAMPLE_TABLE':sample_table,'PROBES_TABLE':probes_table,'USAGE_TABLE':usage_table,
+            'OPENING_EXAMPLES':examples_html(examples),
+            'SHARED_INSTRUCTIONS':html.escape(examples[0]['llm_kwargs']['system']),
             'INTERVAL_TABLE':interval_table,'SELF_TABLE':self_table,'HISTORY_TABLE':history_table,
             'REPLAY_DATA':json.dumps(replay,separators=(',',':')).replace('</','<\\/'),
             'TOTAL_COST':f"{sum(x['estimated_usd'] for x in summary['usage'].values()):.3f}"}
@@ -182,7 +185,9 @@ def main():
     frame,match,replay,journal=audit_and_load()
     summary,probes=summarize(frame,match,journal)
     make_figures(frame,summary)
-    make_report(summary,probes,replay)
+    examples=opening_examples(journal)
+    (HERE/'report'/'opening_examples.json').write_text(json.dumps(examples,indent=2,ensure_ascii=False)+'\n')
+    make_report(summary,probes,replay,examples)
     frame.to_csv(HERE/'data'/'rounds.csv',index=False)
     match.to_csv(HERE/'data'/'matches.csv',index=False)
     print(json.dumps(summary,indent=2))

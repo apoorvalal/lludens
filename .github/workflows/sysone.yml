@@ -1,0 +1,31 @@
+name: System One offline checks
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Install pinned experiment environment
+        run: |
+          uv venv --python 3.12
+          uv pip install -r experiments/decisions_jev_games_2026_10_06/requirements.txt
+          uv pip install --no-deps .
+      - name: Unit and contract tests (no API keys)
+        run: .venv/bin/python -m pytest tests -q
+      - name: Replay all matches and rebuild report/notebook
+        run: .venv/bin/python experiments/decisions_jev_games_2026_10_06/build_report.py
+      - name: Check unchanged experimental results
+        run: git diff --exit-code -- experiments/decisions_jev_games_2026_10_06/data/audit.json experiments/decisions_jev_games_2026_10_06/data/summary.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sysone-report
+          path: experiments/decisions_jev_games_2026_10_06/report/

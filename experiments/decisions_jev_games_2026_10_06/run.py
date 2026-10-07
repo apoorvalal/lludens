@@ -8,19 +8,15 @@ from __future__ import annotations
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
-from hashlib import sha256
-import gzip
 import importlib.metadata
 import json
 from pathlib import Path
 import sys
-import threading
 import time
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from lludens.decision_agent import DecisionAgent, evaluate_choice
-from lludens.decision_games import GAMES, RepeatedDecisionGame
+from lludens.sysone import DecisionJournal as Journal, GAMES, run_match
 
 HERE = Path(__file__).resolve().parent
 
@@ -47,81 +43,6 @@ def make_plan():
             "payoffs": {k: {"rules": v.rules, "actions": v.actions} for k, v in GAMES.items()},
             "option_order": "Seeded shuffle separately for each player/round; seat swap keeps seat seeds",
             "disclosure": "No opponent identity, current action, or probability is sent to the other player"}
-
-
-def jsonl(path):
-    if not path.exists():
-        archived = path.with_suffix(path.suffix + ".gz")
-        if not archived.exists():
-            return []
-        with gzip.open(archived, "rt") as stream:
-            return [json.loads(s) for s in stream if s.strip()]
-    return [json.loads(s) for s in path.read_text().splitlines() if s.strip()]
-
-
-class Journal:
-    def __init__(self, path, offline=False):
-        self.path = path
-        self.offline = offline
-        archived = path.with_suffix(path.suffix + ".gz")
-        if not offline and not path.exists() and archived.exists():
-            # Restore the full append-only journal before a live resume.
-            path.write_bytes(gzip.decompress(archived.read_bytes()))
-        self.lock = threading.Lock()
-        records = jsonl(path)
-        self.saved = {x["key"]: x for x in records}
-        if len(self.saved) != len(records):
-            raise ValueError("Duplicate saved call IDs")
-
-    def caller(self, match_id, player):
-        def call(provider, prompt, options, instructions):
-            payload = {"provider": provider, "prompt": prompt, "options": options, "instructions": instructions}
-            digest = sha256(json.dumps(payload, separators=(",", ":")).encode()).hexdigest()
-            key = f"{match_id}/player{player}/{digest}"
-            with self.lock:
-                saved = self.saved.get(key)
-            if saved is not None:
-                return saved["result"]
-            if self.offline:
-                raise ValueError("Missing exact saved request; offline replay will not call the API")
-            result = evaluate_choice(provider, prompt, options, instructions)
-            record = {"key": key, "match_id": match_id, "player": player,
-                      "utc": datetime.now(timezone.utc).isoformat(), **payload, "result": result}
-            with self.lock:
-                with self.path.open("a") as stream:
-                    stream.write(json.dumps(record, separators=(",", ":"), allow_nan=False) + "\n")
-                self.saved[key] = record
-            return result
-        return call
-
-
-def run_match(spec, journal, rounds_path):
-    agents = {
-        player: DecisionAgent(spec["players"][player-1], dict(GAMES[spec["game"]].descriptions),
-                              seed=spec["seed"] + player, policy=spec["policy"],
-                              call=journal.caller(spec["id"], player)) for player in (1, 2)
-    }
-    game = RepeatedDecisionGame(spec["game"], agents, spec["rounds"])
-    existing = jsonl(rounds_path)
-    if [r["round"] for r in existing] != list(range(1, len(existing)+1)):
-        raise ValueError("Noncontiguous round checkpoint")
-    for row in existing:
-        a, b = row["actions"]["1"], row["actions"]["2"]
-        if list(GAMES[spec["game"]].payoff(a,b)) != [row["payoffs"]["1"], row["payoffs"]["2"]]:
-            raise ValueError("Payoff mismatch in checkpoint")
-    game.history = existing
-    for r in range(len(existing)+1, spec["rounds"]+1):
-        record = game.play_round(r)
-        # The engine publishes history only after both actions were selected.
-        record["decisions"] = {
-            str(p): {k: v for k, v in agents[p].last_decision.items()
-                     if k not in {"prompt", "instructions", "options", "answer"}}
-            for p in (1, 2)
-        }
-        with rounds_path.open("a") as stream:
-            stream.write(json.dumps(record, separators=(",", ":"), allow_nan=False) + "\n")
-    return {"id": spec["id"], "rounds": len(game.history),
-            "scores": {str(p): sum(r["payoffs"][str(p)] for r in game.history) for p in (1, 2)}}
 
 
 def main():

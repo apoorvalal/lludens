@@ -1,13 +1,14 @@
 # Decisions API and Jev in repeated economic games
 
-Date: 6 October 2026 (Pacific). Repository branch:
-`experiment/decisions-jev-games-2026-10-06`.
+Date: 6 October 2026 (Pacific). Original experiment branch: `experiment/decisions-jev-games-2026-10-06`.
+Reusable-module refactor: `feature/sysone-constrained-games`.
 
 ## Scope and findings
 
 The existing local `lludens` checkout is the canonical repository. This experiment
-adds `lludens/decision_agent.py` and `lludens/decision_games.py` without changing
-existing agents or game environments. Pre-existing README, notebook, data, paper,
+uses the reusable `lludens.sysone` package without changing existing agents or
+game environments. The earlier `decision_agent` and `decision_games` modules
+remain compatibility shims. See [the module guide](../../docs/sysone.md). Pre-existing README, notebook, data, paper,
 and planning edits are not part of this experiment.
 
 The models are **OpenAI Decisions / GPT-6 Luna** and **TypeSafe Jev 1.13.0**.
@@ -62,14 +63,24 @@ From the repository (or replication bundle) root:
 uv venv --python 3.12 .venv
 uv pip install --python .venv/bin/python \
   -r experiments/decisions_jev_games_2026_10_06/requirements.txt
-.venv/bin/python -m pytest tests/test_decision_games.py -q
+.venv/bin/python -m pytest tests -q
 .venv/bin/python experiments/decisions_jev_games_2026_10_06/analyze.py
 ```
 
-Analysis is offline. `analyze.py` regenerates all 3,360 request payloads and
+Analysis is offline. `analyze.py` regenerates all 3,360 exact LLM requests and
 replays all 1,680 rounds against the exact recorded responses, including sampling
 seeds, then regenerates tables, figures, and the interactive report. A missing
 request fails rather than making an API call.
+
+To also execute the notebook and refresh the complete replication download:
+
+```bash
+.venv/bin/python experiments/decisions_jev_games_2026_10_06/build_report.py
+```
+
+The report begins with both models' actual opening prompts, LLM keyword arguments,
+and recorded typed answers. HTTP request bodies are reconstructed by the pinned
+plugins, not presented as captured traffic. All report building is offline.
 
 The executed notebook is `notebooks/decisions_jev_games.ipynb`. It uses the same
 offline audit and saved data. Use the full replication bundle to execute a
@@ -93,14 +104,16 @@ sample; do not overwrite this run's frozen plans.
 
 - `data/plan.json`: immutable match design, economic rules, and seeds.
 - `data/matches/*.jsonl`: append-only round results.
-- `data/calls.jsonl`: exact requests, raw typed answers, normalized distributions,
+- `data/calls.jsonl.gz`: exact requests, raw typed answers, normalized distributions,
   usage, resolved model IDs, timestamps, and client latency; no credentials.
-- `data/probes_plan.json`, `probes.json`, `probe_calls.jsonl`: controlled inputs/results.
+- `data/probes_plan.json`, `probes.json`, `probe_calls.jsonl.gz`: controlled inputs/results.
 - `data/summary.json`: aggregate outcomes, diagnostics, and usage.
 - `data/audit.json`: offline full replay result.
 - `data/run.json`: final successful resume metadata.
 - `data/initial_registration_failures.json`, `quantization_failures.json`: earlier
   interrupted passes, retained for provenance rather than silently discarded.
+- `report/opening_examples.json`: actual first-round LLM arguments and typed
+  answers, plus request bodies reconstructed offline by the pinned plugins.
 - `report/index.html`: standalone report with interactive replay of all matches.
 - `report/*.png`: standard Matplotlib figures, suitable for export.
 

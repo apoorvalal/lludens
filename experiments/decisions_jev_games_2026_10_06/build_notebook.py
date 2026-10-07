@@ -30,13 +30,26 @@ nbf.v4.new_code_cell('''from pathlib import Path
 import json, sys
 import pandas as pd
 from IPython.display import display, Image
-root = next(p for p in (Path.cwd(), *Path.cwd().parents) if (p/'lludens/decision_games.py').exists())
+root = next(p for p in (Path.cwd(), *Path.cwd().parents) if (p/'lludens/sysone').exists())
 experiment = root/'experiments/decisions_jev_games_2026_10_06'
 sys.path.insert(0, str(root)); sys.path.insert(0, str(experiment))
 from analyze import audit_and_load, summarize, TITLES
 rounds, matches, replay, journal = audit_and_load()
 summary, probes = summarize(rounds, matches, journal)
 json.loads((experiment/'data/audit.json').read_text())'''),
+nbf.v4.new_markdown_cell('''## Opening prompts and payloads
+
+The following are the actual first-round decisions in the first unswapped
+Prisoner's Dilemma match. `llm_kwargs` holds the exact arguments supplied to LLM,
+including the role-adjusted state prompt, question instructions and option order.
+`api_payload` is reconstructed offline by the pinned plugin; it is not a captured
+HTTP transaction. `answer` is the unchanged typed payload retained from
+`response.text()`. Neither model receives the other's current move.'''),
+nbf.v4.new_code_cell('''from opening_examples import opening_examples
+examples = opening_examples(journal)
+for example in examples:
+    print(example['model_id'], '->', example['returned_model'])
+    print(json.dumps({k: example[k] for k in ('llm_kwargs', 'api_payload', 'answer')}, indent=2))'''),
 nbf.v4.new_markdown_cell('''## Economic primitives
 
 - Prisoner's Dilemma: CC=(3,3), CD=(0,5), DC=(5,0), DD=(1,1).

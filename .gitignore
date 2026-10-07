@@ -4,6 +4,12 @@
 *.ipynb_checkpoints
 .vscode/*
 .venv/
+.venv-*/
+.pytest_cache/
+__pycache__/
+*.py[cod]
+build/
+dist/
 data/repeated_pd_variations*.json
 data/repeated_pd_variations*.jsonl
 **/*_cache/*

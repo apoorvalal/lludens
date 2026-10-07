@@ -7,8 +7,8 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from lludens.agent import AgentRequest
-from lludens.decision_agent import DecisionAgent, normalize_choice
-from lludens.decision_games import GAMES, RepeatedDecisionGame
+from lludens.sysone import DecisionAgent, normalize_choice
+from lludens.sysone import GAMES, RepeatedDecisionGame
 
 
 @pytest.mark.parametrize("game", list(GAMES))

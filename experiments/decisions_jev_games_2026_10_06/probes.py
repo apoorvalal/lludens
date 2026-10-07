@@ -7,8 +7,9 @@ import sys
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from run import HERE, Journal
-from lludens.decision_games import GAMES, RepeatedDecisionGame, INSTRUCTIONS
+from run import HERE
+from lludens.sysone import DecisionJournal as Journal
+from lludens.sysone import GAMES, RepeatedDecisionGame, INSTRUCTIONS
 from lludens.environments import RoundState
 
 
