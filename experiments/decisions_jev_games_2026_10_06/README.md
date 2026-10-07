@@ -117,6 +117,12 @@ The executed notebook is `notebooks/decisions_jev_games.ipynb`. It uses the same
 offline audit and saved data. Use the full replication bundle to execute a
 downloaded notebook; the single notebook file does not contain raw journals.
 
+[Annotation copy on Quomodoc](https://lalten.org/quomodoc/docs/lludens-repeated-games).
+Generate its self-contained HTML with `python export_quomodoc.py` from this
+experiment directory. The figure is embedded; script-driven replay controls are
+replaced with a link to the private interactive report. No Quomodoc scripts or
+security settings are changed. Publishing the exported HTML is a separate step.
+
 For live runs, use the plugins' existing API connections in the host execution
 environment. Here those are supplied by the OpenClaw Gateway's protected route;
 no credentials belong in experiment files or command arguments.
