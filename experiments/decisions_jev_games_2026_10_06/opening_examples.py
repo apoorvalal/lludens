@@ -54,7 +54,7 @@ def examples_html(examples):
         invocation += "\n)\nanswer = response.text()  # Evaluating this would make a live API call."
         chunks.append(
             f'<article class="opening-example" data-provider="{e["provider"]}">'
-            f'<h3>{name} — player {e["player"]}</h3>'
+            f'<details><summary>{name} — opening prompt, LLM invocation and response</summary>'
             '<p><strong>Initial state prompt</strong> (the exact text passed to LLM).</p>'
             + code(kwargs["prompt"])
             + '<details><summary>Exact llm Python invocation</summary>' + code(invocation) + '</details>'
@@ -66,6 +66,6 @@ def examples_html(examples):
             + code(json.dumps(e["answer"], indent=2, ensure_ascii=False))
             + f'<p class="muted">Returned model: <code>{html.escape(e["returned_model"])}</code>. '
             + f'Input tokens: {e["usage"]["input_tokens"]}; client time: {1000 * e["latency_seconds"]:.0f} ms. '
-            + f'Journal key: <code>{html.escape(e["journal_key"])}</code>.</p></article>'
+            + f'Journal key: <code>{html.escape(e["journal_key"])}</code>.</p></details></article>'
         )
     return ''.join(chunks)

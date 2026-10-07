@@ -27,7 +27,7 @@ def main():
     nbformat.write(notebook, notebook_path)
     report = HERE / "report"
     shutil.copy2(notebook_path, report / notebook_path.name)
-    shutil.copy2(HERE / "data/summary.json", report / "summary.json")
+    shutil.copy2(HERE / "data/direct_summary.json", report / "summary.json")
     shutil.copy2(ROOT / "docs/sysone.md", report / "sysone.md")
 
     # Explicit inclusion: exclude unrelated working-tree edits, data, credentials,
@@ -35,12 +35,13 @@ def main():
     files = [ROOT / "pyproject.toml", ROOT / "uv.lock", ROOT / "docs/sysone.md", notebook_path]
     files += sorted((ROOT / "lludens").glob("*.py"))
     files += sorted((ROOT / "lludens/sysone").glob("*.py"))
-    files += [ROOT / "tests/test_decision_games.py", ROOT / "tests/test_sysone.py"]
+    files += [ROOT / "tests/test_decision_games.py", ROOT / "tests/test_sysone.py",
+              ROOT / "tests/test_direct_results.py"]
     files += sorted(HERE.glob("*.py"))
     files += [HERE / "README.md", HERE / "requirements.txt", HERE / "report_template.html"]
     for pattern in ("*.json", "*.jsonl.gz", "matches/*.jsonl"):
         files += sorted((HERE / "data").glob(pattern))
-    for pattern in ("*.html", "*.png", "*.json"):
+    for pattern in ("*.html", "*.png", "*.json", "*.csv"):
         files += sorted(report.glob(pattern))
     with ZipFile(report / "replication.zip", "w", compression=ZIP_DEFLATED, compresslevel=9) as archive:
         for path in files:

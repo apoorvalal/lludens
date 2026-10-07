@@ -24,7 +24,7 @@ jobs:
       - name: Replay all matches and rebuild report/notebook
         run: .venv/bin/python experiments/decisions_jev_games_2026_10_06/build_report.py
       - name: Check unchanged experimental results
-        run: git diff --exit-code -- experiments/decisions_jev_games_2026_10_06/data/audit.json experiments/decisions_jev_games_2026_10_06/data/summary.json
+        run: git diff --exit-code -- experiments/decisions_jev_games_2026_10_06/data/audit.json experiments/decisions_jev_games_2026_10_06/data/summary.json experiments/decisions_jev_games_2026_10_06/data/direct_summary.json
       - uses: actions/upload-artifact@v4
         with:
           name: sysone-report

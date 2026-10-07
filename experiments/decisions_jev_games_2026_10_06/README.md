@@ -5,55 +5,85 @@ Reusable-module refactor: `feature/sysone-constrained-games`.
 
 ## Scope and findings
 
-The existing local `lludens` checkout is the canonical repository. This experiment
-uses the reusable `lludens.sysone` package without changing existing agents or
-game environments. The earlier `decision_agent` and `decision_games` modules
-remain compatibility shims. See [the module guide](../../docs/sysone.md). Pre-existing README, notebook, data, paper,
-and planning edits are not part of this experiment.
+The revised memo compares **direct API-selected actions only**. Each player is
+queried afresh in every round with the complete realized action/payoff history.
+No returned probability vector is used to randomize these actions. The models
+are **GPT-6 Luna / OpenAI Decisions** and **TypeSafe Jev 1.13.0**, called through
+Simon Willison's pinned `llm` plugins with identical instructions and role-adjusted
+state text. The existing `lludens.sysone` module and compatibility imports are
+unchanged; see [the module guide](../../docs/sysone.md).
 
-The models are **OpenAI Decisions / GPT-6 Luna** and **TypeSafe Jev 1.13.0**.
-Both are called through Simon Willison's `llm` plugins, with identical instructions
-and role-adjusted state text. The inspected plugin commits are pinned in
-`requirements.txt`. OpenAI's plugin was installed from its repository at version
-0.1; the announcement's 0.1a0 package was not available from the package index.
+Mean **cumulative points per twenty-round head-to-head match**, with 16 matches
+(eight seat-swapped pairs) per game:
 
-The main comparison uses each API's selected action (argmax). Mean points/round:
+| Game | Luna | Jev | Joint | Joint maximum | Mean share | Matches attaining maximum |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Prisoner's Dilemma | 19.2500 | 23.9375 | 43.1875 | 120 | 35.99% | 0/16 |
+| Stag Hunt | 57.5625 | 60.0000 | 117.5625 | 160 | 73.48% | 0/16 |
+| Two-player public goods | 199.5750 | 201.7000 | 401.2750 | 640 | 62.70% | 0/16 |
 
-| Game | GPT-6 Luna | Jev |
-| --- | ---: | ---: |
-| Prisoner's Dilemma | 0.9625 | 1.1969 |
-| Stag Hunt | 2.8781 | 3.0000 |
-| Two-player public goods | 9.9788 | 10.0850 |
+Jev earns more on average in each game. This individual advantage is separate
+from collective payoff attainment. Every head-to-head cumulative vector is
+strictly Pareto-dominated by the corresponding symmetric cooperative benchmark:
+(60,60), (80,80), or (320,320). No head-to-head round attains its joint maximum.
+There is no claim of a general ranking of the two models.
 
-Each row summarizes 16 twenty-round matches (eight seat-swapped pairs). Jev's
-small advantage does **not** imply a universal ranking: the separate sampled
-policies reverse the payoff ordering in Prisoner's Dilemma and public goods.
-Classification probabilities are not automatically strategic mixed strategies.
-Both models score 20/20 on one-shot, known-opponent best-response checks.
+The memo also reports 12 self-play matches separately (two per model per game).
+One Luna Stag Hunt match reaches (80,80), the only efficient cumulative outcome
+among all 60 direct-action matches. Two runs per setting cannot establish an
+equilibrium-selection rate.
 
-## Protocol
+**Efficiency accounting.** Individual cumulative payoffs are sums of the 20
+round payoffs; joint payoff is their sum. The share of the joint maximum is not
+an attainment frequency. `direct_results.py` computes the full cumulative Pareto
+frontier using exact rational arithmetic and distinguishes efficient asymmetric
+vectors from the symmetric joint maximum. For example, perpetual (D,C) in PD
+yields the efficient vector (100,0), but not the maximum joint payoff 120.
 
-- 48 primary head-to-head matches: 3 games × 8 seeds × 2 seats.
-- 24 sampled-policy matches: 3 games × 4 seeds × 2 seats.
-- 12 self-play matches: 3 games × 2 models × 2 seeds.
-- All matches: 20 simultaneous rounds, fixed known horizon, complete public
-  action/payoff history, same opponent throughout, maximize own total points.
-- No communication, opponent model identity, cross-match memory, payoff noise,
-  private types, or hidden chain-of-thought. Only the application retains history.
-- Public goods has **two players**, fresh endowment 10, multiplier 1.6, equal
-  sharing, contributions {0,2,4,6,8,10}; it is not a four-player treatment.
-- Action descriptions are permuted independently by seat and round. Seat swaps
-  preserve each seat's schedule; the payoff explanation's order is fixed.
-- 166 probes: 40 known-opponent one-shot choices (both option orders), and 126
-  fixed-history choices (21 states × 2 models × forward/reverse/repeat).
-- Errors and refusals never become fallback actions. API distributions are
-  validated. Jev's two-decimal probabilities can sum to 0.99/1.01; the adapter
-  preserves raw values and normalizes only errors consistent with rounding.
+## Games and information
 
-The plans were frozen before the corresponding calls. The probes' histories were
-specified before inspecting their results. API output drives the play; no moves
-or probabilities were hand-written. The pilot is conditional on one framing,
-one payoff specification per game, and one finite horizon.
+- PD: CC=(3,3), CD=(0,5), DC=(5,0), DD=(1,1).
+- Stag Hunt: SS=(4,4), SH=(0,3), HS=(3,0), HH=(3,3).
+- Public goods: **two players**, fresh endowment 10, contributions {0,2,4,6,8,10},
+  multiplier 1.6 and equal sharing. Own payoff is `10-c_i+0.8*(c_i+c_j)`;
+  joint payoff is `20+0.6*(c_i+c_j)`. Unspent tokens do not carry forward.
+- All matches have 20 simultaneous rounds, a fixed known horizon and the same
+  opponent throughout. The objective is own expected total points, including
+  future rounds—not the lead over the opponent or the joint score.
+- Before round t: rules, legal actions, own player number, current round/horizon,
+  **every earlier action pair and both payoffs**, and own cumulative points.
+  Other cumulative points are inferable from the history. No current-round move
+  is revealed until both actions have been selected.
+- Explicit per-request history, no persistent conversation, cross-match memory,
+  communication, opponent brand/strategy, side payments or private reasoning trace.
+- **40 fresh decisions per match**: 20 per player. The direct panel contains
+  60 matches, 1,200 rounds and 2,400 retained decisions. Primary head-to-head
+  accounts for 48 matches, 960 rounds and 1,920 decisions.
+- Options are shuffled by seat and round; swaps preserve each seat's schedule.
+  The payoff explanation is fixed. Seeds do not ensure service determinism.
+- No API error is converted to a fallback action.
+
+The joint benchmark is not necessarily an equilibrium. Under standard common
+knowledge of rationality, finite-horizon backward induction selects defection
+in PD and zero contribution in public goods. Low cooperation is not by itself
+evidence of misunderstanding. Hare/Hare is an equilibrium in Stag Hunt, although
+Stag/Stag Pareto-dominates it. These results describe one framing, payoff
+specification and known horizon; they do not identify the models' strategies.
+
+## Preserved archive and exclusions
+
+The original archive is unchanged: 84 matches, 1,680 rounds, 3,360 game decisions,
+plus 166 diagnostics. In addition to the 60 direct-action matches, it contains
+24 matches with experimenter-imposed action randomization. Those runs change
+the agent's policy; they are **not** a second estimate of the direct-action
+model comparison and do not enter the revised memo, notebook tables or replay.
+Diagnostics also remain in the archive rather than the memo's results.
+
+The plans were frozen before their corresponding calls. The revision does not
+remove observed poor outcomes or rerun models. `data/summary.json` preserves the
+original all-panel accounting; `data/direct_summary.json` supplies the revised
+memo and is copied to `report/summary.json` for download. Every original match
+continues to be checked by the offline audit.
 
 ## Reproduction
 
@@ -68,8 +98,9 @@ uv pip install --python .venv/bin/python \
 ```
 
 Analysis is offline. `analyze.py` regenerates all 3,360 exact LLM requests and
-replays all 1,680 rounds against the exact recorded responses, including sampling
-seeds, then regenerates tables, figures, and the interactive report. A missing
+replays all 1,680 archived rounds against the exact recorded responses, including
+sampling seeds. It then selects the 60 direct-action matches for the memo tables,
+figure and interactive replay. A missing
 request fails rather than making an API call.
 
 To also execute the notebook and refresh the complete replication download:
@@ -107,14 +138,16 @@ sample; do not overwrite this run's frozen plans.
 - `data/calls.jsonl.gz`: exact requests, raw typed answers, normalized distributions,
   usage, resolved model IDs, timestamps, and client latency; no credentials.
 - `data/probes_plan.json`, `probes.json`, `probe_calls.jsonl.gz`: controlled inputs/results.
-- `data/summary.json`: aggregate outcomes, diagnostics, and usage.
+- `data/summary.json`: original all-panel outcomes, diagnostics, and usage (archive).
+- `data/direct_summary.json`: revised direct-only cumulative payoffs and efficiency.
+- `report/direct_matches.csv`: individual/joint scores and attainment for all 60 direct matches.
 - `data/audit.json`: offline full replay result.
 - `data/run.json`: final successful resume metadata.
 - `data/initial_registration_failures.json`, `quantization_failures.json`: earlier
   interrupted passes, retained for provenance rather than silently discarded.
 - `report/opening_examples.json`: actual first-round LLM arguments and typed
   answers, plus request bodies reconstructed offline by the pinned plugins.
-- `report/index.html`: standalone report with interactive replay of all matches.
+- `report/index.html`: standalone memo with interactive replay of the 60 direct-action matches.
 - `report/*.png`: standard Matplotlib figures, suitable for export.
 
 ## Execution limitations
