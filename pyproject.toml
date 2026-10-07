@@ -32,8 +32,16 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/apoorvalal/lludens"
 
+[project.optional-dependencies]
+sysone = [
+    "llm>=0.36",
+    "llm-openai-decisions @ git+https://github.com/simonw/llm-openai-decisions.git@4827324f5b55a5a4e8626b81518d48706d790a08",
+    "llm-typesafe @ git+https://github.com/simonw/llm-typesafe.git@225932cfde461ee6e38ae2b612040c50c086db8c",
+]
+test = ["pytest>=8"]
+
 [tool.setuptools.packages]
-find = {exclude = ["notebooks"]}
+find = {include = ["lludens*", "repeated_pd_variations*"]}
 
 [tool.setuptools.package-data]
 repeated_pd_variations = ["README.md", "models.json"]

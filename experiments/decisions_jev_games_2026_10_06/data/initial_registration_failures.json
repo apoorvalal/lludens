@@ -1,0 +1,426 @@
+{
+  "started_utc": "2026-10-07T05:47:30.723355+00:00",
+  "workers": 8,
+  "python": "3.12.9 (main, Mar 17 2025, 21:36:21) [Clang 20.1.0 ]",
+  "packages": {
+    "llm": "0.36",
+    "llm-openai-decisions": "0.1",
+    "llm-typesafe": "0.1a0",
+    "httpx2": "2.13.1"
+  },
+  "elapsed_seconds": 9.762341083027422,
+  "failed_matches": [
+    {
+      "match": "prisoners_dilemma-argmax-00-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "public_goods-argmax-00-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "prisoners_dilemma-argmax-01-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "prisoners_dilemma-argmax-01-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "public_goods-argmax-00-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "stag_hunt-argmax-00-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "stag_hunt-argmax-00-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "stag_hunt-argmax-01-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "stag_hunt-argmax-01-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "public_goods-argmax-01-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "prisoners_dilemma-argmax-02-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "public_goods-argmax-01-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "prisoners_dilemma-argmax-03-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "public_goods-argmax-02-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "prisoners_dilemma-argmax-03-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "stag_hunt-argmax-02-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "stag_hunt-argmax-03-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "prisoners_dilemma-argmax-02-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "stag_hunt-argmax-03-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "public_goods-argmax-02-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "public_goods-argmax-03-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "stag_hunt-argmax-02-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "public_goods-argmax-03-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "public_goods-argmax-04-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "prisoners_dilemma-argmax-04-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "stag_hunt-argmax-05-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "prisoners_dilemma-argmax-04-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "stag_hunt-argmax-05-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "stag_hunt-argmax-04-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "public_goods-argmax-04-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "public_goods-argmax-05-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "stag_hunt-argmax-06-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "prisoners_dilemma-argmax-06-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "prisoners_dilemma-argmax-05-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "stag_hunt-argmax-06-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "prisoners_dilemma-argmax-07-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "public_goods-argmax-05-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "stag_hunt-argmax-07-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "stag_hunt-argmax-07-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "public_goods-argmax-06-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "public_goods-argmax-07-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "prisoners_dilemma-sample-00-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "prisoners_dilemma-argmax-05-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "stag_hunt-sample-00-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "prisoners_dilemma-sample-00-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "public_goods-argmax-07-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "public_goods-sample-00-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "public_goods-argmax-06-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "stag_hunt-sample-00-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "stag_hunt-sample-01-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "stag_hunt-sample-01-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "stag_hunt-argmax-04-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "public_goods-sample-01-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "prisoners_dilemma-sample-01-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "prisoners_dilemma-sample-02-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "prisoners_dilemma-argmax-06-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "stag_hunt-sample-02-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "public_goods-sample-02-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "prisoners_dilemma-argmax-07-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "prisoners_dilemma-sample-03-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "prisoners_dilemma-sample-01-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "public_goods-sample-00-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "stag_hunt-sample-03-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "prisoners_dilemma-sample-03-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "public_goods-sample-03-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "prisoners_dilemma-self-decisions-00",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "public_goods-sample-01-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "stag_hunt-sample-02-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "stag_hunt-self-decisions-00",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "prisoners_dilemma-sample-02-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "public_goods-self-jev-00",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "stag_hunt-self-jev-00",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "prisoners_dilemma-self-jev-01",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "stag_hunt-self-decisions-01",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "prisoners_dilemma-self-jev-00",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "prisoners_dilemma-self-decisions-01",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "public_goods-sample-02-swap1",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    },
+    {
+      "match": "public_goods-self-decisions-01",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "public_goods-self-decisions-00",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "stag_hunt-sample-03-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "public_goods-sample-03-swap0",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: openai-decisions/gpt-6-luna'"
+    },
+    {
+      "match": "public_goods-self-jev-01",
+      "type": "UnknownModelError",
+      "message": "'Unknown model: typesafe/jev-latest'"
+    }
+  ],
+  "saved_successful_calls": 80,
+  "matches_requested": 84
+}

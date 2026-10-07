@@ -1,0 +1,1822 @@
+{
+  "action_rule": "Use each fresh API response's selected action; no added randomization.",
+  "horizon": 20,
+  "matches": 60,
+  "rounds": 1200,
+  "decisions": 2400,
+  "benchmarks": {
+    "prisoners_dilemma": {
+      "rounds": 20,
+      "actions": [
+        "C",
+        "C"
+      ],
+      "individual": [
+        60.0,
+        60.0
+      ],
+      "joint": 120.0,
+      "stage_joint": 6.0
+    },
+    "stag_hunt": {
+      "rounds": 20,
+      "actions": [
+        "Stag",
+        "Stag"
+      ],
+      "individual": [
+        80.0,
+        80.0
+      ],
+      "joint": 160.0,
+      "stage_joint": 8.0
+    },
+    "public_goods": {
+      "rounds": 20,
+      "actions": [
+        "10",
+        "10"
+      ],
+      "individual": [
+        320.0,
+        320.0
+      ],
+      "joint": 640.0,
+      "stage_joint": 32.0
+    }
+  },
+  "h2h": [
+    {
+      "game": "prisoners_dilemma",
+      "matches": 16,
+      "rounds_observed": 320,
+      "mean_seat1_payoff": 20.8125,
+      "mean_seat2_payoff": 22.375,
+      "mean_joint_payoff": 43.1875,
+      "joint_maximum": 120.0,
+      "mean_joint_shortfall": 76.8125,
+      "joint_maximum_matches": 0,
+      "pareto_efficient_matches": 0,
+      "joint_optimal_rounds": 0,
+      "mean_joint_share": 0.35989583333333336,
+      "action_profiles": {
+        "C / D": 16,
+        "D / C": 1,
+        "D / D": 303
+      },
+      "seat_pairs": 8,
+      "mean_luna_payoff": 19.25,
+      "mean_jev_payoff": 23.9375,
+      "luna_wins": 1,
+      "jev_wins": 13,
+      "ties": 2
+    },
+    {
+      "game": "stag_hunt",
+      "matches": 16,
+      "rounds_observed": 320,
+      "mean_seat1_payoff": 58.6875,
+      "mean_seat2_payoff": 58.875,
+      "mean_joint_payoff": 117.5625,
+      "joint_maximum": 160.0,
+      "mean_joint_shortfall": 42.4375,
+      "joint_maximum_matches": 0,
+      "pareto_efficient_matches": 0,
+      "joint_optimal_rounds": 0,
+      "mean_joint_share": 0.734765625,
+      "action_profiles": {
+        "Hare / Hare": 307,
+        "Stag / Hare": 13
+      },
+      "seat_pairs": 8,
+      "mean_luna_payoff": 57.5625,
+      "mean_jev_payoff": 60.0,
+      "luna_wins": 0,
+      "jev_wins": 13,
+      "ties": 3
+    },
+    {
+      "game": "public_goods",
+      "matches": 16,
+      "rounds_observed": 320,
+      "mean_seat1_payoff": 200.45,
+      "mean_seat2_payoff": 200.825,
+      "mean_joint_payoff": 401.275,
+      "joint_maximum": 640.0,
+      "mean_joint_shortfall": 238.725,
+      "joint_maximum_matches": 0,
+      "pareto_efficient_matches": 0,
+      "joint_optimal_rounds": 0,
+      "mean_joint_share": 0.6269921875,
+      "action_profiles": {
+        "0 / 0": 303,
+        "2 / 0": 17
+      },
+      "seat_pairs": 8,
+      "mean_luna_payoff": 199.575,
+      "mean_jev_payoff": 201.7,
+      "luna_wins": 0,
+      "jev_wins": 11,
+      "ties": 5
+    }
+  ],
+  "self_play": [
+    {
+      "game": "prisoners_dilemma",
+      "provider": "decisions",
+      "matches": 2,
+      "rounds_observed": 40,
+      "mean_seat1_payoff": 21.5,
+      "mean_seat2_payoff": 21.5,
+      "mean_joint_payoff": 43.0,
+      "joint_maximum": 120.0,
+      "mean_joint_shortfall": 77.0,
+      "joint_maximum_matches": 0,
+      "pareto_efficient_matches": 0,
+      "joint_optimal_rounds": 0,
+      "mean_joint_share": 0.35833333333333334,
+      "action_profiles": {
+        "C / D": 1,
+        "D / C": 1,
+        "D / D": 38
+      }
+    },
+    {
+      "game": "prisoners_dilemma",
+      "provider": "jev",
+      "matches": 2,
+      "rounds_observed": 40,
+      "mean_seat1_payoff": 20.0,
+      "mean_seat2_payoff": 20.0,
+      "mean_joint_payoff": 40.0,
+      "joint_maximum": 120.0,
+      "mean_joint_shortfall": 80.0,
+      "joint_maximum_matches": 0,
+      "pareto_efficient_matches": 0,
+      "joint_optimal_rounds": 0,
+      "mean_joint_share": 0.3333333333333333,
+      "action_profiles": {
+        "D / D": 40
+      }
+    },
+    {
+      "game": "stag_hunt",
+      "provider": "decisions",
+      "matches": 2,
+      "rounds_observed": 40,
+      "mean_seat1_payoff": 68.5,
+      "mean_seat2_payoff": 68.5,
+      "mean_joint_payoff": 137.0,
+      "joint_maximum": 160.0,
+      "mean_joint_shortfall": 23.0,
+      "joint_maximum_matches": 1,
+      "pareto_efficient_matches": 1,
+      "joint_optimal_rounds": 20,
+      "mean_joint_share": 0.85625,
+      "action_profiles": {
+        "Hare / Hare": 18,
+        "Hare / Stag": 1,
+        "Stag / Hare": 1,
+        "Stag / Stag": 20
+      }
+    },
+    {
+      "game": "stag_hunt",
+      "provider": "jev",
+      "matches": 2,
+      "rounds_observed": 40,
+      "mean_seat1_payoff": 60.0,
+      "mean_seat2_payoff": 60.0,
+      "mean_joint_payoff": 120.0,
+      "joint_maximum": 160.0,
+      "mean_joint_shortfall": 40.0,
+      "joint_maximum_matches": 0,
+      "pareto_efficient_matches": 0,
+      "joint_optimal_rounds": 0,
+      "mean_joint_share": 0.75,
+      "action_profiles": {
+        "Hare / Hare": 40
+      }
+    },
+    {
+      "game": "public_goods",
+      "provider": "decisions",
+      "matches": 2,
+      "rounds_observed": 40,
+      "mean_seat1_payoff": 201.2,
+      "mean_seat2_payoff": 204.2,
+      "mean_joint_payoff": 405.4,
+      "joint_maximum": 640.0,
+      "mean_joint_shortfall": 234.6,
+      "joint_maximum_matches": 0,
+      "pareto_efficient_matches": 0,
+      "joint_optimal_rounds": 0,
+      "mean_joint_share": 0.6334375,
+      "action_profiles": {
+        "0 / 0": 34,
+        "2 / 0": 3,
+        "2 / 2": 3
+      }
+    },
+    {
+      "game": "public_goods",
+      "provider": "jev",
+      "matches": 2,
+      "rounds_observed": 40,
+      "mean_seat1_payoff": 200.0,
+      "mean_seat2_payoff": 200.0,
+      "mean_joint_payoff": 400.0,
+      "joint_maximum": 640.0,
+      "mean_joint_shortfall": 240.0,
+      "joint_maximum_matches": 0,
+      "pareto_efficient_matches": 0,
+      "joint_optimal_rounds": 0,
+      "mean_joint_share": 0.625,
+      "action_profiles": {
+        "0 / 0": 40
+      }
+    }
+  ],
+  "match_results": [
+    {
+      "id": "prisoners_dilemma-argmax-00-swap0",
+      "game": "prisoners_dilemma",
+      "kind": "h2h",
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 19.0,
+      "seat2_payoff": 24.0,
+      "joint_payoff": 43.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.35833333333333334,
+      "joint_shortfall": 77.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "C / D": 1,
+        "D / D": 19
+      },
+      "luna_payoff": 19.0,
+      "jev_payoff": 24.0
+    },
+    {
+      "id": "prisoners_dilemma-argmax-00-swap1",
+      "game": "prisoners_dilemma",
+      "kind": "h2h",
+      "pair": 0,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 20.0,
+      "seat2_payoff": 20.0,
+      "joint_payoff": 40.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.3333333333333333,
+      "joint_shortfall": 80.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "D / D": 20
+      },
+      "luna_payoff": 20.0,
+      "jev_payoff": 20.0
+    },
+    {
+      "id": "stag_hunt-argmax-00-swap0",
+      "game": "stag_hunt",
+      "kind": "h2h",
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 57.0,
+      "seat2_payoff": 60.0,
+      "joint_payoff": 117.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.73125,
+      "joint_shortfall": 43.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 19,
+        "Stag / Hare": 1
+      },
+      "luna_payoff": 57.0,
+      "jev_payoff": 60.0
+    },
+    {
+      "id": "stag_hunt-argmax-00-swap1",
+      "game": "stag_hunt",
+      "kind": "h2h",
+      "pair": 0,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 60.0,
+      "seat2_payoff": 57.0,
+      "joint_payoff": 117.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.73125,
+      "joint_shortfall": 43.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 19,
+        "Stag / Hare": 1
+      },
+      "luna_payoff": 57.0,
+      "jev_payoff": 60.0
+    },
+    {
+      "id": "public_goods-argmax-00-swap0",
+      "game": "public_goods",
+      "kind": "h2h",
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 199.2,
+      "seat2_payoff": 203.2,
+      "joint_payoff": 402.4,
+      "joint_maximum": 640.0,
+      "joint_share": 0.62875,
+      "joint_shortfall": 237.6,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 18,
+        "2 / 0": 2
+      },
+      "luna_payoff": 199.2,
+      "jev_payoff": 203.2
+    },
+    {
+      "id": "public_goods-argmax-00-swap1",
+      "game": "public_goods",
+      "kind": "h2h",
+      "pair": 0,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 203.2,
+      "seat2_payoff": 199.2,
+      "joint_payoff": 402.4,
+      "joint_maximum": 640.0,
+      "joint_share": 0.62875,
+      "joint_shortfall": 237.6,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 18,
+        "2 / 0": 2
+      },
+      "luna_payoff": 199.2,
+      "jev_payoff": 203.2
+    },
+    {
+      "id": "prisoners_dilemma-argmax-01-swap0",
+      "game": "prisoners_dilemma",
+      "kind": "h2h",
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 20.0,
+      "seat2_payoff": 20.0,
+      "joint_payoff": 40.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.3333333333333333,
+      "joint_shortfall": 80.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "D / D": 20
+      },
+      "luna_payoff": 20.0,
+      "jev_payoff": 20.0
+    },
+    {
+      "id": "prisoners_dilemma-argmax-01-swap1",
+      "game": "prisoners_dilemma",
+      "kind": "h2h",
+      "pair": 1,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 24.0,
+      "seat2_payoff": 19.0,
+      "joint_payoff": 43.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.35833333333333334,
+      "joint_shortfall": 77.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "C / D": 1,
+        "D / D": 19
+      },
+      "luna_payoff": 19.0,
+      "jev_payoff": 24.0
+    },
+    {
+      "id": "stag_hunt-argmax-01-swap0",
+      "game": "stag_hunt",
+      "kind": "h2h",
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 57.0,
+      "seat2_payoff": 60.0,
+      "joint_payoff": 117.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.73125,
+      "joint_shortfall": 43.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 19,
+        "Stag / Hare": 1
+      },
+      "luna_payoff": 57.0,
+      "jev_payoff": 60.0
+    },
+    {
+      "id": "stag_hunt-argmax-01-swap1",
+      "game": "stag_hunt",
+      "kind": "h2h",
+      "pair": 1,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 60.0,
+      "seat2_payoff": 57.0,
+      "joint_payoff": 117.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.73125,
+      "joint_shortfall": 43.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 19,
+        "Stag / Hare": 1
+      },
+      "luna_payoff": 57.0,
+      "jev_payoff": 60.0
+    },
+    {
+      "id": "public_goods-argmax-01-swap0",
+      "game": "public_goods",
+      "kind": "h2h",
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 200.0,
+      "seat2_payoff": 200.0,
+      "joint_payoff": 400.0,
+      "joint_maximum": 640.0,
+      "joint_share": 0.625,
+      "joint_shortfall": 240.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 20
+      },
+      "luna_payoff": 200.0,
+      "jev_payoff": 200.0
+    },
+    {
+      "id": "public_goods-argmax-01-swap1",
+      "game": "public_goods",
+      "kind": "h2h",
+      "pair": 1,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 200.0,
+      "seat2_payoff": 200.0,
+      "joint_payoff": 400.0,
+      "joint_maximum": 640.0,
+      "joint_share": 0.625,
+      "joint_shortfall": 240.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 20
+      },
+      "luna_payoff": 200.0,
+      "jev_payoff": 200.0
+    },
+    {
+      "id": "prisoners_dilemma-argmax-02-swap0",
+      "game": "prisoners_dilemma",
+      "kind": "h2h",
+      "pair": 2,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 18.0,
+      "seat2_payoff": 28.0,
+      "joint_payoff": 46.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.38333333333333336,
+      "joint_shortfall": 74.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "C / D": 2,
+        "D / D": 18
+      },
+      "luna_payoff": 18.0,
+      "jev_payoff": 28.0
+    },
+    {
+      "id": "prisoners_dilemma-argmax-02-swap1",
+      "game": "prisoners_dilemma",
+      "kind": "h2h",
+      "pair": 2,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 24.0,
+      "seat2_payoff": 19.0,
+      "joint_payoff": 43.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.35833333333333334,
+      "joint_shortfall": 77.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "C / D": 1,
+        "D / D": 19
+      },
+      "luna_payoff": 19.0,
+      "jev_payoff": 24.0
+    },
+    {
+      "id": "stag_hunt-argmax-02-swap0",
+      "game": "stag_hunt",
+      "kind": "h2h",
+      "pair": 2,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 57.0,
+      "seat2_payoff": 60.0,
+      "joint_payoff": 117.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.73125,
+      "joint_shortfall": 43.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 19,
+        "Stag / Hare": 1
+      },
+      "luna_payoff": 57.0,
+      "jev_payoff": 60.0
+    },
+    {
+      "id": "stag_hunt-argmax-02-swap1",
+      "game": "stag_hunt",
+      "kind": "h2h",
+      "pair": 2,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 60.0,
+      "seat2_payoff": 57.0,
+      "joint_payoff": 117.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.73125,
+      "joint_shortfall": 43.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 19,
+        "Stag / Hare": 1
+      },
+      "luna_payoff": 57.0,
+      "jev_payoff": 60.0
+    },
+    {
+      "id": "public_goods-argmax-02-swap0",
+      "game": "public_goods",
+      "kind": "h2h",
+      "pair": 2,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 199.6,
+      "seat2_payoff": 201.6,
+      "joint_payoff": 401.2,
+      "joint_maximum": 640.0,
+      "joint_share": 0.626875,
+      "joint_shortfall": 238.8,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 19,
+        "2 / 0": 1
+      },
+      "luna_payoff": 199.6,
+      "jev_payoff": 201.6
+    },
+    {
+      "id": "public_goods-argmax-02-swap1",
+      "game": "public_goods",
+      "kind": "h2h",
+      "pair": 2,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 203.2,
+      "seat2_payoff": 199.2,
+      "joint_payoff": 402.4,
+      "joint_maximum": 640.0,
+      "joint_share": 0.62875,
+      "joint_shortfall": 237.6,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 18,
+        "2 / 0": 2
+      },
+      "luna_payoff": 199.2,
+      "jev_payoff": 203.2
+    },
+    {
+      "id": "prisoners_dilemma-argmax-03-swap0",
+      "game": "prisoners_dilemma",
+      "kind": "h2h",
+      "pair": 3,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 19.0,
+      "seat2_payoff": 24.0,
+      "joint_payoff": 43.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.35833333333333334,
+      "joint_shortfall": 77.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "C / D": 1,
+        "D / D": 19
+      },
+      "luna_payoff": 19.0,
+      "jev_payoff": 24.0
+    },
+    {
+      "id": "prisoners_dilemma-argmax-03-swap1",
+      "game": "prisoners_dilemma",
+      "kind": "h2h",
+      "pair": 3,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 19.0,
+      "seat2_payoff": 24.0,
+      "joint_payoff": 43.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.35833333333333334,
+      "joint_shortfall": 77.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "D / C": 1,
+        "D / D": 19
+      },
+      "luna_payoff": 24.0,
+      "jev_payoff": 19.0
+    },
+    {
+      "id": "stag_hunt-argmax-03-swap0",
+      "game": "stag_hunt",
+      "kind": "h2h",
+      "pair": 3,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 60.0,
+      "seat2_payoff": 60.0,
+      "joint_payoff": 120.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.75,
+      "joint_shortfall": 40.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 20
+      },
+      "luna_payoff": 60.0,
+      "jev_payoff": 60.0
+    },
+    {
+      "id": "stag_hunt-argmax-03-swap1",
+      "game": "stag_hunt",
+      "kind": "h2h",
+      "pair": 3,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 60.0,
+      "seat2_payoff": 57.0,
+      "joint_payoff": 117.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.73125,
+      "joint_shortfall": 43.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 19,
+        "Stag / Hare": 1
+      },
+      "luna_payoff": 57.0,
+      "jev_payoff": 60.0
+    },
+    {
+      "id": "public_goods-argmax-03-swap0",
+      "game": "public_goods",
+      "kind": "h2h",
+      "pair": 3,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 199.6,
+      "seat2_payoff": 201.6,
+      "joint_payoff": 401.2,
+      "joint_maximum": 640.0,
+      "joint_share": 0.626875,
+      "joint_shortfall": 238.8,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 19,
+        "2 / 0": 1
+      },
+      "luna_payoff": 199.6,
+      "jev_payoff": 201.6
+    },
+    {
+      "id": "public_goods-argmax-03-swap1",
+      "game": "public_goods",
+      "kind": "h2h",
+      "pair": 3,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 201.6,
+      "seat2_payoff": 199.6,
+      "joint_payoff": 401.2,
+      "joint_maximum": 640.0,
+      "joint_share": 0.626875,
+      "joint_shortfall": 238.8,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 19,
+        "2 / 0": 1
+      },
+      "luna_payoff": 199.6,
+      "jev_payoff": 201.6
+    },
+    {
+      "id": "prisoners_dilemma-argmax-04-swap0",
+      "game": "prisoners_dilemma",
+      "kind": "h2h",
+      "pair": 4,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 19.0,
+      "seat2_payoff": 24.0,
+      "joint_payoff": 43.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.35833333333333334,
+      "joint_shortfall": 77.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "C / D": 1,
+        "D / D": 19
+      },
+      "luna_payoff": 19.0,
+      "jev_payoff": 24.0
+    },
+    {
+      "id": "prisoners_dilemma-argmax-04-swap1",
+      "game": "prisoners_dilemma",
+      "kind": "h2h",
+      "pair": 4,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 24.0,
+      "seat2_payoff": 19.0,
+      "joint_payoff": 43.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.35833333333333334,
+      "joint_shortfall": 77.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "C / D": 1,
+        "D / D": 19
+      },
+      "luna_payoff": 19.0,
+      "jev_payoff": 24.0
+    },
+    {
+      "id": "stag_hunt-argmax-04-swap0",
+      "game": "stag_hunt",
+      "kind": "h2h",
+      "pair": 4,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 57.0,
+      "seat2_payoff": 60.0,
+      "joint_payoff": 117.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.73125,
+      "joint_shortfall": 43.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 19,
+        "Stag / Hare": 1
+      },
+      "luna_payoff": 57.0,
+      "jev_payoff": 60.0
+    },
+    {
+      "id": "stag_hunt-argmax-04-swap1",
+      "game": "stag_hunt",
+      "kind": "h2h",
+      "pair": 4,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 60.0,
+      "seat2_payoff": 57.0,
+      "joint_payoff": 117.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.73125,
+      "joint_shortfall": 43.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 19,
+        "Stag / Hare": 1
+      },
+      "luna_payoff": 57.0,
+      "jev_payoff": 60.0
+    },
+    {
+      "id": "public_goods-argmax-04-swap0",
+      "game": "public_goods",
+      "kind": "h2h",
+      "pair": 4,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 199.2,
+      "seat2_payoff": 203.2,
+      "joint_payoff": 402.4,
+      "joint_maximum": 640.0,
+      "joint_share": 0.62875,
+      "joint_shortfall": 237.6,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 18,
+        "2 / 0": 2
+      },
+      "luna_payoff": 199.2,
+      "jev_payoff": 203.2
+    },
+    {
+      "id": "public_goods-argmax-04-swap1",
+      "game": "public_goods",
+      "kind": "h2h",
+      "pair": 4,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 200.0,
+      "seat2_payoff": 200.0,
+      "joint_payoff": 400.0,
+      "joint_maximum": 640.0,
+      "joint_share": 0.625,
+      "joint_shortfall": 240.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 20
+      },
+      "luna_payoff": 200.0,
+      "jev_payoff": 200.0
+    },
+    {
+      "id": "prisoners_dilemma-argmax-05-swap0",
+      "game": "prisoners_dilemma",
+      "kind": "h2h",
+      "pair": 5,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 19.0,
+      "seat2_payoff": 24.0,
+      "joint_payoff": 43.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.35833333333333334,
+      "joint_shortfall": 77.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "C / D": 1,
+        "D / D": 19
+      },
+      "luna_payoff": 19.0,
+      "jev_payoff": 24.0
+    },
+    {
+      "id": "prisoners_dilemma-argmax-05-swap1",
+      "game": "prisoners_dilemma",
+      "kind": "h2h",
+      "pair": 5,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 24.0,
+      "seat2_payoff": 19.0,
+      "joint_payoff": 43.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.35833333333333334,
+      "joint_shortfall": 77.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "C / D": 1,
+        "D / D": 19
+      },
+      "luna_payoff": 19.0,
+      "jev_payoff": 24.0
+    },
+    {
+      "id": "stag_hunt-argmax-05-swap0",
+      "game": "stag_hunt",
+      "kind": "h2h",
+      "pair": 5,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 57.0,
+      "seat2_payoff": 60.0,
+      "joint_payoff": 117.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.73125,
+      "joint_shortfall": 43.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 19,
+        "Stag / Hare": 1
+      },
+      "luna_payoff": 57.0,
+      "jev_payoff": 60.0
+    },
+    {
+      "id": "stag_hunt-argmax-05-swap1",
+      "game": "stag_hunt",
+      "kind": "h2h",
+      "pair": 5,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 60.0,
+      "seat2_payoff": 57.0,
+      "joint_payoff": 117.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.73125,
+      "joint_shortfall": 43.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 19,
+        "Stag / Hare": 1
+      },
+      "luna_payoff": 57.0,
+      "jev_payoff": 60.0
+    },
+    {
+      "id": "public_goods-argmax-05-swap0",
+      "game": "public_goods",
+      "kind": "h2h",
+      "pair": 5,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 199.6,
+      "seat2_payoff": 201.6,
+      "joint_payoff": 401.2,
+      "joint_maximum": 640.0,
+      "joint_share": 0.626875,
+      "joint_shortfall": 238.8,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 19,
+        "2 / 0": 1
+      },
+      "luna_payoff": 199.6,
+      "jev_payoff": 201.6
+    },
+    {
+      "id": "public_goods-argmax-05-swap1",
+      "game": "public_goods",
+      "kind": "h2h",
+      "pair": 5,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 200.0,
+      "seat2_payoff": 200.0,
+      "joint_payoff": 400.0,
+      "joint_maximum": 640.0,
+      "joint_share": 0.625,
+      "joint_shortfall": 240.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 20
+      },
+      "luna_payoff": 200.0,
+      "jev_payoff": 200.0
+    },
+    {
+      "id": "prisoners_dilemma-argmax-06-swap0",
+      "game": "prisoners_dilemma",
+      "kind": "h2h",
+      "pair": 6,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 18.0,
+      "seat2_payoff": 28.0,
+      "joint_payoff": 46.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.38333333333333336,
+      "joint_shortfall": 74.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "C / D": 2,
+        "D / D": 18
+      },
+      "luna_payoff": 18.0,
+      "jev_payoff": 28.0
+    },
+    {
+      "id": "prisoners_dilemma-argmax-06-swap1",
+      "game": "prisoners_dilemma",
+      "kind": "h2h",
+      "pair": 6,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 24.0,
+      "seat2_payoff": 19.0,
+      "joint_payoff": 43.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.35833333333333334,
+      "joint_shortfall": 77.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "C / D": 1,
+        "D / D": 19
+      },
+      "luna_payoff": 19.0,
+      "jev_payoff": 24.0
+    },
+    {
+      "id": "stag_hunt-argmax-06-swap0",
+      "game": "stag_hunt",
+      "kind": "h2h",
+      "pair": 6,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 57.0,
+      "seat2_payoff": 60.0,
+      "joint_payoff": 117.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.73125,
+      "joint_shortfall": 43.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 19,
+        "Stag / Hare": 1
+      },
+      "luna_payoff": 57.0,
+      "jev_payoff": 60.0
+    },
+    {
+      "id": "stag_hunt-argmax-06-swap1",
+      "game": "stag_hunt",
+      "kind": "h2h",
+      "pair": 6,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 60.0,
+      "seat2_payoff": 60.0,
+      "joint_payoff": 120.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.75,
+      "joint_shortfall": 40.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 20
+      },
+      "luna_payoff": 60.0,
+      "jev_payoff": 60.0
+    },
+    {
+      "id": "public_goods-argmax-06-swap0",
+      "game": "public_goods",
+      "kind": "h2h",
+      "pair": 6,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 199.6,
+      "seat2_payoff": 201.6,
+      "joint_payoff": 401.2,
+      "joint_maximum": 640.0,
+      "joint_share": 0.626875,
+      "joint_shortfall": 238.8,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 19,
+        "2 / 0": 1
+      },
+      "luna_payoff": 199.6,
+      "jev_payoff": 201.6
+    },
+    {
+      "id": "public_goods-argmax-06-swap1",
+      "game": "public_goods",
+      "kind": "h2h",
+      "pair": 6,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 203.2,
+      "seat2_payoff": 199.2,
+      "joint_payoff": 402.4,
+      "joint_maximum": 640.0,
+      "joint_share": 0.62875,
+      "joint_shortfall": 237.6,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 18,
+        "2 / 0": 2
+      },
+      "luna_payoff": 199.2,
+      "jev_payoff": 203.2
+    },
+    {
+      "id": "prisoners_dilemma-argmax-07-swap0",
+      "game": "prisoners_dilemma",
+      "kind": "h2h",
+      "pair": 7,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 18.0,
+      "seat2_payoff": 28.0,
+      "joint_payoff": 46.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.38333333333333336,
+      "joint_shortfall": 74.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "C / D": 2,
+        "D / D": 18
+      },
+      "luna_payoff": 18.0,
+      "jev_payoff": 28.0
+    },
+    {
+      "id": "prisoners_dilemma-argmax-07-swap1",
+      "game": "prisoners_dilemma",
+      "kind": "h2h",
+      "pair": 7,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 24.0,
+      "seat2_payoff": 19.0,
+      "joint_payoff": 43.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.35833333333333334,
+      "joint_shortfall": 77.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "C / D": 1,
+        "D / D": 19
+      },
+      "luna_payoff": 19.0,
+      "jev_payoff": 24.0
+    },
+    {
+      "id": "stag_hunt-argmax-07-swap0",
+      "game": "stag_hunt",
+      "kind": "h2h",
+      "pair": 7,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 57.0,
+      "seat2_payoff": 60.0,
+      "joint_payoff": 117.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.73125,
+      "joint_shortfall": 43.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 19,
+        "Stag / Hare": 1
+      },
+      "luna_payoff": 57.0,
+      "jev_payoff": 60.0
+    },
+    {
+      "id": "stag_hunt-argmax-07-swap1",
+      "game": "stag_hunt",
+      "kind": "h2h",
+      "pair": 7,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 60.0,
+      "seat2_payoff": 60.0,
+      "joint_payoff": 120.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.75,
+      "joint_shortfall": 40.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 20
+      },
+      "luna_payoff": 60.0,
+      "jev_payoff": 60.0
+    },
+    {
+      "id": "public_goods-argmax-07-swap0",
+      "game": "public_goods",
+      "kind": "h2h",
+      "pair": 7,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 199.2,
+      "seat2_payoff": 203.2,
+      "joint_payoff": 402.4,
+      "joint_maximum": 640.0,
+      "joint_share": 0.62875,
+      "joint_shortfall": 237.6,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 18,
+        "2 / 0": 2
+      },
+      "luna_payoff": 199.2,
+      "jev_payoff": 203.2
+    },
+    {
+      "id": "public_goods-argmax-07-swap1",
+      "game": "public_goods",
+      "kind": "h2h",
+      "pair": 7,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 200.0,
+      "seat2_payoff": 200.0,
+      "joint_payoff": 400.0,
+      "joint_maximum": 640.0,
+      "joint_share": 0.625,
+      "joint_shortfall": 240.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 20
+      },
+      "luna_payoff": 200.0,
+      "jev_payoff": 200.0
+    },
+    {
+      "id": "prisoners_dilemma-self-decisions-00",
+      "game": "prisoners_dilemma",
+      "kind": "self",
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 19.0,
+      "seat2_payoff": 24.0,
+      "joint_payoff": 43.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.35833333333333334,
+      "joint_shortfall": 77.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "C / D": 1,
+        "D / D": 19
+      }
+    },
+    {
+      "id": "prisoners_dilemma-self-jev-00",
+      "game": "prisoners_dilemma",
+      "kind": "self",
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "jev",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 20.0,
+      "seat2_payoff": 20.0,
+      "joint_payoff": 40.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.3333333333333333,
+      "joint_shortfall": 80.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "D / D": 20
+      }
+    },
+    {
+      "id": "stag_hunt-self-decisions-00",
+      "game": "stag_hunt",
+      "kind": "self",
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 80.0,
+      "seat2_payoff": 80.0,
+      "joint_payoff": 160.0,
+      "joint_maximum": 160.0,
+      "joint_share": 1.0,
+      "joint_shortfall": 0.0,
+      "joint_maximum_attained": true,
+      "pareto_efficient": true,
+      "joint_optimal_rounds": 20,
+      "action_profiles": {
+        "Stag / Stag": 20
+      }
+    },
+    {
+      "id": "stag_hunt-self-jev-00",
+      "game": "stag_hunt",
+      "kind": "self",
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "jev",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 60.0,
+      "seat2_payoff": 60.0,
+      "joint_payoff": 120.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.75,
+      "joint_shortfall": 40.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 20
+      }
+    },
+    {
+      "id": "public_goods-self-decisions-00",
+      "game": "public_goods",
+      "kind": "self",
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 202.4,
+      "seat2_payoff": 208.4,
+      "joint_payoff": 410.8,
+      "joint_maximum": 640.0,
+      "joint_share": 0.641875,
+      "joint_shortfall": 229.2,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 14,
+        "2 / 0": 3,
+        "2 / 2": 3
+      }
+    },
+    {
+      "id": "public_goods-self-jev-00",
+      "game": "public_goods",
+      "kind": "self",
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "jev",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 200.0,
+      "seat2_payoff": 200.0,
+      "joint_payoff": 400.0,
+      "joint_maximum": 640.0,
+      "joint_share": 0.625,
+      "joint_shortfall": 240.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 20
+      }
+    },
+    {
+      "id": "prisoners_dilemma-self-decisions-01",
+      "game": "prisoners_dilemma",
+      "kind": "self",
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 24.0,
+      "seat2_payoff": 19.0,
+      "joint_payoff": 43.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.35833333333333334,
+      "joint_shortfall": 77.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "D / C": 1,
+        "D / D": 19
+      }
+    },
+    {
+      "id": "prisoners_dilemma-self-jev-01",
+      "game": "prisoners_dilemma",
+      "kind": "self",
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "jev",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 20.0,
+      "seat2_payoff": 20.0,
+      "joint_payoff": 40.0,
+      "joint_maximum": 120.0,
+      "joint_share": 0.3333333333333333,
+      "joint_shortfall": 80.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "D / D": 20
+      }
+    },
+    {
+      "id": "stag_hunt-self-decisions-01",
+      "game": "stag_hunt",
+      "kind": "self",
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 57.0,
+      "seat2_payoff": 57.0,
+      "joint_payoff": 114.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.7125,
+      "joint_shortfall": 46.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 18,
+        "Hare / Stag": 1,
+        "Stag / Hare": 1
+      }
+    },
+    {
+      "id": "stag_hunt-self-jev-01",
+      "game": "stag_hunt",
+      "kind": "self",
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "jev",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 60.0,
+      "seat2_payoff": 60.0,
+      "joint_payoff": 120.0,
+      "joint_maximum": 160.0,
+      "joint_share": 0.75,
+      "joint_shortfall": 40.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "Hare / Hare": 20
+      }
+    },
+    {
+      "id": "public_goods-self-decisions-01",
+      "game": "public_goods",
+      "kind": "self",
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "decisions"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 200.0,
+      "seat2_payoff": 200.0,
+      "joint_payoff": 400.0,
+      "joint_maximum": 640.0,
+      "joint_share": 0.625,
+      "joint_shortfall": 240.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 20
+      }
+    },
+    {
+      "id": "public_goods-self-jev-01",
+      "game": "public_goods",
+      "kind": "self",
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "jev",
+        "jev"
+      ],
+      "rounds": 20,
+      "seat1_payoff": 200.0,
+      "seat2_payoff": 200.0,
+      "joint_payoff": 400.0,
+      "joint_maximum": 640.0,
+      "joint_share": 0.625,
+      "joint_shortfall": 240.0,
+      "joint_maximum_attained": false,
+      "pareto_efficient": false,
+      "joint_optimal_rounds": 0,
+      "action_profiles": {
+        "0 / 0": 20
+      }
+    }
+  ]
+}

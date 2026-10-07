@@ -1,0 +1,1211 @@
+{
+  "schema": 1,
+  "matches": [
+    {
+      "id": "prisoners_dilemma-argmax-00-swap0",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-argmax-00-swap1",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-argmax-00-swap0",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-argmax-00-swap1",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-argmax-00-swap0",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-argmax-00-swap1",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-argmax-01-swap0",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-argmax-01-swap1",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-argmax-01-swap0",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-argmax-01-swap1",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-argmax-01-swap0",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-argmax-01-swap1",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-argmax-02-swap0",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026100800,
+      "pair": 2,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-argmax-02-swap1",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026100800,
+      "pair": 2,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-argmax-02-swap0",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026100800,
+      "pair": 2,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-argmax-02-swap1",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026100800,
+      "pair": 2,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-argmax-02-swap0",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026100800,
+      "pair": 2,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-argmax-02-swap1",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026100800,
+      "pair": 2,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-argmax-03-swap0",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026100900,
+      "pair": 3,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-argmax-03-swap1",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026100900,
+      "pair": 3,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-argmax-03-swap0",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026100900,
+      "pair": 3,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-argmax-03-swap1",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026100900,
+      "pair": 3,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-argmax-03-swap0",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026100900,
+      "pair": 3,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-argmax-03-swap1",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026100900,
+      "pair": 3,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-argmax-04-swap0",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026101000,
+      "pair": 4,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-argmax-04-swap1",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026101000,
+      "pair": 4,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-argmax-04-swap0",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026101000,
+      "pair": 4,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-argmax-04-swap1",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026101000,
+      "pair": 4,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-argmax-04-swap0",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026101000,
+      "pair": 4,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-argmax-04-swap1",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026101000,
+      "pair": 4,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-argmax-05-swap0",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026101100,
+      "pair": 5,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-argmax-05-swap1",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026101100,
+      "pair": 5,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-argmax-05-swap0",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026101100,
+      "pair": 5,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-argmax-05-swap1",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026101100,
+      "pair": 5,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-argmax-05-swap0",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026101100,
+      "pair": 5,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-argmax-05-swap1",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026101100,
+      "pair": 5,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-argmax-06-swap0",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026101200,
+      "pair": 6,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-argmax-06-swap1",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026101200,
+      "pair": 6,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-argmax-06-swap0",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026101200,
+      "pair": 6,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-argmax-06-swap1",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026101200,
+      "pair": 6,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-argmax-06-swap0",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026101200,
+      "pair": 6,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-argmax-06-swap1",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026101200,
+      "pair": 6,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-argmax-07-swap0",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026101300,
+      "pair": 7,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-argmax-07-swap1",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026101300,
+      "pair": 7,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-argmax-07-swap0",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026101300,
+      "pair": 7,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-argmax-07-swap1",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026101300,
+      "pair": 7,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-argmax-07-swap0",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026101300,
+      "pair": 7,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-argmax-07-swap1",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026101300,
+      "pair": 7,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-sample-00-swap0",
+      "game": "prisoners_dilemma",
+      "policy": "sample",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-sample-00-swap1",
+      "game": "prisoners_dilemma",
+      "policy": "sample",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-sample-00-swap0",
+      "game": "stag_hunt",
+      "policy": "sample",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-sample-00-swap1",
+      "game": "stag_hunt",
+      "policy": "sample",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-sample-00-swap0",
+      "game": "public_goods",
+      "policy": "sample",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-sample-00-swap1",
+      "game": "public_goods",
+      "policy": "sample",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-sample-01-swap0",
+      "game": "prisoners_dilemma",
+      "policy": "sample",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-sample-01-swap1",
+      "game": "prisoners_dilemma",
+      "policy": "sample",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-sample-01-swap0",
+      "game": "stag_hunt",
+      "policy": "sample",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-sample-01-swap1",
+      "game": "stag_hunt",
+      "policy": "sample",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-sample-01-swap0",
+      "game": "public_goods",
+      "policy": "sample",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-sample-01-swap1",
+      "game": "public_goods",
+      "policy": "sample",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-sample-02-swap0",
+      "game": "prisoners_dilemma",
+      "policy": "sample",
+      "seed": 2026100800,
+      "pair": 2,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-sample-02-swap1",
+      "game": "prisoners_dilemma",
+      "policy": "sample",
+      "seed": 2026100800,
+      "pair": 2,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-sample-02-swap0",
+      "game": "stag_hunt",
+      "policy": "sample",
+      "seed": 2026100800,
+      "pair": 2,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-sample-02-swap1",
+      "game": "stag_hunt",
+      "policy": "sample",
+      "seed": 2026100800,
+      "pair": 2,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-sample-02-swap0",
+      "game": "public_goods",
+      "policy": "sample",
+      "seed": 2026100800,
+      "pair": 2,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-sample-02-swap1",
+      "game": "public_goods",
+      "policy": "sample",
+      "seed": 2026100800,
+      "pair": 2,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-sample-03-swap0",
+      "game": "prisoners_dilemma",
+      "policy": "sample",
+      "seed": 2026100900,
+      "pair": 3,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-sample-03-swap1",
+      "game": "prisoners_dilemma",
+      "policy": "sample",
+      "seed": 2026100900,
+      "pair": 3,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-sample-03-swap0",
+      "game": "stag_hunt",
+      "policy": "sample",
+      "seed": 2026100900,
+      "pair": 3,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "stag_hunt-sample-03-swap1",
+      "game": "stag_hunt",
+      "policy": "sample",
+      "seed": 2026100900,
+      "pair": 3,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-sample-03-swap0",
+      "game": "public_goods",
+      "policy": "sample",
+      "seed": 2026100900,
+      "pair": 3,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "public_goods-sample-03-swap1",
+      "game": "public_goods",
+      "policy": "sample",
+      "seed": 2026100900,
+      "pair": 3,
+      "swap": 1,
+      "players": [
+        "jev",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "h2h"
+    },
+    {
+      "id": "prisoners_dilemma-self-decisions-00",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "self"
+    },
+    {
+      "id": "prisoners_dilemma-self-jev-00",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "jev",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "self"
+    },
+    {
+      "id": "stag_hunt-self-decisions-00",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "self"
+    },
+    {
+      "id": "stag_hunt-self-jev-00",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "jev",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "self"
+    },
+    {
+      "id": "public_goods-self-decisions-00",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "self"
+    },
+    {
+      "id": "public_goods-self-jev-00",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026100600,
+      "pair": 0,
+      "swap": 0,
+      "players": [
+        "jev",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "self"
+    },
+    {
+      "id": "prisoners_dilemma-self-decisions-01",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "self"
+    },
+    {
+      "id": "prisoners_dilemma-self-jev-01",
+      "game": "prisoners_dilemma",
+      "policy": "argmax",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "jev",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "self"
+    },
+    {
+      "id": "stag_hunt-self-decisions-01",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "self"
+    },
+    {
+      "id": "stag_hunt-self-jev-01",
+      "game": "stag_hunt",
+      "policy": "argmax",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "jev",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "self"
+    },
+    {
+      "id": "public_goods-self-decisions-01",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "decisions",
+        "decisions"
+      ],
+      "rounds": 20,
+      "kind": "self"
+    },
+    {
+      "id": "public_goods-self-jev-01",
+      "game": "public_goods",
+      "policy": "argmax",
+      "seed": 2026100700,
+      "pair": 1,
+      "swap": 0,
+      "players": [
+        "jev",
+        "jev"
+      ],
+      "rounds": 20,
+      "kind": "self"
+    }
+  ],
+  "action_rule": "API choice (argmax); sample is separate",
+  "payoffs": {
+    "prisoners_dilemma": {
+      "rules": "Repeated Prisoner's Dilemma. Both choose C or D simultaneously. Payoffs (your action, other action -> your points, other points): C,C -> 3,3; C,D -> 0,5; D,C -> 5,0; D,D -> 1,1.",
+      "actions": [
+        "C",
+        "D"
+      ]
+    },
+    "stag_hunt": {
+      "rules": "Repeated Stag Hunt. Both choose Stag or Hare simultaneously. Payoffs (your action, other action -> your points, other points): Stag,Stag -> 4,4; Stag,Hare -> 0,3; Hare,Stag -> 3,0; Hare,Hare -> 3,3.",
+      "actions": [
+        "Stag",
+        "Hare"
+      ]
+    },
+    "public_goods": {
+      "rules": "Repeated TWO-PLAYER public goods game. Each player receives a fresh endowment of 10 tokens each round. Each simultaneously contributes 0, 2, 4, 6, 8, or 10 tokens. The joint contribution is multiplied by 1.6 and divided equally between the two players. Your points = 10 - your contribution + 0.8*(your contribution + other contribution). Other points = 10 - other contribution + 0.8*(your contribution + other contribution). For example, both contribute 10 -> 16 points each; both contribute 0 -> 10 each; you contribute 0 and other contributes 10 -> you get 18, other gets 8. Unused tokens do not carry into the next endowment; points accumulate.",
+      "actions": [
+        "0",
+        "2",
+        "4",
+        "6",
+        "8",
+        "10"
+      ]
+    }
+  },
+  "option_order": "Seeded shuffle separately for each player/round; seat swap keeps seat seeds",
+  "disclosure": "No opponent identity, current action, or probability is sent to the other player"
+}

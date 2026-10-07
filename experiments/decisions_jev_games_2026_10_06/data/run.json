@@ -1,0 +1,15 @@
+{
+  "started_utc": "2026-10-07T05:52:24.984921+00:00",
+  "workers": 8,
+  "python": "3.12.9 (main, Mar 17 2025, 21:36:21) [Clang 20.1.0 ]",
+  "packages": {
+    "llm": "0.36",
+    "llm-openai-decisions": "0.1",
+    "llm-typesafe": "0.1a0",
+    "httpx2": "2.13.1"
+  },
+  "elapsed_seconds": 16.273603749927133,
+  "failed_matches": [],
+  "saved_successful_calls": 3360,
+  "matches_requested": 84
+}
